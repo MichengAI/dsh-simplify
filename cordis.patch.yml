@@ -1,0 +1,3 @@
+- insert:
+    - id: michengai-simplify
+      name: '@michengai/dsh-simplify'

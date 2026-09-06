@@ -1,0 +1,173 @@
+<div align="center">
+
+# DSH Simplify
+
+**在 DeepSeek Harness 中简化最近改动的代码，保持原有功能。**
+
+[English](README.md) · [安装](#安装) · [用法](#用法) · [故障排查](#故障排查) · [更新日志](CHANGELOG.zh-CN.md) · [Apache-2.0](LICENSE)
+
+[![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
+[![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
+
+</div>
+
+DeepSeek Harness 代码简化插件。运行 `/simplify` 后，插件收集 Git 变更文件、行号与内容快照，由当前 Agent 在限定范围内改进代码清晰度，保持功能不变。
+
+本项目为社区插件，并非 DeepSeek AI 官方产品。支持 DSH Web 及集成 DSH Web 的桌面应用。
+
+审查提示词、补丁正文解析、Git 收集与 DSH 适配均由本项目实现。命令文案及提示词使用简体中文。
+
+## 功能概览
+
+- **限定审查范围**：当前改动、暂存区、指定提交、指定文件或目录。
+- **包含新增文件**：未跟踪文件按整文件审查，支持尚无首次提交的仓库。
+- **跨平台路径**：Git 参数数组与 NUL 分隔解析，支持中文、空格和引号文件名。
+- **执行失败有边界**：Git 错误、取消、超时、截断和冲突时不提交不完整的审查任务。
+- **防止暂存区行号错位**：所选暂存文件仍有未暂存改动时拒绝执行。
+- **快照复核**：提交提示词前复核 HEAD、index 和内容哈希，要求 Agent 编辑前再次验证。
+- **提交后回看**：仅默认模式允许回看 HEAD 相对第一父提交的差异。
+
+## 安装
+
+要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows 已实测，Linux/macOS 尚未在对应系统验证。
+
+当前版本 `0.1.0` 为本地预览，**尚未发布 npm，也没有正式 GitHub Release**。以下示例使用 `web` profile，请按实际环境替换。
+
+### 从源码安装
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+git clone https://github.com/MichengAI/dsh-simplify.git
+Set-Location dsh-simplify
+npm ci --ignore-scripts
+npm run check
+dsh plugin --profile web add . --ignore-scripts
+```
+
+入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。安装前停用其他注册 `/simplify` 的插件。
+
+### 从本地安装包安装
+
+在源码目录运行 `npm pack` 生成 tgz，然后在安装包所在目录执行：
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.0.tgz --ignore-scripts
+```
+
+### npm 发布后安装
+
+未来发布到 npm 后可使用以下命令；当前不要把它作为已发布包安装：
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+dsh plugin --profile web add @michengai/dsh-simplify@latest --registry=https://registry.npmjs.org/
+```
+
+### 重新加载与确认
+
+请在当前任务结束后安装或更新，桌面应用可能自动重载。若未生效，使用桌面应用的重新加载功能，或重启 `dsh web`；仅刷新浏览器不够。
+
+执行 `dsh --profile web --dump-config`，确认包含 `michengai-simplify`。分享完整配置前先检查其中是否包含敏感设置。然后在 Git 项目会话中输入 `/simplify`。
+
+## 用法
+
+| 输入 | 范围 |
+| --- | --- |
+| `/simplify` | HEAD 到当前工作区的净改动，包含未跟踪新增文件；确实没有改动时回看最近一次提交 |
+| `/simplify --staged` | 仅暂存区；所选暂存文件另有未暂存改动时拒绝执行 |
+| `/simplify --ref=main` | 指定提交到当前工作区的差异，包含未跟踪文件；不回退其他提交 |
+| `/simplify --ref HEAD` | 显式 HEAD 范围，不启动上一提交回看 |
+| `/simplify src/a.ts "src/中文 文件.ts"` | 仅指定文件的改动；未跟踪文件按整文件处理 |
+| `/simplify src` | 展开目录中的变更文件 |
+| `/simplify -- --special.ts` | 选项终止符后可使用以连字符开头的路径 |
+
+- 路径相对当前会话目录，支持仓库内绝对路径；提示词统一使用仓库根目录相对路径。
+- 支持单双引号组合带空格路径，反斜杠按路径字符保留；不执行 Shell 展开、通配符或命令替换。
+- `--ref` 支持分支、标签和单个提交表达式，不支持 `a..b` / `a...b`；不能与 `--staged` 混用。
+- 没有首次提交时仍可审查新增文件；只有一个提交且工作区干净时直接返回无变更。
+- 上一提交回看相对于 HEAD 第一父提交；merge commit 不做多父合并审查。
+
+## 命令结果
+
+| 返回结果 | 含义 |
+| --- | --- |
+| `已提交 N 个文件的简化审查` | 审查任务已入队，不代表 Agent 已完成编辑或测试。 |
+| `没有可简化的当前代码行` | 没有可操作的当前行，不发起模型请求；结果可能附带跳过明细。 |
+| 错误信息 | 无法可靠建立审查范围，不发起模型请求；修正所报问题后再试。 |
+
+## 故障排查
+
+**回车后输入框清空，但没有回答。** 空审查不会启动 Agent。已收到的用户反馈中，后端返回成功，但两份 CHANGELOG 被判定没有可简化的当前行而跳过；部分宿主界面未明显展示这类命令结果，反馈可见性仍待排查。后端成功不等于界面已经显示结果。
+
+**当前目录不是 Git 仓库。** 在正确的 Git 项目会话中执行，或自行初始化项目仓库。插件不会自动初始化仓库、暂存或提交。
+
+**暂存文件还有未暂存改动。** 先自行保存或处理这些改动，再运行 `--staged`；也可用默认 `/simplify` 审查当前工作区的净改动。插件不会自动重置或 stash。
+
+**安装器提示 peer 依赖缺失。** 官方包可能由 DSH 宿主运行时提供。应核实实际模块解析版本和后端加载结果，不要直接向 profile 重复安装宿主包；版本仍需满足 `package.json`。
+
+**超时、输出超限或快照过期。** 使用具体文件或目录缩小范围，并在并发编辑结束后重试。
+
+## 执行边界
+
+插件只执行 Git 只读查询和读取本地文件，不自动 `git add`、提交、重置或存储工作区。Git 参数通过 DSH `subprocess` 的 `argv` 传递，不依赖 PowerShell/Bash 引用规则。
+
+Git 失败、信号终止、取消、超时、输出截断、未解决冲突和过期快照都会阻止提示词投递，不将它们当作无改动。补丁解析器按正文核对每块的新旧行数，拒绝残缺正文，并排除上下文行。显式路径不存在、被忽略或位于仓库外时返回错误。
+
+删除文件、纯删除行、仅重命名、二进制文件、非普通文件及大于 5 MiB 的文件不进入可编辑范围，并说明跳过原因。子模块不纳入 diff 收集。已检测到的改动全部被跳过时，不会因此扩大到其他范围。最多收集 200 个变更文件，单次 Git 最多 30 秒，整个范围收集最多 60 秒（进程终止还有最多 1 秒宽限）；Git stdout 上限 8 MiB、stderr 64 KiB，提示词上限 128 KiB。
+
+`--staged` 先确认所选暂存文件与工作区一致，并在入队前再次核对暂存区、HEAD 和文件 SHA-256，避免把 index 行号直接用于不同的工作区内容。Agent 编辑前还需复核内容快照；内容变化时停止该文件的简化并重新运行命令。
+
+**修改范围是提示词约束，不是文件写入权限隔离。** Agent 按宿主工具和用户授权执行修改及测试；本插件没有拦截其他工具的写入，也不能保证排队后文件不再变化。不要把“已提交审查”理解成“已完成简化”。
+
+实现针对本地文件系统与本地 subprocess 同一工作区，未验证远程 subprocess 或远程文件系统组合。
+
+## 卸载
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web remove @michengai/dsh-simplify
+```
+
+若桌面应用未自动重载，手动重新加载 DSH。卸载不会撤销 Agent 已产生的代码修改。
+
+## 开发与验证
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+npm ci --ignore-scripts
+npm run check
+npm pack --dry-run
+```
+
+测试使用真实临时 Git 仓库，覆盖路径、未跟踪文件、回退、冲突、暂存区错位、快照过期及执行错误。测试夹具位于 `.test-tmp`，正常结束时自动清理。
+
+`tests/host.test.mjs` 检测 `%USERPROFILE%\.dsh\profiles\node_modules` 的 DSH 运行时；也可通过 `DSH_RUNTIME_ROOT` 指定其 node_modules 路径。检测到时执行隔离的真实服务注册、Git 执行、消息投递与卸载测试；缺失时明确标为跳过。测试不调用模型，不修改已安装 profile。
+
+| 目录 | 职责 |
+| --- | --- |
+| `src/args.ts` | 命令参数解析 |
+| `src/exec.ts` | DSH subprocess 与 Git 错误、取消、超时处理 |
+| `src/git.ts` | Git 范围选择、NUL 解析、行号与快照复核 |
+| `src/prompt.ts` | 编辑任务、范围与验证提示词 |
+| `src/command.ts`、`src/index.ts` | 命令处理、投递及生命周期 |
+| `tests` | 回归与宿主集成验证 |
+
+项目状态与交接：[阅读导航](docs/00-交接入口/00-阅读导航.md)。
+
+## 相关项目
+
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 提供宿主运行时。[DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop) 可通过 Web profile 运行本插件，但这不代表安装器已经内置本插件。[DSH BTW](https://github.com/MichengAI/dsh-btw) 提供独立旁问，本插件则向当前会话提交代码编辑任务。
+
+## 许可
+
+[Apache-2.0](LICENSE)，Copyright 2026 MichengAI。
