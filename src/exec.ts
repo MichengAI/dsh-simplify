@@ -1,6 +1,15 @@
 import type { SubprocessRuntime } from '@deepseek-ai/dsh-subprocess';
 import type { GitRunner } from './git.js';
 
+// 清除 Git 仓库局部环境，交由 cwd 和 .git/worktree 元数据确定仓库；保留常规用户配置。
+const REPOSITORY_ENV: NodeJS.ProcessEnv = Object.fromEntries([
+  'GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_CONFIG', 'GIT_CONFIG_PARAMETERS', 'GIT_CONFIG_COUNT',
+  'GIT_OBJECT_DIRECTORY', 'GIT_DIR', 'GIT_WORK_TREE', 'GIT_IMPLICIT_WORK_TREE', 'GIT_GRAFT_FILE',
+  'GIT_INDEX_FILE', 'GIT_NO_REPLACE_OBJECTS', 'GIT_REPLACE_REF_BASE', 'GIT_PREFIX',
+  'GIT_SHALLOW_FILE', 'GIT_COMMON_DIR', 'GIT_NAMESPACE', 'GIT_CEILING_DIRECTORIES',
+  'GIT_DISCOVERY_ACROSS_FILESYSTEM',
+].map(name => [name, undefined]));
+
 export class GitError extends Error {
   constructor(readonly code: 'ABORTED' | 'TIMEOUT' | 'UNAVAILABLE' | 'OUTPUT_TRUNCATED' | 'FAILED', message: string) {
     super(message);
@@ -23,7 +32,7 @@ export function createGitRunner(subprocess: Pick<SubprocessRuntime, 'spawn'>, si
       const handle = subprocess.spawn({
         argv: ['git', ...args], cwd, signal: combined, graceMs: 1_000,
         stdio: { stdin: 'ignore', stdout: { maxBytes: 8 * 1024 * 1024 }, stderr: { maxBytes: 64 * 1024 } },
-        env: { GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0', GIT_PAGER: 'cat' },
+        env: { ...REPOSITORY_ENV, GIT_TERMINAL_PROMPT: '0', GIT_OPTIONAL_LOCKS: '0', GIT_PAGER: 'cat' },
       });
       const outcome = await handle.done;
       checkAbort();

@@ -37,6 +37,35 @@ test('无首次提交时也收集暂存和未跟踪文件', async () => {
   assert.equal((await collect(r)).files.length, 2);
   assert.deepEqual((await collect(r, '--staged')).files.map(f => f.path), ['a.ts']);
 });
+
+test('累计行范围超限时不继续扫描后续文件', async () => {
+  const r = repo();
+  const before = Array.from({length:2050}, (_, i) => `old-${i}\nkeep-${i}\n`).join('');
+  const after = before.replaceAll('old-', 'new-');
+  for (const path of ['a.ts', 'b.ts', 'c.ts']) r.write(path, before);
+  r.commit();
+  for (const path of ['a.ts', 'b.ts', 'c.ts']) r.write(path, after);
+  const scanned = [];
+  const counted = async (args, ...rest) => {
+    if (args.includes('--unified=0')) scanned.push(args.at(-1));
+    return run(args, ...rest);
+  };
+  await assert.rejects(collectReview(counted, r.cwd, parseArgs('')), /行范围/);
+  assert.deepEqual(scanned, ['a.ts', 'b.ts']);
+});
+
+test('大量长路径的跳过清单超限时在快照复核前停止', async () => {
+  const r = repo(); r.write('a.ts', 'base\n'); r.commit();
+  const deleted = Array.from({length:100}, (_, i) => `D\0${'目录/'.repeat(200)}${i}.ts\0`).join('');
+  let headReads = 0;
+  const oversized = async (args, ...rest) => {
+    if (args.includes('HEAD^{commit}')) headReads++;
+    if (args.includes('--name-status')) return {code:0,stdout:deleted};
+    return run(args, ...rest);
+  };
+  await assert.rejects(collectReview(oversized, r.cwd, parseArgs('')), /清单.*128 KiB/);
+  assert.equal(headReads, 1);
+});
 test('单提交干净仓库返回无变更', async () => {
   const r = repo(); r.write('a.ts', 'base\n'); r.commit();
   assert.equal((await collect(r)).files.length, 0);
@@ -71,6 +100,16 @@ test('目录参数会展开实际变更文件，子目录会话能定位根目�
   assert.equal((await collect(r, 'src')).files[0].path, 'src/a.ts');
   const review = await collectReview(run, join(r.cwd, 'src'), parseArgs('a.ts'));
   assert.equal(review.files[0].path, 'src/a.ts');
+});
+
+test('默认审查拒绝与会话工作目录无关的 Git 根目录', async () => {
+  const r = repo();
+  const other = repo();
+  const redirected = async args => {
+    assert.ok(args.includes('--show-toplevel'));
+    return {code:0,stdout:`${other.cwd}\n`};
+  };
+  await assert.rejects(collectReview(redirected, r.cwd, parseArgs('')), /工作目录.*Git/);
 });
 test('拒绝不存在、忽略、仓库外路径且不把文件名当通配符', async () => {
   const r = repo(); r.write('a.ts', 'a\n'); r.write('.gitignore', 'secret\n'); r.commit(); r.write('secret', 'x\n');

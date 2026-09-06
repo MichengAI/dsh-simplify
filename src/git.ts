@@ -24,6 +24,8 @@ export interface Review {
 }
 const MAX_FILES = 200;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const MAX_REVIEW_RANGES = 4_096;
+const MAX_REVIEW_BYTES = 128 * 1024;
 const STATUS: Record<string, string> = { A: 'added', M: 'modified', R: 'renamed', C: 'copied', D: 'deleted', T: 'type-changed', U: 'unmerged', X: 'unknown', B: 'broken' };
 const DIFF = ['diff', '--no-color', '--no-ext-diff', '--no-textconv', '--no-relative', '--ignore-submodules=all', '--find-renames'];
 const GLOBAL = ['--no-pager', '--literal-pathspecs', '-c', 'color.ui=false'];
@@ -52,13 +54,17 @@ export function parseNameStatus(text: string): Change[] {
   return files;
 }
 
-/** 按 unified diff 正文计数，只开放新增行；块计数不一致时抛错。 */
-export function parseChangedLines(text: string): LineRange[] {
+/** 按 unified diff 正文计数；maxRanges 为剩余离散行范围额度，超额或正文不完整时抛错。 */
+export function parseChangedLines(text: string, maxRanges = MAX_REVIEW_RANGES): LineRange[] {
+  if (!Number.isSafeInteger(maxRanges) || maxRanges < 0 || maxRanges > MAX_REVIEW_RANGES) throw new Error('行范围额度无效。');
   const result: LineRange[] = [];
   let block: { oldLeft: number; newLeft: number; cursor: number } | undefined;
   let segment: number | undefined;
   const flush = (): void => {
-    if (segment !== undefined && block) result.push({ start: segment, end: block.cursor - 1 });
+    if (segment !== undefined && block) {
+      if (result.length >= maxRanges) throw new Error('审查行范围超过 4096 个，请通过路径缩小审查范围。');
+      result.push({ start: segment, end: block.cursor - 1 });
+    }
     segment = undefined;
   };
   const finish = (): void => {
@@ -66,8 +72,11 @@ export function parseChangedLines(text: string): LineRange[] {
     flush();
     block = undefined;
   };
-  const rows = (text.endsWith('\n') ? text.slice(0, -1) : text).split('\n');
-  for (const row of rows) {
+  // 逐行消费已有 diff 字符串，避免先分配整份行数组，再因范围超限丢弃。
+  for (let offset = 0; offset < text.length;) {
+    const newline = text.indexOf('\n', offset);
+    const row = text.slice(offset, newline < 0 ? text.length : newline);
+    offset = newline < 0 ? text.length : newline + 1;
     if (row.startsWith('@@')) {
       finish();
       const header = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(?: .*)?$/u.exec(row);
@@ -153,6 +162,7 @@ export async function collectReview(run: GitRunner, cwd: string, options: Simpli
   const rootResult = await run([...GLOBAL, 'rev-parse', '--show-toplevel'], cwd);
   const root = await realpath(rootResult.stdout.replace(/\r?\n$/u, ''));
   const sessionRoot = await realpath(cwd);
+  if (!inside(root, sessionRoot)) throw new Error('当前会话工作目录不在 Git 返回的仓库内。');
   const paths = options.files.map(path => {
     const absolute = resolve(sessionRoot, path);
     if (!inside(root, absolute)) throw new Error(`路径不在当前仓库内：${JSON.stringify(path)}`);
@@ -192,27 +202,42 @@ export async function collectReview(run: GitRunner, cwd: string, options: Simpli
   if (options.staged) await assertStagedClean(run, root, changes.flatMap(file => file.oldPath ? [file.oldPath, file.path] : [file.path]));
   const files: ReviewFile[] = [];
   const skipped: { path: string; reason: string }[] = [];
+  let rangeCount = 0;
+  let metadataBytes = 0;
+  const accountMetadata = (value: unknown): void => {
+    metadataBytes += Buffer.byteLength(JSON.stringify(value), 'utf8');
+    if (metadataBytes > MAX_REVIEW_BYTES) throw new Error('审查清单超过 128 KiB，请通过路径缩小审查范围。');
+  };
+  accountMetadata({ root, head, base, source, staged: options.staged, paths });
+  const skip = (path: string, reason: string): void => {
+    const file = { path, reason };
+    accountMetadata(file);
+    skipped.push(file);
+  };
   for (const file of changes) {
     if (['deleted', 'type-changed', 'unmerged', 'unknown', 'broken'].includes(file.status)) {
-      skipped.push({ path: file.path, reason: `不可编辑的文件状态：${file.status}` });
+      skip(file.path, `不可编辑的文件状态：${file.status}`);
       continue;
     }
     let before;
     try { before = await fingerprint(root, file.path); }
     catch (error) {
-      if (!head && (error as NodeJS.ErrnoException).code === 'ENOENT') { skipped.push({ path: file.path, reason: '新仓库中已从工作区删除' }); continue; }
+      if (!head && (error as NodeJS.ErrnoException).code === 'ENOENT') { skip(file.path, '新仓库中已从工作区删除'); continue; }
       throw error;
     }
-    if ('reason' in before) { skipped.push({ path: file.path, reason: before.reason }); continue; }
+    if ('reason' in before) { skip(file.path, before.reason); continue; }
     let ranges: LineRange[] = [];
     if (file.status !== 'added') {
       const diff = await run([...GLOBAL, ...DIFF, '--unified=0', '--inter-hunk-context=0', ...(options.staged ? ['--cached'] : [base!]), '--', ...(file.oldPath ? [file.oldPath] : []), file.path], root);
-      ranges = parseChangedLines(diff.stdout);
+      ranges = parseChangedLines(diff.stdout, MAX_REVIEW_RANGES - rangeCount);
+      rangeCount += ranges.length;
       const after = await fingerprint(root, file.path);
       if (!('sha256' in after) || after.sha256 !== before.sha256) throw new Error(`文件在收集范围时发生变化：${JSON.stringify(file.path)}，请重试。`);
-      if (!ranges.length) { skipped.push({ path: file.path, reason: '没有可简化的当前行（纯删除、仅重命名或非文本 diff）' }); continue; }
+      if (!ranges.length) { skip(file.path, '没有可简化的当前行（纯删除、仅重命名或非文本 diff）'); continue; }
     }
-    files.push({ ...file, ranges, sha256: before.sha256 });
+    const reviewed = { ...file, ranges, sha256: before.sha256 };
+    accountMetadata(reviewed);
+    files.push(reviewed);
   }
   const review: Review = { root, head, base, source, staged: options.staged, paths, indexSnapshot, files, skipped };
   await verifyReview(run, review);

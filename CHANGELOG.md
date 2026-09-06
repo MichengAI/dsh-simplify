@@ -2,6 +2,12 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## Unreleased
+
+- Fix inherited Git environment settings selecting the wrong repository or staging area, including in linked worktrees.
+- Stop collecting excessively fragmented changes or oversized review lists early and ask for a narrower scope.
+- Clarify that new files before the initial commit are eligible for whole-file simplification.
+
 ## 0.1.1 - 2026-09-06
 
 - Update the documentation in the package to focus on features, usage scope, and known issues. Code simplification behavior is unchanged from `0.1.0`.

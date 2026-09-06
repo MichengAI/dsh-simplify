@@ -94,7 +94,7 @@ Run `dsh --profile web --dump-config` and confirm that it includes `michengai-si
 - Paths are relative to the session directory. Absolute paths inside the repository are supported; prompts use paths relative to the repository root.
 - Single and double quotes group paths containing spaces; backslashes remain path characters. No shell expansion, wildcard expansion, or command substitution is performed.
 - `--ref` accepts branches, tags, and single-commit expressions, not `a..b` or `a...b`. It cannot be combined with `--staged`.
-- New files can be reviewed before the initial commit. A clean repository with only one commit returns no changes.
+- Before the initial commit, files in the selected scope are treated as new and may be simplified in full. Default mode includes staged and untracked files; `--staged` includes only staged files. Select files or directories to narrow the scope; file count and size limits still apply. A clean repository with only one commit returns no changes.
 - Previous-commit fallback compares HEAD with its first parent. Merge commits do not receive a multi-parent review.
 
 ## Command Results
@@ -121,9 +121,13 @@ Run `dsh --profile web --dump-config` and confirm that it includes `michengai-si
 
 The plugin performs read-only Git queries and local file reads. It does not automatically run `git add`, commit, reset, or stash. Git arguments are passed through DSH `subprocess` as `argv`, independent of PowerShell or Bash quoting rules.
 
+The repository and index are determined from the session working directory and Git worktree metadata. Child processes do not inherit repository-local environment overrides such as `GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE`, or temporary configuration overrides. Ordinary user and repository configuration is preserved. The repository returned by Git must contain the session working directory.
+
 Git failures, signals, cancellation, timeouts, truncated output, unresolved conflicts, and stale snapshots prevent prompt delivery. They are not interpreted as an empty diff. The patch parser counts old and new lines against each hunk header, rejects incomplete bodies, and excludes context lines from editable ranges. Explicit paths that do not exist, are ignored, or lie outside the repository return errors.
 
 Deleted files, deletion-only hunks, rename-only changes, binary files, non-regular files, and files over 5 MiB are excluded from editable ranges with reasons. Submodules are excluded from diff collection. Skipping all detected changes does not expand the review scope. Limits are 200 changed files, 30 seconds per Git command, and 60 seconds for scope collection, with up to 1 additional second for process termination. Git stdout is capped at 8 MiB, stderr at 64 KiB, and prompts at 128 KiB.
+
+Across all files, collection is limited to 4,096 separate line ranges and 128 KiB of review metadata, including skipped-file details. Exceeding either limit stops collection instead of submitting a partial review. Consecutive changed lines count as one range. The final prompt is independently checked against its 128 KiB limit; select files or directories to narrow an oversized scope.
 
 `--staged` first checks that selected staged files match the working tree. Before queuing, the plugin rechecks the index, HEAD, and file SHA-256 hashes to avoid applying index line numbers to different working-tree content. The Agent is instructed to verify snapshots again before editing and stop simplifying a file if its content has changed, requiring a new command invocation.
 

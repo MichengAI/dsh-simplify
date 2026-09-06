@@ -52,6 +52,18 @@ test('补丁正文区分新增行与上下文，不把整个 hunk 作为可编�
   const patch = 'diff --git a/a.ts b/a.ts\n--- a/a.ts\n+++ b/a.ts\n@@ -1,5 +1,6 @@ function a()\n same\n-old\n+new\n+extra\n middle\n-other\n+replacement\n end\n';
   assert.deepEqual(parseChangedLines(patch), [{start:2,end:3},{start:5,end:5}]);
 });
+
+test('补丁范围额度允许边界与纯删除，超额时立即拒绝', () => {
+  const two = '@@ -1 +1 @@\n-a\n+b\n@@ -3 +3 @@\n-c\n+d\n';
+  assert.equal(parseChangedLines(two, 2).length, 2);
+  assert.throws(() => parseChangedLines(two, 1), /行范围/);
+  assert.deepEqual(parseChangedLines('@@ -1 +0,0 @@\n-a\n', 0), []);
+  assert.throws(() => parseChangedLines('@@ -0,0 +1 @@\n+a\n', 0), /行范围/);
+  assert.deepEqual(parseChangedLines(two.trimEnd(), 2), parseChangedLines(two, 2));
+  for (const limit of [-1, 1.5, NaN, Infinity, 4097]) {
+    assert.throws(() => parseChangedLines(two, limit), /额度无效/);
+  }
+});
 test('补丁正文缺失、计数不符和无效行号不能产生部分范围', () => {
   for (const patch of [
     '@@ -1 +1 @@\n',
