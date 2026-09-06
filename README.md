@@ -34,7 +34,7 @@ The plugin has its own review prompt, patch-body parser, Git collection, and DSH
 
 ## Installation
 
-Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Tested on Windows; Linux and macOS have not been verified on those systems.
+Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Automated tests, including real host service integration, pass on Windows, Linux, and macOS. Installation in the desktop application has only been verified on Windows.
 
 The current version is `0.1.1`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 

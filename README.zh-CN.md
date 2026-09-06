@@ -34,7 +34,7 @@ DeepSeek Harness 代码简化插件。运行 `/simplify` 后，插件收集 Git 
 
 ## 安装
 
-要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows 已实测，Linux/macOS 尚未在对应系统验证。
+要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows、Linux、macOS 均已通过自动化测试（含真实宿主服务集成）；桌面应用中的实际安装仅在 Windows 验证。
 
 当前版本为 `0.1.1`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
