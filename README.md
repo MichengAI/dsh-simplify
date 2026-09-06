@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/branding/dsh-simplify-banner.png" alt="DSH Simplify" width="100%">
+</p>
+
 <div align="center">
 
 # DSH Simplify
