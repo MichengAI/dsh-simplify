@@ -162,12 +162,6 @@ npm pack --dry-run
 | `src/command.ts`、`src/index.ts` | 命令处理、投递及生命周期 |
 | `tests` | 回归与宿主集成验证 |
 
-项目状态与交接：[阅读导航](docs/00-交接入口/00-阅读导航.md)。
-
-## 相关项目
-
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 提供宿主运行时。[DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop) 可通过 Web profile 运行本插件，但这不代表安装器已经内置本插件。[DSH BTW](https://github.com/MichengAI/dsh-btw) 提供独立旁问，本插件则向当前会话提交代码编辑任务。
-
 ## 许可
 
 [Apache-2.0](LICENSE)，Copyright 2026 MichengAI。

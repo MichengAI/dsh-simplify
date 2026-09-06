@@ -162,12 +162,6 @@ Tests use real temporary Git repositories to cover paths, untracked files, fallb
 | `src/command.ts`, `src/index.ts` | Command handling, delivery, and lifecycle |
 | `tests` | Regression and host integration checks |
 
-Project status and handoff: [Reading guide](docs/00-交接入口/00-阅读导航.md) (Chinese).
-
-## Related Projects
-
-[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) provides the host runtime. [DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop) can run this plugin through its Web profile; this does not mean the installer bundles it. [DSH BTW](https://github.com/MichengAI/dsh-btw) provides independent side questions, while this plugin submits code-editing tasks to the current conversation.
-
 ## License
 
 [Apache-2.0](LICENSE), Copyright 2026 MichengAI.
