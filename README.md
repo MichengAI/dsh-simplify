@@ -36,7 +36,7 @@ The plugin has its own review prompt, patch-body parser, Git collection, and DSH
 
 Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Automated tests, including real host service integration, pass on Windows, Linux, and macOS. Installation in the desktop application has only been verified on Windows.
 
-The current version is `0.1.1`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The current version is `0.1.2`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### From npm
 
@@ -44,7 +44,7 @@ The current version is `0.1.1`, available through npm, a packaged archive, or so
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.1 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/
 ```
 
 ### From Source
@@ -64,13 +64,13 @@ The entry point is `lib/index.js`, so build before installing. Keep the source d
 
 ### From a Local Package
 
-Download the tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.1), or run `npm pack` in the source directory, then run this from the package directory:
+Download the tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2), or run `npm pack` in the source directory, then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.1.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.2.tgz --ignore-scripts
 ```
 
 ### Reload and Verify

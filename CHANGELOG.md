@@ -2,11 +2,15 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
-## Unreleased
+## 0.1.2 - 2026-09-06
 
 - Fix inherited Git environment settings selecting the wrong repository or staging area, including in linked worktrees.
 - Stop collecting excessively fragmented changes or oversized review lists early and ask for a narrower scope.
 - Clarify that new files before the initial commit are eligible for whole-file simplification.
+
+### Known Issues
+
+- When there are no eligible code lines to simplify, the Agent does not start. Some host interfaces may not display the result, making the command appear unresponsive.
 
 ## 0.1.1 - 2026-09-06
 
