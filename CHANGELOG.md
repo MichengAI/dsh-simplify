@@ -2,10 +2,11 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
-## 0.1.0 (Local Preview, Unreleased)
+## 0.1.0 - 2026-09-06
 
 - Add `/simplify` for current changes, staged changes, a specified commit, and explicit files or directories.
 - Add a Chinese editing-task prompt with scope, behavior, snapshot, and verification requirements.
+- Expand simplification guidance, behavior-equivalence checks, project instruction discovery, concurrent-edit handling, and validation reporting to avoid over-abstraction, out-of-scope edits, and unsupported optimizations.
 - Use DSH subprocess argument arrays and NUL-delimited parsing for Chinese characters, spaces in paths, and untracked files.
 - Prevent queuing on Git failures, cancellation, timeouts, and truncation; bound file counts, content size, and prompt size.
 - Add staged consistency checks, HEAD/index/content verification, and previous-commit fallback in default mode only.

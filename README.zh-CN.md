@@ -36,7 +36,16 @@ DeepSeek Harness 代码简化插件。运行 `/simplify` 后，插件收集 Git 
 
 要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows 已实测，Linux/macOS 尚未在对应系统验证。
 
-当前版本 `0.1.0` 为本地预览，**尚未发布 npm，也没有正式 GitHub Release**。以下示例使用 `web` profile，请按实际环境替换。
+当前版本为 `0.1.0`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+
+### 从 npm 安装
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.0 --registry=https://registry.npmjs.org/
+```
 
 ### 从源码安装
 
@@ -51,27 +60,17 @@ npm run check
 dsh plugin --profile web add . --ignore-scripts
 ```
 
-入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。安装前停用其他注册 `/simplify` 的插件。
+入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。
 
 ### 从本地安装包安装
 
-在源码目录运行 `npm pack` 生成 tgz，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.0) 下载 tgz，或在源码目录运行 `npm pack` 生成安装包，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 dsh plugin --profile web add .\michengai-dsh-simplify-0.1.0.tgz --ignore-scripts
-```
-
-### npm 发布后安装
-
-未来发布到 npm 后可使用以下命令；当前不要把它作为已发布包安装：
-
-```powershell
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-dsh plugin --profile web add @michengai/dsh-simplify@latest --registry=https://registry.npmjs.org/
 ```
 
 ### 重新加载与确认

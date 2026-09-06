@@ -36,7 +36,16 @@ The plugin has its own review prompt, patch-body parser, Git collection, and DSH
 
 Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Tested on Windows; Linux and macOS have not been verified on those systems.
 
-Version `0.1.0` is a local preview. **It is not published to npm and has no formal GitHub Release.** The examples use the `web` profile; replace it for your environment.
+The current version is `0.1.0`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+
+### From npm
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.0 --registry=https://registry.npmjs.org/
+```
 
 ### From Source
 
@@ -51,27 +60,17 @@ npm run check
 dsh plugin --profile web add . --ignore-scripts
 ```
 
-The entry point is `lib/index.js`, so build before installing. Keep the source directory when the profile uses a local link. Disable other plugins that register `/simplify` before installation.
+The entry point is `lib/index.js`, so build before installing. Keep the source directory when the profile uses a local link.
 
 ### From a Local Package
 
-Run `npm pack` in the source directory to generate a tgz, then run this from the package directory:
+Download the tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.0), or run `npm pack` in the source directory, then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 dsh plugin --profile web add .\michengai-dsh-simplify-0.1.0.tgz --ignore-scripts
-```
-
-### After npm Publication
-
-The following command is for a future npm release. It is not currently an installation path for a published package:
-
-```powershell
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-dsh plugin --profile web add @michengai/dsh-simplify@latest --registry=https://registry.npmjs.org/
 ```
 
 ### Reload and Verify
