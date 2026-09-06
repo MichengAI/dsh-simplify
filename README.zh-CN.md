@@ -36,7 +36,7 @@ DeepSeek Harness 代码简化插件。运行 `/simplify` 后，插件收集 Git 
 
 要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows 已实测，Linux/macOS 尚未在对应系统验证。
 
-当前版本为 `0.1.0`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+当前版本为 `0.1.1`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
 ### 从 npm 安装
 
@@ -44,7 +44,7 @@ DeepSeek Harness 代码简化插件。运行 `/simplify` 后，插件收集 Git 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.0 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.1 --registry=https://registry.npmjs.org/
 ```
 
 ### 从源码安装
@@ -64,13 +64,13 @@ dsh plugin --profile web add . --ignore-scripts
 
 ### 从本地安装包安装
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.0) 下载 tgz，或在源码目录运行 `npm pack` 生成安装包，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.1) 下载 tgz，或在源码目录运行 `npm pack` 生成安装包，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.0.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.1.tgz --ignore-scripts
 ```
 
 ### 重新加载与确认
@@ -155,6 +155,8 @@ npm pack --dry-run
 测试使用真实临时 Git 仓库，覆盖路径、未跟踪文件、回退、冲突、暂存区错位、快照过期及执行错误。测试夹具位于 `.test-tmp`，正常结束时自动清理。
 
 `tests/host.test.mjs` 检测 `%USERPROFILE%\.dsh\profiles\node_modules` 的 DSH 运行时；也可通过 `DSH_RUNTIME_ROOT` 指定其 node_modules 路径。检测到时执行隔离的真实服务注册、Git 执行、消息投递与卸载测试；缺失时明确标为跳过。测试不调用模型，不修改已安装 profile。
+
+GitHub Actions 在 Windows、Linux、macOS 上检查类型与测试，并通过 `DSH_RUNTIME_ROOT` 使用开发依赖中的宿主运行时。发布正式 GitHub Release 后，`publish.yml` 先完成三平台检查，再核对版本、双语发布说明及安装包内容，通过 npm Trusted Publishing 发布，并把同一 tgz 上传到 Release。npm 中的工作流文件名需配置为 `publish.yml`，并允许 `npm publish`；不需要发布令牌。
 
 | 目录 | 职责 |
 | --- | --- |

@@ -36,7 +36,7 @@ The plugin has its own review prompt, patch-body parser, Git collection, and DSH
 
 Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Tested on Windows; Linux and macOS have not been verified on those systems.
 
-The current version is `0.1.0`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The current version is `0.1.1`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### From npm
 
@@ -44,7 +44,7 @@ The current version is `0.1.0`, available through npm, a packaged archive, or so
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.0 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.1 --registry=https://registry.npmjs.org/
 ```
 
 ### From Source
@@ -64,13 +64,13 @@ The entry point is `lib/index.js`, so build before installing. Keep the source d
 
 ### From a Local Package
 
-Download the tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.0), or run `npm pack` in the source directory, then run this from the package directory:
+Download the tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.1), or run `npm pack` in the source directory, then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.0.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.1.tgz --ignore-scripts
 ```
 
 ### Reload and Verify
@@ -155,6 +155,8 @@ npm pack --dry-run
 Tests use real temporary Git repositories to cover paths, untracked files, fallback, conflicts, staged mismatches, stale snapshots, and execution errors. Fixtures are created under `.test-tmp` and cleaned up on normal completion.
 
 `tests/host.test.mjs` looks for a DSH runtime at `%USERPROFILE%\.dsh\profiles\node_modules`. Set `DSH_RUNTIME_ROOT` to use another runtime's node_modules path. When detected, it runs isolated integration checks for real service registration, Git execution, message delivery, and disposal; otherwise, that test is explicitly skipped. Tests do not call a model or modify installed profiles.
+
+GitHub Actions checks types and tests on Windows, Linux, and macOS, using the host runtime from development dependencies through `DSH_RUNTIME_ROOT`. Publishing a stable GitHub Release starts `publish.yml`: it runs all three platform checks, validates the version, bilingual release notes, and package contents, publishes through npm Trusted Publishing, and uploads the same tgz to the Release. Configure `publish.yml` as the workflow filename in npm and allow `npm publish`; no publishing token is required.
 
 | Path | Responsibility |
 | --- | --- |

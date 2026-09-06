@@ -1,6 +1,6 @@
 {
   "name": "@michengai/dsh-simplify",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSH 代码简化插件：限定 Git 变更范围，支持未跟踪文件、跨平台路径与可靠的 Git 异常处理",
   "repository": { "type": "git", "url": "git+https://github.com/MichengAI/dsh-simplify.git" },
   "homepage": "https://github.com/MichengAI/dsh-simplify#readme",
@@ -32,6 +32,7 @@
     "@deepseek-ai/dsh-commands": "0.1.2-rc.1",
     "@deepseek-ai/dsh-llm": "0.1.2-rc.1",
     "@deepseek-ai/dsh-subprocess": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-subprocess-local": "0.1.2-rc.1",
     "@types/node": "^22.19.0",
     "typescript": "~5.7.2"
   }

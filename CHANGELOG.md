@@ -2,6 +2,14 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.1 - 2026-09-06
+
+- Update the documentation in the package to focus on features, usage scope, and known issues. Code simplification behavior is unchanged from `0.1.0`.
+
+### Known Issues
+
+- When there are no eligible code lines to simplify, the Agent does not start. Some host interfaces may not display the result, making the command appear unresponsive.
+
 ## 0.1.0 - 2026-09-06
 
 - Add `/simplify` to ask the current Agent to simplify code and improve readability while preserving existing behavior.

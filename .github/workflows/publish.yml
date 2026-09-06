@@ -1,0 +1,102 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: ${{ !github.event.release.prerelease }}
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      id-token: write
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+          registry-url: https://registry.npmjs.org/
+      - name: 核对版本及双语发布说明
+        run: |
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          node .github/scripts/verify-release.mjs
+      - name: 安装构建依赖与 OIDC 发布工具
+        run: |
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          npm install --global npm@11.7.0 --ignore-scripts --registry=https://registry.npmjs.org/
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm ci --ignore-scripts
+      - name: 构建并核对安装包
+        run: |
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          $packageDir = Join-Path $env:RUNNER_TEMP 'npm-package'
+          New-Item -ItemType Directory -Path $packageDir -Force | Out-Null
+          $packJson = npm pack --json --pack-destination $packageDir
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $pack = @($packJson | ConvertFrom-Json)[0]
+          $unexpected = @($pack.files | Where-Object {
+            $_.path -notmatch '^(lib/[^/]+\.(js(?:\.map)?|d\.ts)|assets/branding/dsh-simplify-banner\.png|package\.json|cordis\.patch\.yml|README(?:\.zh-CN)?\.md|CHANGELOG(?:\.zh-CN)?\.md|LICENSE)$'
+          })
+          if ($unexpected.Count -gt 0) { throw "安装包包含非发布文件：$($unexpected.path -join ', ')" }
+          foreach ($required in @('lib/index.js', 'lib/index.d.ts', 'package.json', 'cordis.patch.yml', 'LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CHANGELOG.zh-CN.md', 'assets/branding/dsh-simplify-banner.png')) {
+            if ($required -notin $pack.files.path) { throw "安装包缺少 $required" }
+          }
+          "PACKAGE_TARBALL=$(Join-Path $packageDir $pack.filename)" | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding UTF8
+          "PACKAGE_INTEGRITY=$($pack.integrity)" | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding UTF8
+      - name: 通过 npm Trusted Publishing 发布并验证
+        run: |
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          $package = Get-Content -LiteralPath 'package.json' -Raw -Encoding UTF8 | ConvertFrom-Json
+          $versionUrl = "https://registry.npmjs.org/$([Uri]::EscapeDataString($package.name))/$($package.version)"
+          $existing = $null
+          try { $existing = Invoke-RestMethod -Uri $versionUrl }
+          catch { if ([int]$_.Exception.Response.StatusCode -ne 404) { throw } }
+          if ($existing) {
+            if ($existing.dist.integrity -ne $env:PACKAGE_INTEGRITY) { throw '此版本已存在，但内容不同，不能覆盖。' }
+            Write-Output '同一安装包已发布，继续验证及上传附件。'
+          } else {
+            npm publish $env:PACKAGE_TARBALL --access public --registry=https://registry.npmjs.org/
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          for ($attempt = 1; $attempt -le 12; $attempt++) {
+            try {
+              $published = Invoke-RestMethod -Uri $versionUrl
+              if ($published.dist.integrity -ne $env:PACKAGE_INTEGRITY) { throw 'npm 安装包完整性不匹配。' }
+              Write-Output "已验证 $($package.name)@$($package.version) 的 npm 安装包完整性。"
+              break
+            } catch {
+              if ($attempt -eq 12) { throw }
+              Start-Sleep -Seconds 10
+            }
+          }
+      - name: 上传同一安装包到 GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          gh release upload $env:RELEASE_TAG $env:PACKAGE_TARBALL --repo $env:GITHUB_REPOSITORY --clobber
