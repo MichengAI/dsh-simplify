@@ -49,8 +49,6 @@ For a ready-to-use workbench, download [DSH Codex Desktop](https://github.com/Mi
 | [BTW](https://github.com/MichengAI/dsh-btw) | Ask side questions without interrupting the main task |
 | [Simplify](https://github.com/MichengAI/dsh-simplify) | Use /simplify to improve code within your Git changes |
 
-The desktop introduction and download site is maintained in the [website repository](https://github.com/MichengAI/dsh-codex-desktop-website).
-
 ## Installation
 
 Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Automated tests, including real host service integration, pass on Windows, Linux, and macOS. Installation in the desktop application has only been verified on Windows.
