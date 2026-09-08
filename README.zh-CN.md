@@ -16,27 +16,54 @@
 
 </div>
 
-DeepSeek Harness 代码简化插件。运行 `/simplify` 后，插件收集 Git 变更文件、行号与内容快照，由当前 Agent 在限定范围内改进代码清晰度，保持功能不变。
+DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码，让后续阅读和维护更轻松。
 
 本项目为社区插件，并非 DeepSeek AI 官方产品。支持 DSH Web 及集成 DSH Web 的桌面应用。
 
-审查提示词、补丁正文解析、Git 收集与 DSH 适配均由本项目实现。命令文案及提示词使用简体中文。
+命令文案及提示词使用简体中文。
 
 ## 功能概览
 
-- **限定审查范围**：当前改动、暂存区、指定提交、指定文件或目录。
-- **包含新增文件**：未跟踪文件按整文件审查，支持尚无首次提交的仓库。
-- **跨平台路径**：Git 参数数组与 NUL 分隔解析，支持中文、空格和引号文件名。
-- **执行失败有边界**：Git 错误、取消、超时、截断和冲突时不提交不完整的审查任务。
-- **防止暂存区行号错位**：所选暂存文件仍有未暂存改动时拒绝执行。
-- **快照复核**：提交提示词前复核 HEAD、index 和内容哈希，要求 Agent 编辑前再次验证。
-- **提交后回看**：仅默认模式允许回看 HEAD 相对第一父提交的差异。
+写完一轮代码后，用 `/simplify` 请当前 Agent 整理刚改过的部分，改善可读性并保持原有功能。
+
+- **聚焦本次改动**：按 Git 变更范围整理代码，避免把需求扩大到无关文件。
+- **覆盖新增文件**：新文件可以整份审查，也支持尚无首次提交的仓库。
+- **选择适合的范围**：默认检查工作区改动，也可仅检查暂存区、指定提交或路径。
+- **提交后也能回看**：默认模式在工作区没有改动时，可回看最近一次提交。
+- **范围不可靠时停止**：遇到冲突、文件变化或读取失败时返回原因，便于修正后重试。
+
+命令提交的是简化任务；是否完成修改和验证，应以 Agent 后续回复和实际差异为准。
+
+## DSH 产品生态
+
+想直接使用完整工作台，可下载 [DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop/releases)；已有 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 环境，可按需独立安装以下 8 个自研插件。桌面端已随附这些插件。
+
+| 插件 | 你可以用它做什么 |
+| --- | --- |
+| [Codex UI](https://github.com/MichengAI/dsh-codex-ui) | 整理项目与会话、搜索任务、跳转对话轮次 |
+| [IM Connect](https://github.com/MichengAI/dsh-im-connect) | 从微信、飞书、钉钉等消息平台下任务、收回复 |
+| [Automation](https://github.com/MichengAI/dsh-automation) | 按计划执行任务，查看每次运行的结果 |
+| [Skills Manager](https://github.com/MichengAI/dsh-skills-manager) | 统一查找、启停、创建和导入本机技能 |
+| [Archive Manager](https://github.com/MichengAI/dsh-archive-manager) | 搜索、恢复或清理已归档会话 |
+| [Agency Agents](https://github.com/MichengAI/dsh-agency-agents) | 按任务选择并召唤专业角色 |
+| [BTW](https://github.com/MichengAI/dsh-btw) | 在当前上下文中临时旁问，不打断主任务 |
+| [Simplify](https://github.com/MichengAI/dsh-simplify) | 用 /simplify 整理 Git 改动范围内的代码 |
+
+桌面端介绍与下载站的源码见[官网仓库](https://github.com/MichengAI/dsh-codex-desktop-website)。
 
 ## 安装
 
 要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows、Linux、macOS 均已通过自动化测试（含真实宿主服务集成）；桌面应用中的实际安装仅在 Windows 验证。
 
 当前版本为 `0.1.2`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+
+### 让 Agent 帮你安装（推荐）
+
+把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
+
+```text
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
+```
 
 ### 从 npm 安装
 
@@ -46,21 +73,6 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 
 dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/
 ```
-
-### 从源码安装
-
-```powershell
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-
-git clone https://github.com/MichengAI/dsh-simplify.git
-Set-Location dsh-simplify
-npm ci --ignore-scripts
-npm run check
-dsh plugin --profile web add . --ignore-scripts
-```
-
-入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。
 
 ### 从本地安装包安装
 
@@ -147,6 +159,21 @@ dsh plugin --profile web remove @michengai/dsh-simplify
 若桌面应用未自动重载，手动重新加载 DSH。卸载不会撤销 Agent 已产生的代码修改。
 
 ## 开发与验证
+
+### 从源码安装
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+git clone https://github.com/MichengAI/dsh-simplify.git
+Set-Location dsh-simplify
+npm ci --ignore-scripts
+npm run check
+dsh plugin --profile web add . --ignore-scripts
+```
+
+入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

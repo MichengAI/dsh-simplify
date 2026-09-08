@@ -16,27 +16,54 @@
 
 </div>
 
-DSH Simplify collects changed files, line ranges, and content snapshots from Git when you run `/simplify`. The current Agent then improves clarity within that scope while preserving functionality.
+Use `/simplify` in DeepSeek Harness to make recently changed code easier to read and maintain.
 
 This is a community-maintained plugin, not an official DeepSeek AI product. It supports DSH Web and desktop apps that include DSH Web.
 
-The plugin has its own review prompt, patch-body parser, Git collection, and DSH integration. Command messages and prompts are in Simplified Chinese.
+Command messages and prompts are in Simplified Chinese.
 
 ## Features
 
-- **Scoped review**: current changes, staged changes, a specified commit, or selected files and directories.
-- **New files**: review untracked files in full, including repositories without an initial commit.
-- **Cross-platform paths**: Git argument arrays and NUL-delimited parsing support Chinese characters, spaces, and quotes in file names.
-- **Bounded execution**: Git errors, cancellation, timeouts, truncated output, and conflicts prevent incomplete reviews from being queued.
-- **Staged consistency**: reject selected staged files that also have unstaged changes to avoid mismatched line numbers.
-- **Snapshot checks**: verify HEAD, the index, and content hashes before queuing; ask the Agent to check again before editing.
-- **Previous-commit review**: only the default mode may fall back to HEAD compared with its first parent.
+After a round of coding, use `/simplify` to ask the current Agent to improve the clarity of your changes while preserving behavior.
+
+- **Focus on your changes**: use the Git change scope to keep the request centered on relevant code.
+- **Include new files**: review new files in full, including repositories without an initial commit.
+- **Choose the right scope**: review workspace changes by default, or select staged changes, a commit, or paths.
+- **Review after committing**: when the workspace is clean, the default mode can review the most recent commit.
+- **Stop when the scope is unreliable**: conflicts, file changes, or read failures return a reason so you can fix the issue and retry.
+
+The command queues a simplification task. Check the Agent’s subsequent response and actual diff to confirm edits and validation are complete.
+
+## DSH product ecosystem
+
+For a ready-to-use workbench, download [DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop/releases). If you already use [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness), install any of these eight plugins individually. The desktop app includes all eight.
+
+| Plugin | What you can do |
+| --- | --- |
+| [Codex UI](https://github.com/MichengAI/dsh-codex-ui) | Organize projects and conversations, search tasks, and navigate chat turns |
+| [IM Connect](https://github.com/MichengAI/dsh-im-connect) | Send tasks and receive replies through your usual messenger |
+| [Automation](https://github.com/MichengAI/dsh-automation) | Schedule tasks and review each run |
+| [Skills Manager](https://github.com/MichengAI/dsh-skills-manager) | Find, enable, create, and import local skills |
+| [Archive Manager](https://github.com/MichengAI/dsh-archive-manager) | Search, restore, or clean up archived conversations |
+| [Agency Agents](https://github.com/MichengAI/dsh-agency-agents) | Choose and summon specialists for your task |
+| [BTW](https://github.com/MichengAI/dsh-btw) | Ask side questions without interrupting the main task |
+| [Simplify](https://github.com/MichengAI/dsh-simplify) | Use /simplify to improve code within your Git changes |
+
+The desktop introduction and download site is maintained in the [website repository](https://github.com/MichengAI/dsh-codex-desktop-website).
 
 ## Installation
 
 Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Automated tests, including real host service integration, pass on Windows, Linux, and macOS. Installation in the desktop application has only been verified on Windows.
 
 The current version is `0.1.2`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+
+### Ask an agent to install it (recommended)
+
+Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
+
+```text
+Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+```
 
 ### From npm
 
@@ -46,21 +73,6 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 
 dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/
 ```
-
-### From Source
-
-```powershell
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-
-git clone https://github.com/MichengAI/dsh-simplify.git
-Set-Location dsh-simplify
-npm ci --ignore-scripts
-npm run check
-dsh plugin --profile web add . --ignore-scripts
-```
-
-The entry point is `lib/index.js`, so build before installing. Keep the source directory when the profile uses a local link.
 
 ### From a Local Package
 
@@ -147,6 +159,21 @@ dsh plugin --profile web remove @michengai/dsh-simplify
 Reload DSH manually if the desktop app does not reload automatically. Uninstalling does not undo code changes already made by the Agent.
 
 ## Development and Verification
+
+### From Source
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+git clone https://github.com/MichengAI/dsh-simplify.git
+Set-Location dsh-simplify
+npm ci --ignore-scripts
+npm run check
+dsh plugin --profile web add . --ignore-scripts
+```
+
+The entry point is `lib/index.js`, so build before installing. Keep the source directory when the profile uses a local link.
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
