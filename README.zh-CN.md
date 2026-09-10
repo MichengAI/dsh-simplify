@@ -22,7 +22,7 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 
 命令文案及提示词使用简体中文。
 
-兼容性：支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`，开发依赖保持 `0.1.5-rc.1`。四个版本均在 Windows 隔离环境通过类型检查、全部 41 项测试、打包安装及导入检查，并各通过一例真实模型 headless 验收：实际简化目标文件、行为测试通过、范围外文件保持不变。两个最早版本的完整宿主因 npm 解析停滞而显式补齐 peer；这些运行不代表普通完整宿主安装或 Web 界面验收。
+源码 `0.1.3`（未发布）支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`，开发依赖固定为 `0.1.5-rc.1`。
 
 ## 功能概览
 
@@ -53,9 +53,9 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 
 ## 安装
 
-要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH `0.1.2-rc.1`。会话需要关联本地 Git 工作目录。Windows、Linux、macOS 均已通过自动化测试（含真实宿主服务集成）；桌面应用中的实际安装仅在 Windows 验证。
+要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH。会话需要关联本地 Git 工作目录。宿主版本取决于安装的插件版本：已发布版 `0.1.2` 要求 DSH `0.1.2-rc.1`；当前源码 `0.1.3` 支持上文列出的四个版本。
 
-当前版本为 `0.1.2`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+最新已发布版本为 `0.1.2`，以下 npm 和 Release 安装示例继续使用该版本。要使用四版本兼容支持，请按下方源码打包步骤安装尚未发布的 `0.1.3`。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
 ### 让 Agent 帮你安装（推荐）
 
@@ -76,13 +76,28 @@ dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://re
 
 ### 从本地安装包安装
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2) 下载 tgz，或在源码目录运行 `npm pack` 生成安装包，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 dsh plugin --profile web add .\michengai-dsh-simplify-0.1.2.tgz --ignore-scripts
+```
+
+### 从当前源码打包安装（0.1.3，未发布）
+
+在仓库根目录执行：
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+npm ci
+if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
+npm pack
+if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
 ```
 
 ### 重新加载与确认

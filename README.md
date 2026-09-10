@@ -22,7 +22,7 @@ This is a community-maintained plugin, not an official DeepSeek AI product. It s
 
 Command messages and prompts are in Simplified Chinese.
 
-Compatibility: supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`. Development dependencies remain pinned to `0.1.5-rc.1`. Each host passed type checking and all 41 tests in an isolated Windows environment, plus package installation and import checks. A live-model headless scenario also passed on each host: the model simplified the target file, behavior tests passed, and out-of-scope files remained unchanged. The two earliest full hosts required explicit peer setup after npm resolution stalled; these runs do not validate ordinary full-host installation or Web UI behavior.
+Source version `0.1.3` (unreleased) supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`; development dependencies are pinned to `0.1.5-rc.1`.
 
 ## Features
 
@@ -53,9 +53,9 @@ For a ready-to-use workbench, download [DSH Codex Desktop](https://github.com/Mi
 
 ## Installation
 
-Requires Node.js >= 22.19, Git on PATH, and DSH `0.1.2-rc.1` with the `commands` and `subprocess` services. The session must have a local Git working directory. Automated tests, including real host service integration, pass on Windows, Linux, and macOS. Installation in the desktop application has only been verified on Windows.
+Requires Node.js >= 22.19, Git on PATH, and DSH with the `commands` and `subprocess` services. The session must have a local Git working directory. The required host depends on the plugin version: published version `0.1.2` requires DSH `0.1.2-rc.1`; source version `0.1.3` supports the four versions listed above.
 
-The current version is `0.1.2`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The latest published version is `0.1.2`, which the npm and Release examples below continue to install. For four-version compatibility, follow the source packaging steps below to install the unreleased `0.1.3`. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### Ask an agent to install it (recommended)
 
@@ -76,13 +76,28 @@ dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://re
 
 ### From a Local Package
 
-Download the tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2), or run `npm pack` in the source directory, then run this from the package directory:
+Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2), then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 dsh plugin --profile web add .\michengai-dsh-simplify-0.1.2.tgz --ignore-scripts
+```
+
+### Build from Current Source (0.1.3, unreleased)
+
+Run from the repository root:
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+npm ci
+if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
+npm pack
+if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
 ```
 
 ### Reload and Verify
