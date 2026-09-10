@@ -22,6 +22,8 @@ This is a community-maintained plugin, not an official DeepSeek AI product. It s
 
 Command messages and prompts are in Simplified Chinese.
 
+Compatibility: supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`. Development dependencies remain pinned to `0.1.5-rc.1`. Each host passed type checking and all 41 tests in an isolated Windows environment, plus package installation and import checks. A live-model headless scenario also passed on each host: the model simplified the target file, behavior tests passed, and out-of-scope files remained unchanged. The two earliest full hosts required explicit peer setup after npm resolution stalled; these runs do not validate ordinary full-host installation or Web UI behavior.
+
 ## Features
 
 After a round of coding, use `/simplify` to ask the current Agent to improve the clarity of your changes while preserving behavior.

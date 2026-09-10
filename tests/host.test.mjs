@@ -2,19 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, realpathSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { repo } from './fixture.mjs';
 import * as plugin from '../lib/index.js';
 import { createGitRunner } from '../lib/exec.js';
 import { collectReview } from '../lib/git.js';
 import { parseArgs } from '../lib/args.js';
 
-const runtimeRoot = process.env.DSH_RUNTIME_ROOT ?? join(homedir(), '.dsh', 'profiles', 'node_modules');
+const runtimeRoot = process.env.DSH_RUNTIME_ROOT ?? fileURLToPath(new URL('../node_modules/', import.meta.url));
 const available = existsSync(join(runtimeRoot, '@deepseek-ai', 'dsh-subprocess-local', 'lib', 'index.js'));
 
-test('真实 DSH 命令注册、subprocess 执行、消息投递与卸载', {skip: available ? false : '未提供 DSH_RUNTIME_ROOT，且未检测到本地 DSH 运行时'}, async () => {
+test('真实 DSH 命令注册、subprocess 执行、消息投递与卸载', {skip: available ? false : '未检测到项目宿主依赖，请先安装依赖或设置 DSH_RUNTIME_ROOT'}, async () => {
   const load = name => import(pathToFileURL(join(runtimeRoot, '@deepseek-ai', name, 'lib', 'index.js')).href);
   const [{Context}, {CommandRuntime}, {LocalSubprocessRuntime}] = await Promise.all([load('cordis'),load('dsh-commands'),load('dsh-subprocess-local')]);
   const ctx = new Context();
