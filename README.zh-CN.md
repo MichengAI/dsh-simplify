@@ -22,7 +22,7 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 
 命令文案及提示词使用简体中文。
 
-兼容性：支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`，开发依赖固定为 `0.1.5-rc.1`。
+兼容性：支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`、`0.1.5-rc.2`，开发依赖固定为 `0.1.5-rc.2`。
 
 ## 功能概览
 
@@ -53,16 +53,16 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 
 ## 安装
 
-要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH。会话需要关联本地 Git 工作目录。插件 `0.1.3` 支持上文列出的四个宿主版本。
+要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH。会话需要关联本地 Git 工作目录。插件 `0.1.4` 支持上文列出的五个宿主版本。
 
-当前版本为 `0.1.3`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+当前版本为 `0.1.4`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
 ### 让 Agent 帮你安装（推荐）
 
 把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
 
 ```text
-请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
 ### 从 npm 安装
@@ -71,18 +71,18 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/
 ```
 
 ### 从本地安装包安装
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.3) 下载已发布的 tgz，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.4) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 ```
 
 ### 从源码打包安装
@@ -97,7 +97,7 @@ npm ci
 if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
 npm pack
 if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 ```
 
 ### 重新加载与确认
@@ -200,7 +200,7 @@ npm pack --dry-run
 
 测试使用真实临时 Git 仓库，覆盖路径、未跟踪文件、回退、冲突、暂存区错位、快照过期及执行错误。测试夹具位于 `.test-tmp`，正常结束时自动清理。
 
-`tests/host.test.mjs` 检测 `%USERPROFILE%\.dsh\profiles\node_modules` 的 DSH 运行时；也可通过 `DSH_RUNTIME_ROOT` 指定其 node_modules 路径。检测到时执行隔离的真实服务注册、Git 执行、消息投递与卸载测试；缺失时明确标为跳过。测试不调用模型，不修改已安装 profile。
+`tests/host.test.mjs` 默认使用项目 `node_modules` 中的 DSH 运行时；也可通过 `DSH_RUNTIME_ROOT` 指定其 node_modules 路径。检测到时执行隔离的真实服务注册、Git 执行、消息投递与卸载测试；缺失时明确标为跳过。测试不调用模型，不修改已安装 profile。
 
 GitHub Actions 在 Windows、Linux、macOS 上检查类型与测试，并通过 `DSH_RUNTIME_ROOT` 使用开发依赖中的宿主运行时。发布正式 GitHub Release 后，`publish.yml` 先完成三平台检查，再核对版本、双语发布说明及安装包内容，通过 npm Trusted Publishing 发布，并把同一 tgz 上传到 Release。npm 中的工作流文件名需配置为 `publish.yml`，并允许 `npm publish`；不需要发布令牌。
 

@@ -22,7 +22,7 @@ This is a community-maintained plugin, not an official DeepSeek AI product. It s
 
 Command messages and prompts are in Simplified Chinese.
 
-Compatibility: supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`; development dependencies are pinned to `0.1.5-rc.1`.
+Compatibility: supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, and `0.1.5-rc.2`; development dependencies are pinned to `0.1.5-rc.2`.
 
 ## Features
 
@@ -53,16 +53,16 @@ For a ready-to-use workbench, download [DSH Codex Desktop](https://github.com/Mi
 
 ## Installation
 
-Requires Node.js >= 22.19, Git on PATH, and DSH with the `commands` and `subprocess` services. The session must have a local Git working directory. Plugin `0.1.3` supports the four host versions listed above.
+Requires Node.js >= 22.19, Git on PATH, and DSH with the `commands` and `subprocess` services. The session must have a local Git working directory. Plugin `0.1.4` supports the five host versions listed above.
 
-The current version is `0.1.3`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The current version is `0.1.4`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### Ask an agent to install it (recommended)
 
 Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
 
 ```text
-Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
 ```
 
 ### From npm
@@ -71,18 +71,18 @@ Install the DSH plugin @michengai/dsh-simplify into my local web profile by runn
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/
 ```
 
 ### From a Local Package
 
-Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.3), then run this from the package directory:
+Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.4), then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 ```
 
 ### Build from Source
@@ -97,7 +97,7 @@ npm ci
 if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
 npm pack
 if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 ```
 
 ### Reload and Verify
@@ -200,7 +200,7 @@ npm pack --dry-run
 
 Tests use real temporary Git repositories to cover paths, untracked files, fallback, conflicts, staged mismatches, stale snapshots, and execution errors. Fixtures are created under `.test-tmp` and cleaned up on normal completion.
 
-`tests/host.test.mjs` looks for a DSH runtime at `%USERPROFILE%\.dsh\profiles\node_modules`. Set `DSH_RUNTIME_ROOT` to use another runtime's node_modules path. When detected, it runs isolated integration checks for real service registration, Git execution, message delivery, and disposal; otherwise, that test is explicitly skipped. Tests do not call a model or modify installed profiles.
+`tests/host.test.mjs` uses the DSH runtime in the project’s `node_modules` by default. Set `DSH_RUNTIME_ROOT` to use another runtime's node_modules path. When detected, it runs isolated integration checks for real service registration, Git execution, message delivery, and disposal; otherwise, that test is explicitly skipped. Tests do not call a model or modify installed profiles.
 
 GitHub Actions checks types and tests on Windows, Linux, and macOS, using the host runtime from development dependencies through `DSH_RUNTIME_ROOT`. Publishing a stable GitHub Release starts `publish.yml`: it runs all three platform checks, validates the version, bilingual release notes, and package contents, publishes through npm Trusted Publishing, and uploads the same tgz to the Release. Configure `publish.yml` as the workflow filename in npm and allow `npm publish`; no publishing token is required.
 

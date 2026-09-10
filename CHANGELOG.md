@@ -2,14 +2,13 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.4 - 2026-09-11
+
+- Support DSH `0.1.5-rc.2` while retaining compatibility with `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`.
+
 ## 0.1.3 - 2026-09-10
 
-- Update the development host to DSH `0.1.5-rc.1` and explicitly support `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1` as peers. All four hosts pass isolated type, 41-test, package installation, and import checks on Windows.
-- Resolve host integration tests from project dependencies by default to avoid testing against a different personal DSH installation.
-- Validate one live-model headless simplification scenario on each supported host, including target edits, behavior preservation, and file scope; document full-host setup and Web UI validation limits.
-- The two earliest hosts required explicit peer setup after npm resolution stalled; headless validation does not cover ordinary full-host installation or Web UI behavior.
-- Align npm, Release archive, and source installation instructions with `0.1.3`, restore npmjs lockfile URLs without changing package versions or integrity, and ignore local CodeGraph files.
-- Require valid, matching release dates in both changelogs before publishing; add seven release validation regression cases.
+- Support DSH `0.1.5-rc.1`, with compatibility for `0.1.0-rc.8`, `0.1.1-rc.2`, and `0.1.2-rc.1`.
 
 ## 0.1.2 - 2026-09-06
 
