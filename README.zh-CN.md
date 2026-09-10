@@ -22,7 +22,7 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 
 命令文案及提示词使用简体中文。
 
-源码 `0.1.3`（未发布）支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`，开发依赖固定为 `0.1.5-rc.1`。
+兼容性：支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`，开发依赖固定为 `0.1.5-rc.1`。
 
 ## 功能概览
 
@@ -53,16 +53,16 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 
 ## 安装
 
-要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH。会话需要关联本地 Git 工作目录。宿主版本取决于安装的插件版本：已发布版 `0.1.2` 要求 DSH `0.1.2-rc.1`；当前源码 `0.1.3` 支持上文列出的四个版本。
+要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH。会话需要关联本地 Git 工作目录。插件 `0.1.3` 支持上文列出的四个宿主版本。
 
-最新已发布版本为 `0.1.2`，以下 npm 和 Release 安装示例继续使用该版本。要使用四版本兼容支持，请按下方源码打包步骤安装尚未发布的 `0.1.3`。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+当前版本为 `0.1.3`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
 ### 让 Agent 帮你安装（推荐）
 
 把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
 
 ```text
-请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
 ### 从 npm 安装
@@ -71,21 +71,21 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/
 ```
 
 ### 从本地安装包安装
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2) 下载已发布的 tgz，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.3) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.2.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
 ```
 
-### 从当前源码打包安装（0.1.3，未发布）
+### 从源码打包安装
 
 在仓库根目录执行：
 

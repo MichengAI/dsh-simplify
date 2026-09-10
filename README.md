@@ -22,7 +22,7 @@ This is a community-maintained plugin, not an official DeepSeek AI product. It s
 
 Command messages and prompts are in Simplified Chinese.
 
-Source version `0.1.3` (unreleased) supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`; development dependencies are pinned to `0.1.5-rc.1`.
+Compatibility: supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, and `0.1.5-rc.1`; development dependencies are pinned to `0.1.5-rc.1`.
 
 ## Features
 
@@ -53,16 +53,16 @@ For a ready-to-use workbench, download [DSH Codex Desktop](https://github.com/Mi
 
 ## Installation
 
-Requires Node.js >= 22.19, Git on PATH, and DSH with the `commands` and `subprocess` services. The session must have a local Git working directory. The required host depends on the plugin version: published version `0.1.2` requires DSH `0.1.2-rc.1`; source version `0.1.3` supports the four versions listed above.
+Requires Node.js >= 22.19, Git on PATH, and DSH with the `commands` and `subprocess` services. The session must have a local Git working directory. Plugin `0.1.3` supports the four host versions listed above.
 
-The latest published version is `0.1.2`, which the npm and Release examples below continue to install. For four-version compatibility, follow the source packaging steps below to install the unreleased `0.1.3`. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The current version is `0.1.3`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### Ask an agent to install it (recommended)
 
 Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
 
 ```text
-Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
 ```
 
 ### From npm
@@ -71,21 +71,21 @@ Install the DSH plugin @michengai/dsh-simplify into my local web profile by runn
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.2 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.3 --registry=https://registry.npmjs.org/
 ```
 
 ### From a Local Package
 
-Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.2), then run this from the package directory:
+Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.3), then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.2.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.3.tgz --ignore-scripts
 ```
 
-### Build from Current Source (0.1.3, unreleased)
+### Build from Source
 
 Run from the repository root:
 
