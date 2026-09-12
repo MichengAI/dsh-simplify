@@ -11,18 +11,15 @@
 [简体中文](README.zh-CN.md) · [Installation](#installation) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Changelog](CHANGELOG.md) · [Apache-2.0](LICENSE)
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
 
-Use `/simplify` in DeepSeek Harness to make recently changed code easier to read and maintain.
-
-This is a community-maintained plugin, not an official DeepSeek AI product. It supports DSH Web and desktop apps that include DSH Web.
+> DSH Simplify is a community-maintained DeepSeek Harness plugin, not an official DeepSeek AI product. Enter `/simplify` in the current session to ask the Agent to improve code within your Git changes while preserving behavior. Supports DSH Web and desktop apps that include DSH Web.
 
 Command messages and prompts are in Simplified Chinese.
-
-Compatibility: supports DSH `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, and `0.1.5-rc.2`; development dependencies are pinned to `0.1.5-rc.2`.
 
 ## Features
 
@@ -51,11 +48,16 @@ For a ready-to-use workbench, download [DSH Codex Desktop](https://github.com/Mi
 | [BTW](https://github.com/MichengAI/dsh-btw) | Ask side questions without interrupting the main task |
 | [Simplify](https://github.com/MichengAI/dsh-simplify) | Use /simplify to improve code within your Git changes |
 
+## Prerequisites
+
+- DeepSeek Harness is installed, `dsh` is available in your terminal, and the host provides the `commands` and `subprocess` services.
+- Host peer dependencies declare `0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2`.
+- Node.js >= 22.19 and Git on PATH.
+- The current session is associated with a local Git project.
+
 ## Installation
 
-Requires Node.js >= 22.19, Git on PATH, and DSH with the `commands` and `subprocess` services. The session must have a local Git working directory. Plugin `0.1.4` supports the five host versions listed above.
-
-The current version is `0.1.4`, available through npm, a packaged archive, or source installation. The examples use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The current version is `0.1.4`. The commands below use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### Ask an agent to install it (recommended)
 
@@ -65,7 +67,7 @@ Send the prompt below to any agent that can run terminal commands on your comput
 Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
 ```
 
-### From npm
+### Install from npm
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -74,7 +76,8 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/
 ```
 
-### From a Local Package
+<details>
+<summary>Install from a local package</summary>
 
 Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.4), then run this from the package directory:
 
@@ -85,20 +88,7 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 ```
 
-### Build from Source
-
-Run from the repository root:
-
-```powershell
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-
-npm ci
-if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
-npm pack
-if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
-```
+</details>
 
 ### Reload and Verify
 
@@ -107,6 +97,16 @@ Install or update after the current task finishes, since desktop apps may reload
 Run `dsh --profile web --dump-config` and confirm that it includes `michengai-simplify`. Check for sensitive settings before sharing the full configuration. Then enter `/simplify` in a session associated with a Git project.
 
 ## Usage
+
+After a round of coding, enter this in the current Git project session:
+
+```text
+/simplify
+```
+
+Wait for the Agent to finish editing and validation, then inspect the actual diff. Use the options below to narrow the scope.
+
+### Choose a review scope
 
 | Input | Scope |
 | --- | --- |
@@ -124,7 +124,7 @@ Run `dsh --profile web --dump-config` and confirm that it includes `michengai-si
 - Before the initial commit, files in the selected scope are treated as new and may be simplified in full. Default mode includes staged and untracked files; `--staged` includes only staged files. Select files or directories to narrow the scope; file count and size limits still apply. A clean repository with only one commit returns no changes.
 - Previous-commit fallback compares HEAD with its first parent. Merge commits do not receive a multi-parent review.
 
-## Command Results
+### Command results
 
 | Result | Meaning |
 | --- | --- |
@@ -148,6 +148,13 @@ Run `dsh --profile web --dump-config` and confirm that it includes `michengai-si
 
 The plugin performs read-only Git queries and local file reads. It does not automatically run `git add`, commit, reset, or stash. Git arguments are passed through DSH `subprocess` as `argv`, independent of PowerShell or Bash quoting rules.
 
+**Scope is a prompt instruction, not a file-write permission boundary.** The Agent edits and tests using host tools and user authorization. This plugin does not intercept writes from other tools or guarantee that files remain unchanged after queuing. A queued review is not a completed simplification.
+
+The implementation assumes the local filesystem and local subprocess share the same workspace. Remote subprocess and remote filesystem combinations have not been verified.
+
+<details>
+<summary>Git scope collection, snapshot checks, and resource limits</summary>
+
 The repository and index are determined from the session working directory and Git worktree metadata. Child processes do not inherit repository-local environment overrides such as `GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE`, or temporary configuration overrides. Ordinary user and repository configuration is preserved. The repository returned by Git must contain the session working directory.
 
 Git failures, signals, cancellation, timeouts, truncated output, unresolved conflicts, and stale snapshots prevent prompt delivery. They are not interpreted as an empty diff. The patch parser counts old and new lines against each hunk header, rejects incomplete bodies, and excludes context lines from editable ranges. Explicit paths that do not exist, are ignored, or lie outside the repository return errors.
@@ -158,9 +165,7 @@ Across all files, collection is limited to 4,096 separate line ranges and 128 Ki
 
 `--staged` first checks that selected staged files match the working tree. Before queuing, the plugin rechecks the index, HEAD, and file SHA-256 hashes to avoid applying index line numbers to different working-tree content. The Agent is instructed to verify snapshots again before editing and stop simplifying a file if its content has changed, requiring a new command invocation.
 
-**Scope is a prompt instruction, not a file-write permission boundary.** The Agent edits and tests using host tools and user authorization. This plugin does not intercept writes from other tools or guarantee that files remain unchanged after queuing. A queued review is not a completed simplification.
-
-The implementation assumes the local filesystem and local subprocess share the same workspace. Remote subprocess and remote filesystem combinations have not been verified.
+</details>
 
 ## Uninstall
 
@@ -173,7 +178,7 @@ dsh plugin --profile web remove @michengai/dsh-simplify
 
 Reload DSH manually if the desktop app does not reload automatically. Uninstalling does not undo code changes already made by the Agent.
 
-## Development and Verification
+## Development
 
 ### From Source
 
@@ -189,6 +194,10 @@ dsh plugin --profile web add . --ignore-scripts
 ```
 
 The entry point is `lib/index.js`, so build before installing. Keep the source directory when the profile uses a local link.
+
+### Verification
+
+Development dependencies are pinned to DSH `0.1.5-rc.2`.
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

@@ -8,21 +8,18 @@
 
 **在 DeepSeek Harness 中简化最近改动的代码，保持原有功能。**
 
-[English](README.md) · [安装](#安装) · [用法](#用法) · [故障排查](#故障排查) · [更新日志](CHANGELOG.zh-CN.md) · [Apache-2.0](LICENSE)
+[English](README.md) · [安装](#安装) · [使用](#使用) · [故障排查](#故障排查) · [更新日志](CHANGELOG.zh-CN.md) · [Apache-2.0](LICENSE)
 
 [![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
 
-DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码，让后续阅读和维护更轻松。
-
-本项目为社区插件，并非 DeepSeek AI 官方产品。支持 DSH Web 及集成 DSH Web 的桌面应用。
+> DSH Simplify 是社区维护的 DeepSeek Harness 插件，并非 DeepSeek AI 官方产品。在当前会话中输入 `/simplify`，即可请 Agent 整理 Git 改动范围内的代码，改善可读性并保持原有功能。支持 DSH Web 及集成 DSH Web 的桌面应用。
 
 命令文案及提示词使用简体中文。
-
-兼容性：支持 DSH `0.1.0-rc.8`、`0.1.1-rc.2`、`0.1.2-rc.1`、`0.1.5-rc.1`、`0.1.5-rc.2`，开发依赖固定为 `0.1.5-rc.2`。
 
 ## 功能概览
 
@@ -51,11 +48,16 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 | [BTW](https://github.com/MichengAI/dsh-btw) | 在当前上下文中临时旁问，不打断主任务 |
 | [Simplify](https://github.com/MichengAI/dsh-simplify) | 用 /simplify 整理 Git 改动范围内的代码 |
 
+## 前置条件
+
+- 已安装 DeepSeek Harness，可在终端执行 `dsh`，宿主提供 `commands` 和 `subprocess` 服务。
+- 宿主 peer 依赖声明为 `0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2`。
+- Node.js >= 22.19，PATH 中可执行 Git。
+- 当前会话关联本地 Git 项目。
+
 ## 安装
 
-要求 Node.js >= 22.19、PATH 中可执行的 Git，以及提供 `commands`、`subprocess` 服务的 DSH。会话需要关联本地 Git 工作目录。插件 `0.1.4` 支持上文列出的五个宿主版本。
-
-当前版本为 `0.1.4`，支持 npm、安装包和源码安装。以下示例使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+当前版本为 `0.1.4`。以下命令使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
 ### 让 Agent 帮你安装（推荐）
 
@@ -65,7 +67,7 @@ DeepSeek Harness 代码简化插件。用 `/simplify` 整理刚改过的代码�
 请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
-### 从 npm 安装
+### 手动从 npm 安装
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -74,7 +76,8 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 dsh plugin --profile web add @michengai/dsh-simplify@0.1.4 --registry=https://registry.npmjs.org/
 ```
 
-### 从本地安装包安装
+<details>
+<summary>从本地安装包安装</summary>
 
 从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.4) 下载已发布的 tgz，然后在安装包所在目录执行：
 
@@ -85,20 +88,7 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 ```
 
-### 从源码打包安装
-
-在仓库根目录执行：
-
-```powershell
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
-
-npm ci
-if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
-npm pack
-if ($LASTEXITCODE -ne 0) { throw 'npm pack failed' }
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
-```
+</details>
 
 ### 重新加载与确认
 
@@ -106,7 +96,17 @@ dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 
 执行 `dsh --profile web --dump-config`，确认包含 `michengai-simplify`。分享完整配置前先检查其中是否包含敏感设置。然后在 Git 项目会话中输入 `/simplify`。
 
-## 用法
+## 使用
+
+写完一轮代码后，在当前 Git 项目会话中输入：
+
+```text
+/simplify
+```
+
+等待 Agent 完成修改与验证，再检查实际 diff。需要缩小范围时，可使用以下参数。
+
+### 选择审查范围
 
 | 输入 | 范围 |
 | --- | --- |
@@ -124,7 +124,7 @@ dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 - 没有首次提交时，所选范围内的文件视为新增文件，允许整文件整理：默认包含暂存与未跟踪文件，`--staged` 仅包含暂存文件。可指定文件或目录缩小范围，文件数量和大小限制仍然生效。只有一个提交且工作区干净时直接返回无变更。
 - 上一提交回看相对于 HEAD 第一父提交；merge commit 不做多父合并审查。
 
-## 命令结果
+### 命令结果
 
 | 返回结果 | 含义 |
 | --- | --- |
@@ -148,6 +148,13 @@ dsh plugin --profile web add .\michengai-dsh-simplify-0.1.4.tgz --ignore-scripts
 
 插件只执行 Git 只读查询和读取本地文件，不自动 `git add`、提交、重置或存储工作区。Git 参数通过 DSH `subprocess` 的 `argv` 传递，不依赖 PowerShell/Bash 引用规则。
 
+**修改范围是提示词约束，不是文件写入权限隔离。** Agent 按宿主工具和用户授权执行修改及测试；本插件没有拦截其他工具的写入，也不能保证排队后文件不再变化。不要把“已提交审查”理解成“已完成简化”。
+
+实现针对本地文件系统与本地 subprocess 同一工作区，未验证远程 subprocess 或远程文件系统组合。
+
+<details>
+<summary>查看 Git 范围收集、快照校验与资源限制</summary>
+
 仓库和索引依据会话工作目录及 Git worktree 元数据确定；子进程不继承 `GIT_DIR`、`GIT_WORK_TREE`、`GIT_INDEX_FILE` 等仓库局部环境或临时配置覆盖，保留普通用户与仓库配置。Git 返回的仓库必须包含当前会话工作目录。
 
 Git 失败、信号终止、取消、超时、输出截断、未解决冲突和过期快照都会阻止提示词投递，不将它们当作无改动。补丁解析器按正文核对每块的新旧行数，拒绝残缺正文，并排除上下文行。显式路径不存在、被忽略或位于仓库外时返回错误。
@@ -158,9 +165,7 @@ Git 失败、信号终止、取消、超时、输出截断、未解决冲突和�
 
 `--staged` 先确认所选暂存文件与工作区一致，并在入队前再次核对暂存区、HEAD 和文件 SHA-256，避免把 index 行号直接用于不同的工作区内容。Agent 编辑前还需复核内容快照；内容变化时停止该文件的简化并重新运行命令。
 
-**修改范围是提示词约束，不是文件写入权限隔离。** Agent 按宿主工具和用户授权执行修改及测试；本插件没有拦截其他工具的写入，也不能保证排队后文件不再变化。不要把“已提交审查”理解成“已完成简化”。
-
-实现针对本地文件系统与本地 subprocess 同一工作区，未验证远程 subprocess 或远程文件系统组合。
+</details>
 
 ## 卸载
 
@@ -173,7 +178,7 @@ dsh plugin --profile web remove @michengai/dsh-simplify
 
 若桌面应用未自动重载，手动重新加载 DSH。卸载不会撤销 Agent 已产生的代码修改。
 
-## 开发与验证
+## 二次开发
 
 ### 从源码安装
 
@@ -189,6 +194,10 @@ dsh plugin --profile web add . --ignore-scripts
 ```
 
 入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。
+
+### 验证
+
+开发依赖固定为 DSH `0.1.5-rc.2`。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -213,6 +222,6 @@ GitHub Actions 在 Windows、Linux、macOS 上检查类型与测试，并通过 
 | `src/command.ts`、`src/index.ts` | 命令处理、投递及生命周期 |
 | `tests` | 回归与宿主集成验证 |
 
-## 许可
+## 许可证
 
 [Apache-2.0](LICENSE)，Copyright 2026 MichengAI。
