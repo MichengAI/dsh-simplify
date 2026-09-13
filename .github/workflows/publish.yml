@@ -1,20 +1,21 @@
 name: Publish
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ['v*']
 
 permissions:
   contents: read
 
 concurrency:
-  group: publish-${{ github.event.release.tag_name }}
+  group: publish-${{ github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   check:
-    if: ${{ !github.event.release.prerelease }}
     uses: ./.github/workflows/ci.yml
+    with:
+      full: true
 
   publish:
     needs: check
@@ -29,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version: '22'
@@ -76,7 +77,7 @@ jobs:
           catch { if ([int]$_.Exception.Response.StatusCode -ne 404) { throw } }
           if ($existing) {
             if ($existing.dist.integrity -ne $env:PACKAGE_INTEGRITY) { throw '此版本已存在，但内容不同，不能覆盖。' }
-            Write-Output '同一安装包已发布，继续验证及上传附件。'
+            Write-Output '同一安装包已发布，继续验证及同步版本说明。'
           } else {
             npm publish $env:PACKAGE_TARBALL --access public --registry=https://registry.npmjs.org/
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -92,11 +93,17 @@ jobs:
               Start-Sleep -Seconds 10
             }
           }
-      - name: 上传同一安装包到 GitHub Release
+      - name: 同步 GitHub Release（仅说明）
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
           $OutputEncoding = [System.Text.Encoding]::UTF8
-          gh release upload $env:RELEASE_TAG $env:PACKAGE_TARBALL --repo $env:GITHUB_REPOSITORY --clobber
+          $tags = gh api --paginate "repos/$env:GITHUB_REPOSITORY/releases" --jq '.[].tag_name'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ($env:GITHUB_REF_NAME -in $tags) {
+            gh release edit $env:GITHUB_REF_NAME --title $env:GITHUB_REF_NAME --notes-file release-notes.md
+          } else {
+            gh release create $env:GITHUB_REF_NAME --verify-tag --title $env:GITHUB_REF_NAME --notes-file release-notes.md
+          }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

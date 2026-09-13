@@ -1,18 +1,17 @@
 // 发布前核对标签、包版本及双语说明，避免发布错误版本或不完整的公开说明。
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
 const read = (path) => readFileSync(path, "utf8").replace(/\r\n/g, "\n");
 const pkg = JSON.parse(read("package.json"));
 const lock = JSON.parse(read("package-lock.json"));
-const event = JSON.parse(read(process.env.GITHUB_EVENT_PATH));
+assert.equal(process.env.GITHUB_REF_TYPE, "tag", "必须从版本标签发布");
 assert.match(pkg.version, /^\d+\.\d+\.\d+$/, "此流程仅发布正式版本");
 assert.equal(
-  event.release.tag_name,
+  process.env.GITHUB_REF_NAME,
   `v${pkg.version}`,
   "Release 标签与包版本不一致",
 );
-assert.equal(event.release.prerelease, false, "此流程不发布预发行版");
 assert.equal(lock.version, pkg.version, "锁文件版本不一致");
 assert.equal(lock.packages[""].version, pkg.version, "锁文件根包版本不一致");
 
@@ -47,9 +46,5 @@ const zh = section("CHANGELOG.zh-CN.md");
 const en = section("CHANGELOG.md");
 assert.equal(zh.date, en.date, "双语 CHANGELOG 发布日期不一致");
 const expected = `## 简体中文\n\n${zh.content}\n\n## English\n\n${en.content}`;
-assert.equal(
-  event.release.body.replace(/\r\n/g, "\n").trim(),
-  expected,
-  "Release 与双语 CHANGELOG 不一致",
-);
+writeFileSync("release-notes.md", `${expected}\n`, "utf8");
 console.log(`版本及双语说明检查通过：${pkg.name}@${pkg.version}`);
