@@ -54,7 +54,7 @@
 ## 前置条件
 
 - 已安装 DeepSeek Harness，可在终端执行 `dsh`，宿主提供 `commands` 和 `subprocess` 服务。
-- 宿主 peer 依赖声明为 `0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2`。
+- 宿主 peer 依赖声明为 `0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.6-alpha.1`。
 - Node.js >= 22.19，PATH 中可执行 Git。
 - 当前会话关联本地 Git 项目。
 
@@ -200,7 +200,7 @@ dsh plugin --profile web add . --ignore-scripts
 
 ### 验证
 
-开发依赖固定为 DSH `0.1.5-rc.2`。
+开发依赖固定为 DSH `0.1.6-alpha.1`。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
