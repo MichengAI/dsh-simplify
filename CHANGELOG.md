@@ -2,9 +2,10 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
-## Unreleased
+## 0.1.7 - 2026-09-18
 
 - Show the official Enhance icon and a Simplify/简化 title on the `/simplify` slash-menu row, matching commands such as BTW and review.
+- Use a bilingual package description so the plugin manager matches the GitHub About text.
 
 ## 0.1.6 - 2026-09-18
 

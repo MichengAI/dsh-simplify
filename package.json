@@ -1,6 +1,6 @@
 {
   "name": "@michengai/dsh-simplify",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "DSH Simplify — 为 DeepSeek Harness 提供限定 Git 变更范围的代码简化，支持未跟踪文件、跨平台路径与可靠的 Git 异常处理 · Git-scoped code simplification with untracked-file support, cross-platform paths, and reliable Git error handling for DeepSeek Harness",
   "repository": { "type": "git", "url": "git+https://github.com/MichengAI/dsh-simplify.git" },
   "homepage": "https://github.com/MichengAI/dsh-simplify#readme",

@@ -60,14 +60,14 @@
 
 ## 安装
 
-当前版本为 `0.1.6`。以下命令使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
+当前版本为 `0.1.7`。以下命令使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。
 
 ### 让 Agent 帮你安装（推荐）
 
 把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
 
 ```text
-请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.6 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@0.1.7 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
 ### 手动从 npm 安装
@@ -76,19 +76,19 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.6 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.7 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>从本地安装包安装</summary>
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.6) 下载已发布的 tgz，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.7) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.6.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.7.tgz --ignore-scripts
 ```
 
 </details>

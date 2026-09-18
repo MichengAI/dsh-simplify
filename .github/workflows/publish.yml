@@ -61,7 +61,7 @@ jobs:
             $_.path -notmatch '^(lib/[^/]+\.(js(?:\.map)?|d\.ts)|assets/branding/dsh-simplify-banner\.png|package\.json|cordis\.patch\.yml|README(?:\.zh-CN)?\.md|CHANGELOG(?:\.zh-CN)?\.md|LICENSE)$'
           })
           if ($unexpected.Count -gt 0) { throw "安装包包含非发布文件：$($unexpected.path -join ', ')" }
-          foreach ($required in @('lib/index.js', 'lib/index.d.ts', 'package.json', 'cordis.patch.yml', 'LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CHANGELOG.zh-CN.md', 'assets/branding/dsh-simplify-banner.png')) {
+          foreach ($required in @('lib/index.js', 'lib/index.d.ts', 'lib/client.js', 'package.json', 'cordis.patch.yml', 'LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CHANGELOG.zh-CN.md', 'assets/branding/dsh-simplify-banner.png')) {
             if ($required -notin $pack.files.path) { throw "安装包缺少 $required" }
           }
           "PACKAGE_TARBALL=$(Join-Path $packageDir $pack.filename)" | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding UTF8
