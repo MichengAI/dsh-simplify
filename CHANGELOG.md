@@ -2,6 +2,10 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## Unreleased
+
+- Show the official Enhance icon and a Simplify/简化 title on the `/simplify` slash-menu row, matching commands such as BTW and review.
+
 ## 0.1.6 - 2026-09-18
 
 - Support DSH `0.1.6-alpha.2` while retaining compatibility with `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, `0.1.5-rc.2`, and `0.1.6-alpha.1`.

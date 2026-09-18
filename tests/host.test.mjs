@@ -26,7 +26,9 @@ test('真实 DSH 命令注册、subprocess 执行、消息投递与卸载', {ski
   const installed = ctx.plugin(plugin);
   try {
     await installed.await();
-    assert.ok(ctx.commands.list(agent).some(command => command.name === 'simplify'));
+    const listed = ctx.commands.list(agent).find(command => command.name === 'simplify');
+    assert.equal(listed?.name, 'simplify');
+    assert.equal(listed?.description, '简化最近改动的代码，保持功能并限定修改范围');
     const result = await ctx.commands.execute(agent,'/simplify',[],new AbortController().signal);
     assert.equal(result.result.kind,'success',JSON.stringify(result));
     assert.equal(messages.length,1);
