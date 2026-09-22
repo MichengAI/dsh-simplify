@@ -1,7 +1,11 @@
-import { IconEnhanceOutline16 } from '@deepseek-ai/dsh-client-ui-primitives';
+import * as primitives from '@deepseek-ai/dsh-client-ui-primitives';
+
+/** 0.1.6 导出 IconEnhanceOutline16；0.1.7 改为 Regular，画布仍是 16。 */
+const icons = primitives as Record<string, unknown>;
+const enhanceIcon = icons.IconEnhanceOutline16 ?? icons.IconEnhanceOutlineRegular;
 
 /** Host `/` 行没有 icon/label；官方只给一等命令画脸。同名贡献会撞车，只能补 candidates。 */
-const FACE = { icon: IconEnhanceOutline16, zh: '简化', en: 'Simplify' } as const;
+const FACE = { icon: enhanceIcon, zh: '简化', en: 'Simplify' } as const;
 
 type Lookup = { get?: (name: string) => unknown };
 
@@ -24,7 +28,7 @@ function decorateSlashFace(commandUi: unknown, ctx: Lookup): () => void {
       if (item.name !== 'simplify') return item;
       return {
         ...item,
-        ...(item.icon === undefined ? { icon: FACE.icon } : {}),
+        ...(item.icon === undefined && FACE.icon !== undefined ? { icon: FACE.icon } : {}),
         ...(item.label === undefined ? { label: en ? FACE.en : FACE.zh } : {}),
       };
     });

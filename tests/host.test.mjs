@@ -32,7 +32,7 @@ test('真实 DSH 命令注册、subprocess 执行、消息投递与卸载', {ski
     const result = await ctx.commands.execute(agent,'/simplify',[],new AbortController().signal);
     assert.equal(result.result.kind,'success',JSON.stringify(result));
     assert.equal(messages.length,1);
-    assert.equal(messages[0].source.plugin,'@michengai/dsh-simplify');
+    assert.equal(messages[0].source.kind,'michengai-simplify');
     assert.match(messages[0].content[0].text,/中文 space\.ts/);
     assert.match(messages[0].content[0].text,/仅行 1/);
     assert.ok(events.some(event => event.type === 'command/done'));

@@ -5,14 +5,14 @@ import { runInNewContext } from 'node:vm';
 
 const enhanceIcon = () => null;
 
-function loadClient() {
+function loadClient(icons = { IconEnhanceOutline16: enhanceIcon }) {
   let contribution;
   runInNewContext(readFileSync(new URL('../lib/client.js', import.meta.url), 'utf8'), {
     window: { __ModuleLoader__: { load: value => { contribution = value; } } },
   });
   assert.equal(contribution.id, '@michengai/dsh-simplify');
   return contribution.factory(name => {
-    if (name === '@deepseek-ai/dsh-client-ui-primitives') return { IconEnhanceOutline16: enhanceIcon };
+    if (name === '@deepseek-ai/dsh-client-ui-primitives') return icons;
     throw new Error(`unexpected client require: ${name}`);
   });
 }
@@ -50,6 +50,35 @@ test('英文界面使用 Simplify 标题', async () => {
   const rows = await commandUi.candidates();
   assert.equal(rows[0].label, 'Simplify');
   assert.equal(rows[0].icon, enhanceIcon);
+});
+
+test('0.1.7 仅提供 Regular 图标时仍补到斜杠菜单', async () => {
+  const regular = () => null;
+  const client = loadClient({ IconEnhanceOutlineRegular: regular });
+  const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };
+  client.apply({ inject: (_deps, callback) => callback({ get: () => commandUi }) });
+  const rows = await commandUi.candidates();
+  assert.equal(rows[0].icon, regular);
+  assert.equal(rows[0].label, '简化');
+});
+
+test('新旧图标同时存在时沿用 16 导出', async () => {
+  const legacy = () => null;
+  const regular = () => null;
+  const client = loadClient({ IconEnhanceOutline16: legacy, IconEnhanceOutlineRegular: regular });
+  const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };
+  client.apply({ inject: (_deps, callback) => callback({ get: () => commandUi }) });
+  const rows = await commandUi.candidates();
+  assert.equal(rows[0].icon, legacy);
+});
+
+test('宿主没有 Enhance 图标时仍补标题', async () => {
+  const client = loadClient({});
+  const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };
+  client.apply({ inject: (_deps, callback) => callback({ get: () => commandUi }) });
+  const rows = await commandUi.candidates();
+  assert.equal(rows[0].icon, undefined);
+  assert.equal(rows[0].label, '简化');
 });
 
 test('卸载后恢复原始 candidates', async () => {

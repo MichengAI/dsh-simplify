@@ -2,6 +2,12 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.8 - 2026-09-22
+
+- Support DSH `0.1.7-alpha.1` while retaining compatibility with `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, `0.1.5-rc.2`, `0.1.6-alpha.1`, and `0.1.6-alpha.2`.
+- Queue simplification with a producer-owned message source so DSH 0.1.7 accepts it, and keep that same source on earlier hosts.
+- Use whichever Enhance icon the installed host exports, including the icon renamed in 0.1.7.
+
 ## 0.1.7 - 2026-09-18
 
 - Show the official Enhance icon and a Simplify/简化 title on the `/simplify` slash-menu row, matching commands such as BTW and review.

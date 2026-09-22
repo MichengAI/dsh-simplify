@@ -6,6 +6,13 @@ import { createGitRunner } from './exec.js';
 import { collectReview, verifyReview } from './git.js';
 import { buildPrompt } from './prompt.js';
 
+declare module '@deepseek-ai/dsh-llm' {
+  interface MessageSourceMap {
+    /** 0.1.7 拒绝退役的 `kind: 'plugin'` 包装；这个生产者 kind 在更早的宿主里同样可以入队。 */
+    'michengai-simplify': { readonly kind: 'michengai-simplify' }
+  }
+}
+
 /** 执行一次交互式命令；错误只返回 UI，可靠范围才交给当前 Agent。 */
 export async function handleCommand(ctx: Pick<Context, 'subprocess'>, invocation: CommandInvocation, lifetime?: AbortSignal): Promise<CommandResult> {
   const deadline = new AbortController();
@@ -29,7 +36,7 @@ export async function handleCommand(ctx: Pick<Context, 'subprocess'>, invocation
     // followup 在当前宿主中同时负责持久入队与唤醒，避免直接操作 inbox 后缺少唤醒。
     invocation.agent.followup(createUserMessage({
       content: [{ type: 'text', text: prompt }],
-      source: { kind: 'plugin', plugin: '@michengai/dsh-simplify' },
+      source: { kind: 'michengai-simplify' },
     }));
     return { kind: 'success', text: `已提交 ${review.files.length} 个文件的简化审查${review.source === 'previous-commit' ? '（回看上一提交）' : ''}。${review.skipped.length ? `已跳过 ${review.skipped.length} 个不可编辑文件。` : ''}` };
   } catch (error) {
