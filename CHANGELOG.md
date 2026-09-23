@@ -2,6 +2,11 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.9 - 2026-09-24
+
+- Support DSH `0.1.7-rc.1` while retaining compatibility with `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, and `0.1.5-rc.2`.
+- Drop alpha hosts from the compatibility list.
+
 ## 0.1.8 - 2026-09-22
 
 - Support DSH `0.1.7-alpha.1` while retaining compatibility with `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, `0.1.5-rc.2`, `0.1.6-alpha.1`, and `0.1.6-alpha.2`.

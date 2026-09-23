@@ -1,22 +1,45 @@
 {
   "name": "@michengai/dsh-simplify",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "DSH Simplify — 为 DeepSeek Harness 提供限定 Git 变更范围的代码简化，支持未跟踪文件、跨平台路径与可靠的 Git 异常处理 · Git-scoped code simplification with untracked-file support, cross-platform paths, and reliable Git error handling for DeepSeek Harness",
-  "repository": { "type": "git", "url": "git+https://github.com/MichengAI/dsh-simplify.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichengAI/dsh-simplify.git"
+  },
   "homepage": "https://github.com/MichengAI/dsh-simplify#readme",
-  "bugs": { "url": "https://github.com/MichengAI/dsh-simplify/issues" },
+  "bugs": {
+    "url": "https://github.com/MichengAI/dsh-simplify/issues"
+  },
   "type": "module",
   "license": "Apache-2.0",
-  "engines": { "node": ">=22.19.0" },
+  "engines": {
+    "node": ">=22.19.0"
+  },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "exports": {
-    ".": { "types": "./lib/index.d.ts", "default": "./lib/index.js" },
-    "./client": { "default": "./lib/client.js" }
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    }
   },
-  "files": ["lib", "assets/branding/dsh-simplify-banner.png", "cordis.patch.yml", "README.md", "README.zh-CN.md", "LICENSE", "CHANGELOG.md", "CHANGELOG.zh-CN.md"],
+  "files": [
+    "lib",
+    "assets/branding/dsh-simplify-banner.png",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh-CN.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CHANGELOG.zh-CN.md"
+  ],
   "dsh": {
-    "bundle": { "patch": "./cordis.patch.yml" },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "platform": "web",
       "inject": [
@@ -32,27 +55,34 @@
     "check": "npm run typecheck && npm test",
     "prepack": "npm run build"
   },
-  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.2",
-    "@deepseek-ai/dsh-commands": "0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-alpha.1",
-    "@deepseek-ai/dsh-llm": "0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-alpha.1",
-    "@deepseek-ai/dsh-subprocess": "0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-alpha.1",
-    "@deepseek-ai/dsh-client-ui-commands": "0.1.6-alpha.2 || 0.1.7-alpha.1",
-    "@deepseek-ai/dsh-client-ui-primitives": "0.1.6-alpha.2 || 0.1.7-alpha.1"
+    "@deepseek-ai/dsh-commands": "0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.7-rc.1",
+    "@deepseek-ai/dsh-llm": "0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.7-rc.1",
+    "@deepseek-ai/dsh-subprocess": "0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.7-rc.1",
+    "@deepseek-ai/dsh-client-ui-commands": "0.1.7-rc.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.7-rc.1"
   },
   "peerDependenciesMeta": {
-    "@deepseek-ai/dsh-client-ui-commands": { "optional": true },
-    "@deepseek-ai/dsh-client-ui-primitives": { "optional": true }
+    "@deepseek-ai/dsh-client-ui-commands": {
+      "optional": true
+    },
+    "@deepseek-ai/dsh-client-ui-primitives": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "4.0.3",
-    "@deepseek-ai/dsh-client-ui-commands": "0.1.7-alpha.1",
-    "@deepseek-ai/dsh-client-ui-primitives": "0.1.7-alpha.1",
-    "@deepseek-ai/dsh-commands": "0.1.7-alpha.1",
-    "@deepseek-ai/dsh-llm": "0.1.7-alpha.1",
-    "@deepseek-ai/dsh-subprocess": "0.1.7-alpha.1",
-    "@deepseek-ai/dsh-subprocess-local": "0.1.7-alpha.1",
+    "@deepseek-ai/cordis": "4.0.4",
+    "@deepseek-ai/dsh-client-ui-commands": "0.1.7-rc.1",
+    "@deepseek-ai/dsh-client-ui-primitives": "0.1.7-rc.1",
+    "@deepseek-ai/dsh-commands": "0.1.7-rc.1",
+    "@deepseek-ai/dsh-llm": "0.1.7-rc.1",
+    "@deepseek-ai/dsh-subprocess": "0.1.7-rc.1",
+    "@deepseek-ai/dsh-subprocess-local": "0.1.7-rc.1",
     "@types/node": "^22.19.0",
     "esbuild": "^0.25.0",
     "typescript": "~5.7.2"

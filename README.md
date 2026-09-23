@@ -54,20 +54,20 @@ For a desktop workbench, download [DSH Codex Desktop](https://github.com/Micheng
 ## Prerequisites
 
 - DeepSeek Harness is installed, `dsh` is available in your terminal, and the host provides the `commands` and `subprocess` services.
-- Host peer dependencies declare `0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.6-alpha.1 || 0.1.6-alpha.2 || 0.1.7-alpha.1`.
+- Host peer dependencies declare `0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.7-rc.1`.
 - Node.js >= 22.19 and Git on PATH.
 - The current session is associated with a local Git project.
 
 ## Installation
 
-The current version is `0.1.8`. The commands below use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
+The current version is `0.1.9`. The commands below use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation.
 
 ### Ask an agent to install it (recommended)
 
 Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
 
 ```text
-Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.8 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@0.1.9 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
 ```
 
 ### Install from npm
@@ -76,19 +76,19 @@ Install the DSH plugin @michengai/dsh-simplify into my local web profile by runn
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@0.1.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@0.1.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>Install from a local package</summary>
 
-Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.8), then run this from the package directory:
+Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v0.1.9), then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-0.1.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-0.1.9.tgz --ignore-scripts
 ```
 
 </details>
