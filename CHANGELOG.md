@@ -2,6 +2,10 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.10 - 2026-09-25
+
+- Support DSH `0.1.7-rc.2` while retaining compatibility with `0.1.7-rc.1`, `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, and `0.1.5-rc.2`.
+
 ## 0.1.9 - 2026-09-24
 
 - Support DSH `0.1.7-rc.1` while retaining compatibility with `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, and `0.1.5-rc.2`.
