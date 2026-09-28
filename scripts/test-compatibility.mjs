@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 // 用当前开发基线编译，再把真实命令测试指到各版独立宿主，避免旧版借用新版包。
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const supported = ['0.1.0-rc.8', '0.1.1-rc.2', '0.1.2-rc.1', '0.1.5-rc.1', '0.1.5-rc.2', '0.1.7-rc.1', '0.1.7-rc.2', '0.2.0-rc.1'];
+const supported = ['0.1.2-rc.1', '0.1.5-rc.1', '0.1.5-rc.2', '0.1.5-rc.3', '0.1.7-rc.1', '0.1.7-rc.2', '0.2.0-rc.1'];
 const versions = process.argv.slice(2);
 if (!versions.length) versions.push(...supported);
 if (versions.some(version => !supported.includes(version))) throw new Error('请使用指定的 DSH 候选版本');

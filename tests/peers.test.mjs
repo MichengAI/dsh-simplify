@@ -5,8 +5,8 @@ import { readFileSync } from 'node:fs';
 const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const peers = manifest.peerDependencies;
 const dev = manifest.devDependencies;
-const host = '0.1.0-rc.8 || 0.1.1-rc.2 || 0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1';
-const client = '0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1';
+const host = '0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1';
+const client = '0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1';
 
 test('宿主兼容列表只保留 RC，并把开发和 peer 钉到 0.2.0-rc.1', () => {
   for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess']) {
