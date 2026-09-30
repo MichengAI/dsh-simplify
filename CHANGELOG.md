@@ -2,6 +2,10 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.13 - 2026-09-30
+
+- Slash-menu title and description follow the host language instead of the Chinese registry string. The syntax hint is unchanged.
+
 ## 0.1.12 - 2026-09-30
 
 - Support DSH `0.2.0-rc.2` while retaining `0.2.0-rc.1`, `0.1.7-rc.2`, `0.1.7-rc.1`, `0.1.5-rc.3`, `0.1.5-rc.2`, `0.1.5-rc.1`, and `0.1.2-rc.1`.
