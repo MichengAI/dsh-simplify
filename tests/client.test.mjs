@@ -17,39 +17,77 @@ function loadClient(icons = { IconEnhanceOutline16: enhanceIcon }) {
   });
 }
 
-test('斜杠菜单为 /simplify 补官方图标和中文标题，不覆盖已有字段', async () => {
+test('中文界面显示中文标题和说明，不改语法提示和其他命令', async () => {
   const client = loadClient();
   const keep = () => null;
+  const hint = '[--staged] [--ref=<ref>] [--] [文件或目录...]';
+  let active;
   const commandUi = {
     candidates: async () => ([
       { name: 'compact', description: '压缩以上对话内容', icon: keep, label: '压缩' },
-      { name: 'simplify', description: '简化最近改动的代码，保持功能并限定修改范围' },
+      {
+        name: 'simplify',
+        label: 'Simplify',
+        description: 'Simplify recent code changes, preserve behavior, and limit the edit scope.',
+        hint,
+      },
       { name: 'other', description: '其他' },
     ]),
   };
   client.apply({
+    get: name => name === 'locale' && active ? { snapshot: { active } } : undefined,
     inject: (_deps, callback) => callback({ get: () => commandUi }),
   });
-  const rows = await commandUi.candidates();
-  assert.equal(rows[0].icon, keep);
-  assert.equal(rows[0].label, '压缩');
-  assert.equal(rows[1].icon, enhanceIcon);
-  assert.equal(rows[1].label, '简化');
-  assert.equal(rows[1].description, '简化最近改动的代码，保持功能并限定修改范围');
-  assert.equal(rows[2].icon, undefined);
-  assert.equal(rows[2].label, undefined);
+  for (const locale of [undefined, 'zh-CN', 'zh_CN']) {
+    active = locale;
+    const rows = await commandUi.candidates();
+    assert.equal(rows[0].icon, keep, String(locale));
+    assert.equal(rows[0].label, '压缩', String(locale));
+    assert.equal(rows[0].description, '压缩以上对话内容', String(locale));
+    assert.equal(rows[1].icon, enhanceIcon, String(locale));
+    assert.equal(rows[1].label, '简化', String(locale));
+    assert.equal(rows[1].description, '简化最近改动的代码，保持功能并限定修改范围', String(locale));
+    assert.equal(rows[1].hint, hint, String(locale));
+    assert.equal(rows[2].icon, undefined, String(locale));
+    assert.equal(rows[2].label, undefined, String(locale));
+    assert.equal(rows[2].description, '其他', String(locale));
+  }
 });
 
-test('英文界面使用 Simplify 标题', async () => {
+test('英文界面替换中文目录说明，不改语法提示、已有图标和其他命令', async () => {
   const client = loadClient();
-  const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };
+  const keep = () => null;
+  const hint = '[--staged] [--ref=<ref>] [--] [文件或目录...]';
+  let active = 'en-US';
+  const commandUi = {
+    candidates: async () => ([
+      { name: 'compact', description: '压缩以上对话内容', label: '压缩' },
+      {
+        name: 'simplify',
+        icon: keep,
+        label: '简化',
+        description: '简化最近改动的代码，保持功能并限定修改范围',
+        hint,
+      },
+      { name: 'other', description: '其他' },
+    ]),
+  };
   client.apply({
-    get: name => name === 'locale' ? { snapshot: { active: 'en-US' } } : undefined,
+    get: name => name === 'locale' ? { snapshot: { active } } : undefined,
     inject: (_deps, callback) => callback({ get: () => commandUi }),
   });
-  const rows = await commandUi.candidates();
-  assert.equal(rows[0].label, 'Simplify');
-  assert.equal(rows[0].icon, enhanceIcon);
+  for (const locale of ['en-US', 'en_US', 'en']) {
+    active = locale;
+    const rows = await commandUi.candidates();
+    assert.equal(rows[0].label, '压缩', locale);
+    assert.equal(rows[0].description, '压缩以上对话内容', locale);
+    assert.equal(rows[1].icon, keep, locale);
+    assert.equal(rows[1].label, 'Simplify', locale);
+    assert.equal(rows[1].description, 'Simplify recent code changes, preserve behavior, and limit the edit scope.', locale);
+    assert.equal(rows[1].hint, hint, locale);
+    assert.equal(rows[2].label, undefined, locale);
+    assert.equal(rows[2].description, '其他', locale);
+  }
 });
 
 test('0.1.7 仅提供 Regular 图标时仍补到斜杠菜单', async () => {
