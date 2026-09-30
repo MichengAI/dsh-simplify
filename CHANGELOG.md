@@ -2,6 +2,11 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## 0.1.12 - 2026-09-30
+
+- Support DSH `0.2.0-rc.2` while retaining `0.2.0-rc.1`, `0.1.7-rc.2`, `0.1.7-rc.1`, `0.1.5-rc.3`, `0.1.5-rc.2`, `0.1.5-rc.1`, and `0.1.2-rc.1`.
+- The declared host range includes `0.1.5-rc.3` and no longer lists `0.1.0-rc.8` or `0.1.1-rc.2`.
+
 ## 0.1.11 - 2026-09-28
 
 - Support DSH `0.2.0-rc.1` while retaining compatibility with `0.1.7-rc.2`, `0.1.7-rc.1`, `0.1.0-rc.8`, `0.1.1-rc.2`, `0.1.2-rc.1`, `0.1.5-rc.1`, and `0.1.5-rc.2`.
