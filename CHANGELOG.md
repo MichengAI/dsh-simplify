@@ -2,6 +2,10 @@
 
 [简体中文](CHANGELOG.zh-CN.md)
 
+## Unreleased
+
+- Installing from GitHub now includes the compiled runtime, so no manual build is required.
+
 ## 0.1.13 - 2026-09-30
 
 - Slash-menu title and description follow the host language instead of the Chinese registry string. The syntax hint is unchanged.

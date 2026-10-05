@@ -196,7 +196,7 @@ npm run check
 dsh plugin --profile web add . --ignore-scripts
 ```
 
-入口为 `lib/index.js`，必须先构建再安装；profile 使用本地链接时需要保留源码目录。
+GitHub 与 npm 都包含可直接运行的 `lib`。改了源码后，提交前运行 `npm run build`。profile 使用本地链接时需要保留源码目录。
 
 ### 验证
 

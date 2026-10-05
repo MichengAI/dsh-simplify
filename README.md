@@ -196,7 +196,7 @@ npm run check
 dsh plugin --profile web add . --ignore-scripts
 ```
 
-The entry point is `lib/index.js`, so build before installing. Keep the source directory when the profile uses a local link.
+GitHub and npm both include a ready-to-run `lib`. After changing source, run `npm run build` before committing. Keep the source directory when the profile uses a local link.
 
 ### Verification
 
