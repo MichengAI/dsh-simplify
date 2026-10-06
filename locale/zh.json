@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Simplify",
+    "description": "在 Git 变更范围内简化代码，支持未跟踪文件和跨平台路径。"
+  }
+}
