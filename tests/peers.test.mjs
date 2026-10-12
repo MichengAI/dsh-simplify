@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const peers = manifest.peerDependencies;
 const dev = manifest.devDependencies;
-const host = '0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1 || 0.2.0-rc.2';
+const host = '0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1 || 0.2.0-rc.2 || 0.2.1-alpha.2';
 const client = host;
 
 test('宿主兼容列表只保留 RC，并把开发和 peer 钉到 0.2.0-rc.2', () => {
@@ -21,5 +21,7 @@ test('宿主兼容列表只保留 RC，并把开发和 peer 钉到 0.2.0-rc.2', 
   assert.equal(dev['@deepseek-ai/cordis'], '4.0.4');
   assert.equal(peers['@deepseek-ai/cordis'], '^4.0.2');
   const declared = Object.values(peers).join(' ');
-  assert.equal(declared.includes('alpha'), false);
+  // 当官方最新版为 alpha 时，允许写入 0.2.1-alpha.2，禁止旧 alpha
+  assert.equal(declared.includes('0.1.6-alpha'), false);
+  assert.equal(declared.includes('0.1.7-alpha'), false);
 });

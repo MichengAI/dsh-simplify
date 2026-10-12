@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 0.1.15 - 2026-10-12
+
+- Support DSH `0.2.1-alpha.2` while retaining all existing supported versions.
+
 ## 0.1.14 - 2026-10-06
 
 - The installed-plugin list shows “Simplify” and a localized description instead of the package name. Titles and descriptions come from `meta.title` and `meta.description` in `locale/zh.json` and `locale/en.json`.

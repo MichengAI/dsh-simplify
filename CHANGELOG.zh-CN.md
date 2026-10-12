@@ -4,6 +4,10 @@
 
 ## 未发布
 
+## 0.1.15 - 2026-10-12
+
+- 支持 DSH `0.2.1-alpha.2`，继续兼容既有已支持版本。
+
 ## 0.1.14 - 2026-10-06
 
 - 已安装插件列表显示「Simplify」和中文简介，不再只用包名。显示名来自 `locale/zh.json` 和 `locale/en.json` 的 `meta.title`、`meta.description`。
