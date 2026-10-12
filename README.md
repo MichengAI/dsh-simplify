@@ -54,7 +54,7 @@ For a desktop workbench, download [DSH Codex Desktop](https://github.com/Micheng
 ## Prerequisites
 
 - DeepSeek Harness is installed, `dsh` is available in your terminal, and the host provides the `commands` and `subprocess` services.
-- Host peer dependencies declare `0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1 || 0.2.0-rc.2`.
+- Host peer dependencies declare `0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1 || 0.2.0-rc.2 || 0.2.1-alpha.2`.
 - Node.js >= 22.19 and Git on PATH.
 - The current session is associated with a local Git project.
 
