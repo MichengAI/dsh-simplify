@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## 0.1.16 - 2026-10-15
+
+- Support DSH `0.2.1-alpha.3` while retaining all existing supported versions; pin development `@deepseek-ai/dsh*` dependencies to host `0.2.1-alpha.3` and Cordis to `4.0.5-alpha.2`.
+- No production plugin API breaks for this release (peer / documentation / development dependency alignment only).
+
 ## 0.1.15 - 2026-10-12
 
 - Support DSH `0.2.1-alpha.2` while retaining all existing supported versions.

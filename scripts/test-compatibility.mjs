@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 // 用当前开发基线编译，再把真实命令测试指到各版独立宿主，避免旧版借用新版包。
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const supported = ['0.1.2-rc.1', '0.1.5-rc.1', '0.1.5-rc.2', '0.1.5-rc.3', '0.1.7-rc.1', '0.1.7-rc.2', '0.2.0-rc.1', '0.2.0-rc.2', '0.2.1-alpha.2'];
+const supported = ['0.1.2-rc.1', '0.1.5-rc.1', '0.1.5-rc.2', '0.1.5-rc.3', '0.1.7-rc.1', '0.1.7-rc.2', '0.2.0-rc.1', '0.2.0-rc.2', '0.2.1-alpha.2', '0.2.1-alpha.3'];
 const versions = process.argv.slice(2);
 if (!versions.length) versions.push(...supported);
 if (versions.some(version => !supported.includes(version))) throw new Error('请使用指定的 DSH 候选版本');
@@ -26,7 +26,7 @@ for (const version of versions) {
       name: 'dsh-simplify-compatibility',
       private: true,
       dependencies: {
-        '@deepseek-ai/cordis': '4.0.4',
+        '@deepseek-ai/cordis': version.startsWith('0.2.1-alpha.') ? '4.0.5-alpha.2' : '4.0.4',
         '@deepseek-ai/dsh-commands': version,
         '@deepseek-ai/dsh-subprocess-local': version,
       },
