@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 // 用当前开发基线编译，再把真实命令测试指到各版独立宿主，避免旧版借用新版包。
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const cordis = { '0.2.0-rc.1': '4.0.4', '0.2.0-rc.2': '4.0.4', '0.2.1-rc.1': '4.0.5' };
+const cordis = { '0.2.0-rc.1': '4.0.4', '0.2.0-rc.2': '4.0.4', '0.2.1-rc.1': '4.0.5', '0.2.1-rc.2': '4.0.5' };
 const versions = process.argv.slice(2);
 const supported = Object.keys(cordis);
 if (!versions.length) versions.push(...supported);
