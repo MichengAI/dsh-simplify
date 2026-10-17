@@ -5,24 +5,19 @@ import { readFileSync } from 'node:fs';
 const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const peers = manifest.peerDependencies;
 const dev = manifest.devDependencies;
-const host = '0.1.2-rc.1 || 0.1.5-rc.1 || 0.1.5-rc.2 || 0.1.5-rc.3 || 0.1.7-rc.1 || 0.1.7-rc.2 || 0.2.0-rc.1 || 0.2.0-rc.2 || 0.2.1-alpha.2 || 0.2.1-alpha.3';
-const client = host;
+const host = '0.2.0-rc.1 || 0.2.0-rc.2 || 0.2.1-rc.1';
 
-test('宿主兼容列表包含 alpha.3，并把开发和 peer 钉到 0.2.1-alpha.3', () => {
-  for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess']) {
+test('宿主兼容列表只保留 0.2.0 以后的 rc，开发依赖钉到 0.2.1-rc.1', () => {
+  for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess', '@deepseek-ai/dsh-client-ui-commands', '@deepseek-ai/dsh-client-ui-primitives']) {
     assert.equal(peers[name], host);
-    assert.equal(dev[name], '0.2.1-alpha.3');
   }
-  for (const name of ['@deepseek-ai/dsh-client-ui-commands', '@deepseek-ai/dsh-client-ui-primitives']) {
-    assert.equal(peers[name], client);
-    assert.equal(dev[name], '0.2.1-alpha.3');
+  for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess', '@deepseek-ai/dsh-client-ui-commands', '@deepseek-ai/dsh-client-ui-primitives', '@deepseek-ai/dsh-subprocess-local']) {
+    assert.equal(dev[name], '0.2.1-rc.1');
   }
-  assert.equal(dev['@deepseek-ai/dsh-subprocess-local'], '0.2.1-alpha.3');
-  assert.equal(dev['@deepseek-ai/cordis'], '4.0.5-alpha.2');
-  assert.equal(peers['@deepseek-ai/cordis'], '^4.0.2');
+  assert.equal(dev['@deepseek-ai/cordis'], '4.0.5');
+  assert.equal(peers['@deepseek-ai/cordis'], '>=4.0.4 <5');
   const declared = Object.values(peers).join(' ');
-  // 当官方最新版为 alpha 时，允许写入 0.2.1-alpha.3，禁止旧 alpha
-  assert.equal(declared.includes('0.1.6-alpha'), false);
-  assert.equal(declared.includes('0.1.7-alpha'), false);
-  assert.equal(declared.includes('0.2.1-alpha.3'), true);
+  assert.equal(declared.includes('0.1.'), false);
+  assert.equal(declared.includes('alpha'), false);
+  assert.equal(declared.includes('0.2.1-rc.1'), true);
 });

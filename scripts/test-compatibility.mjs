@@ -5,10 +5,11 @@ import { fileURLToPath } from 'node:url';
 
 // 用当前开发基线编译，再把真实命令测试指到各版独立宿主，避免旧版借用新版包。
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const supported = ['0.1.2-rc.1', '0.1.5-rc.1', '0.1.5-rc.2', '0.1.5-rc.3', '0.1.7-rc.1', '0.1.7-rc.2', '0.2.0-rc.1', '0.2.0-rc.2', '0.2.1-alpha.2', '0.2.1-alpha.3'];
+const cordis = { '0.2.0-rc.1': '4.0.4', '0.2.0-rc.2': '4.0.4', '0.2.1-rc.1': '4.0.5' };
 const versions = process.argv.slice(2);
+const supported = Object.keys(cordis);
 if (!versions.length) versions.push(...supported);
-if (versions.some(version => !supported.includes(version))) throw new Error('请使用指定的 DSH 候选版本');
+if (versions.some(version => !cordis[version])) throw new Error('请使用指定的 DSH 候选版本');
 if (!process.env.npm_execpath) throw new Error('请通过 npm run test:compat 执行');
 
 const built = spawnSync(process.execPath, [process.env.npm_execpath, 'run', 'build'], { cwd: root, stdio: 'inherit', windowsHide: true });
@@ -22,11 +23,13 @@ for (const version of versions) {
   writeFileSync(log, '', 'utf8');
   console.log(`\nDSH ${version}：准备独立宿主`);
   try {
+    const pin = cordis[version];
+    if (!pin) throw new Error(`未支持的宿主：${version}`);
     writeFileSync(join(directory, 'package.json'), JSON.stringify({
       name: 'dsh-simplify-compatibility',
       private: true,
       dependencies: {
-        '@deepseek-ai/cordis': version.startsWith('0.2.1-alpha.') ? '4.0.5-alpha.2' : '4.0.4',
+        '@deepseek-ai/cordis': pin,
         '@deepseek-ai/dsh-commands': version,
         '@deepseek-ai/dsh-subprocess-local': version,
       },

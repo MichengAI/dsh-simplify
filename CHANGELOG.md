@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 1.0.0 - 2026-10-17
+
+- Plugin version starts at `1.0.0`. Supported hosts are DeepSeek Harness `0.2.0-rc.1`, `0.2.0-rc.2`, and `0.2.1-rc.1`.
+- Hosts before `0.2.0`, and intermediate `0.2.1-alpha.1` through `0.2.1-alpha.5`, are rejected by the version gate. The plugin stays installed but does not run; saved configuration is kept. If you still use a `0.1.x` host, install plugin `0.1.16` instead of `@latest`.
+- Slash-menu icon uses the host export `IconEnhanceOutlineRegular`. `IconEnhanceOutline16` is not present from `0.2.0-rc.1` onward.
+
 ## 0.1.16 - 2026-10-15
 
 - Support DSH `0.2.1-alpha.3` while retaining all existing supported versions; pin development `@deepseek-ai/dsh*` dependencies to host `0.2.1-alpha.3` and Cordis to `4.0.5-alpha.2`.
