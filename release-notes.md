@@ -1,7 +1,7 @@
-## 中文说明
+## 简体中文
 
-- 支持 DeepSeek Harness `0.2.1-rc.3`，继续兼容此前已支持的宿主版本。
+- 修复发布流程中 package-lock.json 版本号同步。
 
 ## English
 
-- Support DeepSeek Harness `0.2.1-rc.3` while retaining all existing supported versions.
+- Fix package-lock.json version sync in release pipeline.

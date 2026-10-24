@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 1.0.3 - 2026-10-24
+
+- Fix package-lock.json version sync in release pipeline.
+
 ## 1.0.2 - 2026-10-24
 
 - Support DeepSeek Harness `0.2.1-rc.3` while retaining all existing supported versions.
