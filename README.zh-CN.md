@@ -13,7 +13,7 @@
 [![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH 支持至 0.2.1-rc.2](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.1--rc.2-2563eb.svg)](#安装)
+[![DSH 支持至 0.2.1-rc.3](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.1--rc.3-2563eb.svg)](#安装)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -54,14 +54,14 @@
 
 ## 前置条件
 
-- 已安装 DeepSeek Harness `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1` 或 `0.2.1-rc.2`，可在终端执行 `dsh`，宿主提供 `commands` 和 `subprocess` 服务。
+- 已安装 DeepSeek Harness `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2` 或 `0.2.1-rc.3`，可在终端执行 `dsh`，宿主提供 `commands` 和 `subprocess` 服务。
 - `0.2.0` 之前的宿主，以及中间的 `0.2.1-alpha.1` 至 `0.2.1-alpha.5`，会被版本门拒绝。插件仍留在已安装列表里，但不会运行；已保存的配置会保留。仍在使用 `0.1.x` 的，请安装插件 `0.1.16`，不要装 `@latest`。
 - Node.js >= 22.19，PATH 中可执行 Git。
 - 当前会话关联本地 Git 项目。
 
 ## 安装
 
-当前版本为 `1.0.1`。以下命令使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。`1.0.1` 可在 DeepSeek Harness `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2` 上运行。
+当前版本为 `1.0.1`。以下命令使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。`1.0.1` 可在 DeepSeek Harness `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2`、`0.2.1-rc.3` 上运行。
 
 ### 让 Agent 帮你安装（推荐）
 
@@ -201,7 +201,7 @@ GitHub 与 npm 都包含可直接运行的 `lib`。改了源码后，提交前�
 
 ### 验证
 
-开发依赖固定为 DSH `0.2.1-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2` 四个隔离宿主上重跑真实命令与 Git 测试。
+开发依赖固定为 DSH `0.2.1-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2`、`0.2.1-rc.3` 四个隔离宿主上重跑真实命令与 Git 测试。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 1.0.2 - 2026-10-24
+
+- Support DeepSeek Harness `0.2.1-rc.3` while retaining all existing supported versions.
+
 ## 1.0.1 - 2026-10-17
 
 - Support DeepSeek Harness `0.2.1-rc.2`. Supported hosts are `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`, and `0.2.1-rc.2`.
