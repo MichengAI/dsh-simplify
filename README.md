@@ -54,14 +54,14 @@ For a desktop workbench, download [DSH Codex Desktop](https://github.com/Micheng
 
 ## Prerequisites
 
-- DeepSeek Harness `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`, `0.2.1-rc.2`, or `0.2.1-rc.3` is installed, `dsh` is available in your terminal, and the host provides the `commands` and `subprocess` services.
-- Hosts before `0.2.0`, and intermediate `0.2.1-alpha.1` through `0.2.1-alpha.5`, are rejected by the version gate. The plugin stays installed but does not run; saved configuration is kept. If you still use a `0.1.x` host, install plugin `0.1.16` instead of `@latest`.
-- Node.js >= 22.19 and Git on PATH.
-- The current session is associated with a local Git project.
+- Host compatibility: Full DeepSeek Harness `0.2.x` line (`>=0.2.0-rc.1 <0.3.0-0`), verified with `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`, `0.2.1-rc.2`, and `0.2.1-rc.3`, and forwards-compatible with subsequent `0.2.x` releases, alphas, and RCs without requiring routine plugin version bumps.
+- Legacy hosts prior to `0.2.0-rc.1` are rejected by the version gate. The version gate cleanly intercepts breaking changes in the `0.3.0` generation. Users on `0.1.x` hosts should install `0.1.16`.
+- Node.js >= 22.19, git available in PATH.
+- Active conversation linked to a local git repository.
 
 ## Installation
 
-The current version is `1.0.1`. The commands below use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation. `1.0.1` runs on DeepSeek Harness `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`, `0.2.1-rc.2`, and `0.2.1-rc.3`.
+The commands below use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation. Compatible with DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`).
 
 ### Ask an agent to install it (recommended)
 
