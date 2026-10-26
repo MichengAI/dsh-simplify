@@ -38,7 +38,8 @@
     "README.zh-CN.md",
     "LICENSE",
     "CHANGELOG.md",
-    "CHANGELOG.zh-CN.md"
+    "CHANGELOG.zh-CN.md",
+    "assets/icon.webp"
   ],
   "dsh": {
     "bundle": {
@@ -92,5 +93,6 @@
     "esbuild": "^0.25.0",
     "typescript": "~5.7.2",
     "semver": "^7.7.3"
-  }
+  },
+  "icon": "assets/icon.webp"
 }
