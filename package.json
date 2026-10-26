@@ -39,7 +39,7 @@
     "LICENSE",
     "CHANGELOG.md",
     "CHANGELOG.zh-CN.md",
-    "assets/icon.webp"
+    "assets/icon.svg"
   ],
   "dsh": {
     "bundle": {
@@ -94,5 +94,5 @@
     "typescript": "~5.7.2",
     "semver": "^7.7.3"
   },
-  "icon": "assets/icon.webp"
+  "icon": "assets/icon.svg"
 }

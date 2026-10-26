@@ -1,0 +1,21 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dsh_svg_simp_g" x1="6" y1="8" x2="30" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#059669"/>
+      <stop offset="0.6" stop-color="#10B981"/>
+      <stop offset="1" stop-color="#34D399"/>
+    </linearGradient>
+  </defs>
+  <!-- Left: Complex, Messy Tangled Branches -->
+  <path d="M6 10H11L14.5 15" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M6 18H14" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M6 26H11L14.5 21" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Central Streamlining Prism Line -->
+  <line x1="16" y1="8" x2="16" y2="28" stroke="url(#dsh_svg_simp_g)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 3"/>
+  <!-- Right: Pure, Elegant, Parallel Refactored Lines -->
+  <line x1="19" y1="13" x2="29" y2="13" stroke="url(#dsh_svg_simp_g)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="19" y1="18" x2="30" y2="18" stroke="url(#dsh_svg_simp_g)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="19" y1="23" x2="27" y2="23" stroke="url(#dsh_svg_simp_g)" stroke-width="3" stroke-linecap="round"/>
+  <!-- Purity Sparkle -->
+  <circle cx="29" cy="8" r="1.8" fill="#10B981"/>
+</svg>
