@@ -1,7 +1,9 @@
 ## 简体中文
 
-- 修复发布流程中 package-lock.json 版本号同步。
+- 增加透明矢量 SVG 插件图标（`assets/icon.svg`）并在包配置中声明。
+- 将插件图标纳入打包发布文件白名单校验。
 
 ## English
 
-- Fix package-lock.json version sync in release pipeline.
+- Add custom transparent vector SVG plugin icon (`assets/icon.svg`) and configure package manifest.
+- Include plugin icon asset in release distribution package whitelist.

@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## 1.0.5 - 2026-10-27
+
+- Add custom transparent vector SVG plugin icon (`assets/icon.svg`) and configure package manifest.
+- Include plugin icon asset in release distribution package whitelist.
+
 ## 1.0.4 - 2026-10-24
 
 - Upgrade host admission policy: Declare `engines.dsh: ">=0.2.0-rc.1 <0.3.0-0"` to support the entire DeepSeek Harness `0.2.x` line (including `0.2.0-rc.1` onwards, future alphas, RCs, and stable releases) without requiring routine plugin version bumps.
