@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## 1.0.6 - 2026-11-03
+
+- Extend host compatibility support: verified compatibility across DSH latest prerelease `0.2.2-alpha.3` and all RCs up to `0.2.1-rc.5`, ensuring seamless execution of simplify commands on newer hosts.
+
 ## 1.0.5 - 2026-10-27
 
 - Add custom transparent vector SVG plugin icon (`assets/icon.svg`) and configure package manifest.
