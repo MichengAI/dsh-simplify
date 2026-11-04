@@ -22,6 +22,6 @@ test('宿主兼容列表放开至 0.2.x 代际范围，开发依赖钉到 0.2.2-
   for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess', '@deepseek-ai/dsh-client-ui-commands', '@deepseek-ai/dsh-client-ui-primitives', '@deepseek-ai/dsh-subprocess-local']) {
     assert.equal(dev[name], '0.2.2-rc.1');
   }
-  assert.equal(dev['@deepseek-ai/cordis'], '4.0.5');
+  assert.equal(dev['@deepseek-ai/cordis'], '4.1.0');
   assert.equal(peers['@deepseek-ai/cordis'], '>=4.0.4 <5');
 });
