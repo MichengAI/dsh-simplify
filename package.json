@@ -92,7 +92,8 @@
     "@types/node": "^22.19.0",
     "esbuild": "^0.25.0",
     "typescript": "~5.7.2",
-    "semver": "^7.7.3"
+    "semver": "^7.7.3",
+    "@deepseek-ai/dsh-attachment": "0.2.2-rc.1"
   },
   "icon": "assets/icon.svg"
 }
