@@ -13,7 +13,7 @@
 [![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH 支持至 0.2.1-rc.3](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.1--rc.3-2563eb.svg)](#安装)
+[![DSH 支持至 0.2.2-rc.1](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.2--rc.1-2563eb.svg)](#安装)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -54,7 +54,7 @@
 
 ## 前置条件
 
-- 宿主支持范围：DeepSeek Harness `0.2.x` 全系列（`>=0.2.0-rc.1 <0.3.0-0`），已验证兼容 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2`、`0.2.1-rc.3`，并自动支持后续日常小版本、alpha 与 RC，同代宿主升级无需重复等待发版。
+- 宿主支持范围：DeepSeek Harness `0.2.x` 全系列（`>=0.2.0-rc.1 <0.3.0-0`），已验证兼容 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1`，并自动支持后续全部 0.2.x RC 版本，同代宿主升级无需重复等待发版。
 - `0.2.0-rc.1` 之前的早期宿主会被版本门拒绝，`0.3.0` 代际破坏性更新由版本门拦截。仍在使用 `0.1.x` 的用户请安装插件 `0.1.16`。
 - Node.js >= 22.19，PATH 中可执行 Git。
 - 当前会话关联本地 Git 项目。
@@ -201,7 +201,7 @@ GitHub 与 npm 都包含可直接运行的 `lib`。改了源码后，提交前�
 
 ### 验证
 
-开发依赖固定为 DSH `0.2.1-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`、`0.2.1-rc.2`、`0.2.1-rc.3` 四个隔离宿主上重跑真实命令与 Git 测试。
+开发依赖固定为 DSH `0.2.1-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1` 四个隔离宿主上重跑真实命令与 Git 测试。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
