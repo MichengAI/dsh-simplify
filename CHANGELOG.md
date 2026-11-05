@@ -1,8 +1,6 @@
 # Changelog
 
-## [1.0.7] - 2026-11-04
-
-### Compatibility & Dependencies
+## 1.0.7 - 2026-11-04
 
 - Align with official DSH `0.2.2-rc.1` release; upgrade development dependencies to `0.2.2-rc.1`.
 - Clean up obsolete alpha versions from the host compatibility matrix; support all `0.2.x` RC hosts (`0.2.0-rc.1` through `0.2.2-rc.1`).
