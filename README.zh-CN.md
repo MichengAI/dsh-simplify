@@ -8,7 +8,7 @@
 
 **在 DeepSeek Harness 中简化最近改动的代码，保持原有功能。**
 
-[English](README.md) · [安装](#安装) · [使用](#使用) · [故障排查](#故障排查) · [更新日志](CHANGELOG.zh-CN.md) · [Apache-2.0](LICENSE)
+[English](README.en.md) · [安装](#安装) · [使用](#使用) · [故障排查](#故障排查) · [更新日志](CHANGELOG.zh-CN.md) · [Apache-2.0](LICENSE)
 
 [![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)

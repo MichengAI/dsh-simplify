@@ -6,72 +6,72 @@
 
 # DSH Simplify
 
-**Simplify recently changed code in DeepSeek Harness while preserving behavior.**
+**在 DeepSeek Harness 中简化最近改动的代码，保持原有功能。**
 
-[简体中文](README.zh-CN.md) · [Installation](#installation) · [Usage](#usage) · [Troubleshooting](#troubleshooting) · [Changelog](CHANGELOG.md) · [Apache-2.0](LICENSE)
+[English](README.en.md) · [安装](#安装) · [使用](#使用) · [故障排查](#故障排查) · [更新日志](CHANGELOG.zh-CN.md) · [Apache-2.0](LICENSE)
 
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
+[![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH supported through 0.2.2-rc.1](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.1-2563eb.svg)](#installation)
+[![DSH 支持至 0.2.2-rc.1](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.2--rc.1-2563eb.svg)](#安装)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
 
-> DSH Simplify is a community-maintained DeepSeek Harness plugin, not an official DeepSeek AI product. Enter `/simplify` in the current session to ask the Agent to improve code within your Git changes while preserving behavior. Supports DSH Web and desktop apps that include DSH Web.
+> DSH Simplify 是社区维护的 DeepSeek Harness 插件，并非 DeepSeek AI 官方产品。在当前会话中输入 `/simplify`，即可请 Agent 整理 Git 改动范围内的代码，改善可读性并保持原有功能。支持 DSH Web 及集成 DSH Web 的桌面应用。
 
-Command messages and prompts are in Simplified Chinese.
+命令文案及提示词使用简体中文。
 
-## Features
+## 功能概览
 
-After a round of coding, use `/simplify` to ask the current Agent to improve the clarity of your changes while preserving behavior.
+写完一轮代码后，用 `/simplify` 请当前 Agent 整理刚改过的部分，改善可读性并保持原有功能。
 
-- **Focus on your changes**: use the Git change scope to keep the request centered on relevant code.
-- **Include new files**: review new files in full, including repositories without an initial commit.
-- **Choose the right scope**: review workspace changes by default, or select staged changes, a commit, or paths.
-- **Review after committing**: when the workspace is clean, the default mode can review the most recent commit.
-- **Stop when the scope is unreliable**: conflicts, file changes, or read failures return a reason so you can fix the issue and retry.
+- **聚焦本次改动**：按 Git 变更范围整理代码，避免把需求扩大到无关文件。
+- **覆盖新增文件**：新文件可以整份审查，也支持尚无首次提交的仓库。
+- **选择适合的范围**：默认检查工作区改动，也可仅检查暂存区、指定提交或路径。
+- **提交后也能回看**：默认模式在工作区没有改动时，可回看最近一次提交。
+- **范围不可靠时停止**：遇到冲突、文件变化或读取失败时返回原因，便于修正后重试。
 
-The command queues a simplification task. Check the Agent’s subsequent response and actual diff to confirm edits and validation are complete.
+命令提交的是简化任务；是否完成修改和验证，应以 Agent 后续回复和实际差异为准。
 
-## DSH product ecosystem
+## DSH 产品生态
 
-For a desktop workbench, download [DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop/releases). Existing [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) installations can add plugins as needed by following each project's README. Below are 11 first-party plugins; consult the corresponding desktop release notes and bundled catalog for what that version includes.
+想使用桌面工作台，可下载 [DSH Codex Desktop](https://github.com/MichengAI/dsh-codex-desktop/releases)；已有 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 环境，可按各项目 README 按需安装。以下列出 11 个自研插件；桌面端实际随附范围以对应版本的发行说明和内置清单为准。
 
-| Plugin | What you can do |
+| 插件 | 你可以用它做什么 |
 | --- | --- |
-| [Codex UI](https://github.com/MichengAI/dsh-codex-ui) | Organize projects and conversations, search tasks, and navigate chat turns |
-| [Agency Agents](https://github.com/MichengAI/dsh-agency-agents) | Choose and summon specialists for your task |
-| [Skills Manager](https://github.com/MichengAI/dsh-skills-manager) | Find, enable, create, and import local skills |
-| [Archive Manager](https://github.com/MichengAI/dsh-archive-manager) | Search, restore, or clean up archived conversations |
-| [IM Connect](https://github.com/MichengAI/dsh-im-connect) | Send tasks and receive replies through messaging platforms |
-| [Automation](https://github.com/MichengAI/dsh-automation) | Schedule tasks and review each run |
-| [BTW](https://github.com/MichengAI/dsh-btw) | Ask side questions without interrupting the main task |
-| [Simplify](https://github.com/MichengAI/dsh-simplify) | Use `/simplify` to improve code within your Git changes |
-| [PUA](https://github.com/MichengAI/dsh-pua) | Guide the Agent to try new approaches after failures, investigate causes, and verify results before completion |
-| [Code Review](https://github.com/MichengAI/dsh-code-review) | Use `/review` to request an independent Agent code review and receive the report in the current conversation |
-| [Codex Pet](https://github.com/MichengAI/dsh-codex-pet) | View conversation notifications and respond to tool approvals and questions through a desktop pet |
+| [Codex UI](https://github.com/MichengAI/dsh-codex-ui) | 整理项目与会话、搜索任务、跳转对话轮次 |
+| [Agency Agents](https://github.com/MichengAI/dsh-agency-agents) | 按任务选择并召唤专业角色 |
+| [Skills Manager](https://github.com/MichengAI/dsh-skills-manager) | 统一查找、启停、创建和导入本机技能 |
+| [Archive Manager](https://github.com/MichengAI/dsh-archive-manager) | 搜索、恢复或清理已归档会话 |
+| [IM Connect](https://github.com/MichengAI/dsh-im-connect) | 从消息平台下任务、收回复 |
+| [Automation](https://github.com/MichengAI/dsh-automation) | 按计划执行任务，查看每次运行的结果 |
+| [BTW](https://github.com/MichengAI/dsh-btw) | 在当前上下文中临时旁问，不打断主任务 |
+| [Simplify](https://github.com/MichengAI/dsh-simplify) | 用 `/simplify` 整理 Git 改动范围内的代码 |
+| [PUA](https://github.com/MichengAI/dsh-pua) | 引导 Agent 在失败时换方法、查原因，并在完成前验证结果 |
+| [Code Review](https://github.com/MichengAI/dsh-code-review) | 用 `/review` 发起独立 Agent 代码审查，在当前会话接收报告 |
+| [Codex Pet](https://github.com/MichengAI/dsh-codex-pet) | 通过桌面宠物查看会话提醒、处理工具审批和问题回答 |
 
-## Prerequisites
+## 前置条件
 
-- Host compatibility: Full DeepSeek Harness `0.2.x` line (`>=0.2.0-rc.1 <0.3.0-0`), verified with `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, and `0.2.2-rc.1`, and forwards-compatible with subsequent `0.2.x` RC releases without requiring routine plugin version bumps.
-- Legacy hosts prior to `0.2.0-rc.1` are rejected by the version gate. The version gate cleanly intercepts breaking changes in the `0.3.0` generation. Users on `0.1.x` hosts should install `0.1.16`.
-- Node.js >= 22.19, git available in PATH.
-- Active conversation linked to a local git repository.
+- 宿主支持范围：DeepSeek Harness `0.2.x` 全系列（`>=0.2.0-rc.1 <0.3.0-0`），已验证兼容 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1`，并自动支持后续全部 0.2.x RC 版本，同代宿主升级无需重复等待发版。
+- `0.2.0-rc.1` 之前的早期宿主会被版本门拒绝，`0.3.0` 代际破坏性更新由版本门拦截。仍在使用 `0.1.x` 的用户请安装插件 `0.1.16`。
+- Node.js >= 22.19，PATH 中可执行 Git。
+- 当前会话关联本地 Git 项目。
 
-## Installation
+## 安装
 
-The commands below use the `web` profile; replace it for your environment. Disable other plugins that register `/simplify` before installation. Compatible with DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`).
+以下命令使用 `web` profile，请按实际环境替换。安装前停用其他注册 `/simplify` 的插件。可在 DeepSeek Harness `0.2.x` 全系列（`>=0.2.0-rc.1 <0.3.0-0`）上运行。
 
-### Ask an agent to install it (recommended)
+### 让 Agent 帮你安装（推荐）
 
-Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
+把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
 
 ```text
-Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
-### Install from npm
+### 手动从 npm 安装
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -81,9 +81,9 @@ dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://re
 ```
 
 <details>
-<summary>Install from a local package</summary>
+<summary>从本地安装包安装</summary>
 
-Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.1), then run this from the package directory:
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.1) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -94,84 +94,84 @@ dsh plugin --profile web add .\michengai-dsh-simplify-1.0.1.tgz --ignore-scripts
 
 </details>
 
-### Reload and Verify
+### 重新加载与确认
 
-Install or update after the current task finishes, since desktop apps may reload automatically. If the plugin does not take effect, use the desktop app's reload action or restart `dsh web`; refreshing the browser alone is insufficient.
+请在当前任务结束后安装或更新，桌面应用可能自动重载。若未生效，使用桌面应用的重新加载功能，或重启 `dsh web`；仅刷新浏览器不够。
 
-Run `dsh --profile web --dump-config` and confirm that it includes `michengai-simplify`. Check for sensitive settings before sharing the full configuration. Then enter `/simplify` in a session associated with a Git project.
+执行 `dsh --profile web --dump-config`，确认包含 `michengai-simplify`。分享完整配置前先检查其中是否包含敏感设置。然后在 Git 项目会话中输入 `/simplify`。
 
-## Usage
+## 使用
 
-After a round of coding, enter this in the current Git project session:
+写完一轮代码后，在当前 Git 项目会话中输入：
 
 ```text
 /simplify
 ```
 
-Wait for the Agent to finish editing and validation, then inspect the actual diff. Use the options below to narrow the scope.
+等待 Agent 完成修改与验证，再检查实际 diff。需要缩小范围时，可使用以下参数。
 
-### Choose a review scope
+### 选择审查范围
 
-| Input | Scope |
+| 输入 | 范围 |
 | --- | --- |
-| `/simplify` | Net changes from HEAD to the working tree, including untracked files; fall back to the last commit only when there are no changes |
-| `/simplify --staged` | Staged changes only; reject selected staged files that also have unstaged changes |
-| `/simplify --ref=main` | The specified commit to the working tree, including untracked files; no fallback |
-| `/simplify --ref HEAD` | Explicit HEAD scope without previous-commit fallback |
-| `/simplify src/a.ts "src/中文 文件.ts"` | Changes in selected files; review untracked files in full |
-| `/simplify src` | Expand changed files within a directory |
-| `/simplify -- --special.ts` | Use the option terminator for paths starting with a hyphen |
+| `/simplify` | HEAD 到当前工作区的净改动，包含未跟踪新增文件；确实没有改动时回看最近一次提交 |
+| `/simplify --staged` | 仅暂存区；所选暂存文件另有未暂存改动时拒绝执行 |
+| `/simplify --ref=main` | 指定提交到当前工作区的差异，包含未跟踪文件；不回退其他提交 |
+| `/simplify --ref HEAD` | 显式 HEAD 范围，不启动上一提交回看 |
+| `/simplify src/a.ts "src/中文 文件.ts"` | 仅指定文件的改动；未跟踪文件按整文件处理 |
+| `/simplify src` | 展开目录中的变更文件 |
+| `/simplify -- --special.ts` | 选项终止符后可使用以连字符开头的路径 |
 
-- Paths are relative to the session directory. Absolute paths inside the repository are supported; prompts use paths relative to the repository root.
-- Single and double quotes group paths containing spaces; backslashes remain path characters. No shell expansion, wildcard expansion, or command substitution is performed.
-- `--ref` accepts branches, tags, and single-commit expressions, not `a..b` or `a...b`. It cannot be combined with `--staged`.
-- Before the initial commit, files in the selected scope are treated as new and may be simplified in full. Default mode includes staged and untracked files; `--staged` includes only staged files. Select files or directories to narrow the scope; file count and size limits still apply. A clean repository with only one commit returns no changes.
-- Previous-commit fallback compares HEAD with its first parent. Merge commits do not receive a multi-parent review.
+- 路径相对当前会话目录，支持仓库内绝对路径；提示词统一使用仓库根目录相对路径。
+- 支持单双引号组合带空格路径，反斜杠按路径字符保留；不执行 Shell 展开、通配符或命令替换。
+- `--ref` 支持分支、标签和单个提交表达式，不支持 `a..b` / `a...b`；不能与 `--staged` 混用。
+- 没有首次提交时，所选范围内的文件视为新增文件，允许整文件整理：默认包含暂存与未跟踪文件，`--staged` 仅包含暂存文件。可指定文件或目录缩小范围，文件数量和大小限制仍然生效。只有一个提交且工作区干净时直接返回无变更。
+- 上一提交回看相对于 HEAD 第一父提交；merge commit 不做多父合并审查。
 
-### Command results
+### 命令结果
 
-| Result | Meaning |
+| 返回结果 | 含义 |
 | --- | --- |
-| `已提交 N 个文件的简化审查` | Review of N files was queued. The Agent has not necessarily finished editing or testing. |
-| `没有可简化的当前代码行` | No current lines are eligible. No model request is made; skipped-file details may be included. |
-| An error message | A reliable scope could not be established. No model request is made; address the reported issue before retrying. |
+| `已提交 N 个文件的简化审查` | 审查任务已入队，不代表 Agent 已完成编辑或测试。 |
+| `没有可简化的当前代码行` | 没有可操作的当前行，不发起模型请求；结果可能附带跳过明细。 |
+| 错误信息 | 无法可靠建立审查范围，不发起模型请求；修正所报问题后再试。 |
 
-## Troubleshooting
+## 故障排查
 
-**The input clears after Enter, but no answer appears.** Empty reviews do not start the Agent. In a reported case, the backend returned success and skipped two CHANGELOG files because no eligible current lines were found. Some host interfaces do not visibly display these command results; feedback visibility is still under investigation. A successful backend response does not establish that the UI displayed it.
+**回车后输入框清空，但没有回答。** 空审查不会启动 Agent。已收到的用户反馈中，后端返回成功，但两份 CHANGELOG 被判定没有可简化的当前行而跳过；部分宿主界面未明显展示这类命令结果，反馈可见性仍待排查。后端成功不等于界面已经显示结果。
 
-**The current directory is not a Git repository.** Use a session in the correct Git project, or initialize the project yourself. The plugin does not initialize repositories, stage files, or create commits.
+**当前目录不是 Git 仓库。** 在正确的 Git 项目会话中执行，或自行初始化项目仓库。插件不会自动初始化仓库、暂存或提交。
 
-**Staged files also have unstaged changes.** Save or resolve those changes yourself before using `--staged`, or use default `/simplify` to review net working-tree changes. The plugin does not reset or stash changes.
+**暂存文件还有未暂存改动。** 先自行保存或处理这些改动，再运行 `--staged`；也可用默认 `/simplify` 审查当前工作区的净改动。插件不会自动重置或 stash。
 
-**The installer reports missing peer dependencies.** Official packages may be supplied by the DSH host runtime. Verify actual resolved versions and backend loading before installing duplicate host packages into the profile. Versions must still satisfy `package.json`.
+**安装器提示 peer 依赖缺失。** 官方包可能由 DSH 宿主运行时提供。应核实实际模块解析版本和后端加载结果，不要直接向 profile 重复安装宿主包；版本仍需满足 `package.json`。
 
-**Timeout, excessive output, or an outdated snapshot.** Narrow the scope to specific files or directories and retry after concurrent edits finish.
+**超时、输出超限或快照过期。** 使用具体文件或目录缩小范围，并在并发编辑结束后重试。
 
-## Execution Boundaries
+## 执行边界
 
-The plugin performs read-only Git queries and local file reads. It does not automatically run `git add`, commit, reset, or stash. Git arguments are passed through DSH `subprocess` as `argv`, independent of PowerShell or Bash quoting rules.
+插件只执行 Git 只读查询和读取本地文件，不自动 `git add`、提交、重置或存储工作区。Git 参数通过 DSH `subprocess` 的 `argv` 传递，不依赖 PowerShell/Bash 引用规则。
 
-**Scope is a prompt instruction, not a file-write permission boundary.** The Agent edits and tests using host tools and user authorization. This plugin does not intercept writes from other tools or guarantee that files remain unchanged after queuing. A queued review is not a completed simplification.
+**修改范围是提示词约束，不是文件写入权限隔离。** Agent 按宿主工具和用户授权执行修改及测试；本插件没有拦截其他工具的写入，也不能保证排队后文件不再变化。不要把“已提交审查”理解成“已完成简化”。
 
-The implementation assumes the local filesystem and local subprocess share the same workspace. Remote subprocess and remote filesystem combinations have not been verified.
+实现针对本地文件系统与本地 subprocess 同一工作区，未验证远程 subprocess 或远程文件系统组合。
 
 <details>
-<summary>Git scope collection, snapshot checks, and resource limits</summary>
+<summary>查看 Git 范围收集、快照校验与资源限制</summary>
 
-The repository and index are determined from the session working directory and Git worktree metadata. Child processes do not inherit repository-local environment overrides such as `GIT_DIR`, `GIT_WORK_TREE`, `GIT_INDEX_FILE`, or temporary configuration overrides. Ordinary user and repository configuration is preserved. The repository returned by Git must contain the session working directory.
+仓库和索引依据会话工作目录及 Git worktree 元数据确定；子进程不继承 `GIT_DIR`、`GIT_WORK_TREE`、`GIT_INDEX_FILE` 等仓库局部环境或临时配置覆盖，保留普通用户与仓库配置。Git 返回的仓库必须包含当前会话工作目录。
 
-Git failures, signals, cancellation, timeouts, truncated output, unresolved conflicts, and stale snapshots prevent prompt delivery. They are not interpreted as an empty diff. The patch parser counts old and new lines against each hunk header, rejects incomplete bodies, and excludes context lines from editable ranges. Explicit paths that do not exist, are ignored, or lie outside the repository return errors.
+Git 失败、信号终止、取消、超时、输出截断、未解决冲突和过期快照都会阻止提示词投递，不将它们当作无改动。补丁解析器按正文核对每块的新旧行数，拒绝残缺正文，并排除上下文行。显式路径不存在、被忽略或位于仓库外时返回错误。
 
-Deleted files, deletion-only hunks, rename-only changes, binary files, non-regular files, and files over 5 MiB are excluded from editable ranges with reasons. Submodules are excluded from diff collection. Skipping all detected changes does not expand the review scope. Limits are 200 changed files, 30 seconds per Git command, and 60 seconds for scope collection, with up to 1 additional second for process termination. Git stdout is capped at 8 MiB, stderr at 64 KiB, and prompts at 128 KiB.
+删除文件、纯删除行、仅重命名、二进制文件、非普通文件及大于 5 MiB 的文件不进入可编辑范围，并说明跳过原因。子模块不纳入 diff 收集。已检测到的改动全部被跳过时，不会因此扩大到其他范围。最多收集 200 个变更文件，单次 Git 最多 30 秒，整个范围收集最多 60 秒（进程终止还有最多 1 秒宽限）；Git stdout 上限 8 MiB、stderr 64 KiB，提示词上限 128 KiB。
 
-Across all files, collection is limited to 4,096 separate line ranges and 128 KiB of review metadata, including skipped-file details. Exceeding either limit stops collection instead of submitting a partial review. Consecutive changed lines count as one range. The final prompt is independently checked against its 128 KiB limit; select files or directories to narrow an oversized scope.
+所有文件累计最多 4,096 个离散行范围，审查清单元数据（含跳过明细）最多 128 KiB；收集过程中超限即停止，不截取部分文件提交审查。连续修改行按一个范围计数。最终提示词仍独立检查 128 KiB 上限；超限时请指定文件或目录缩小范围。
 
-`--staged` first checks that selected staged files match the working tree. Before queuing, the plugin rechecks the index, HEAD, and file SHA-256 hashes to avoid applying index line numbers to different working-tree content. The Agent is instructed to verify snapshots again before editing and stop simplifying a file if its content has changed, requiring a new command invocation.
+`--staged` 先确认所选暂存文件与工作区一致，并在入队前再次核对暂存区、HEAD 和文件 SHA-256，避免把 index 行号直接用于不同的工作区内容。Agent 编辑前还需复核内容快照；内容变化时停止该文件的简化并重新运行命令。
 
 </details>
 
-## Uninstall
+## 卸载
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -180,11 +180,11 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 dsh plugin --profile web remove @michengai/dsh-simplify
 ```
 
-Reload DSH manually if the desktop app does not reload automatically. Uninstalling does not undo code changes already made by the Agent.
+若桌面应用未自动重载，手动重新加载 DSH。卸载不会撤销 Agent 已产生的代码修改。
 
-## Development
+## 二次开发
 
-### From Source
+### 从源码安装
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -197,11 +197,11 @@ npm run check
 dsh plugin --profile web add . --ignore-scripts
 ```
 
-GitHub and npm both include a ready-to-run `lib`. After changing source, run `npm run build` before committing. Keep the source directory when the profile uses a local link.
+GitHub 与 npm 都包含可直接运行的 `lib`。改了源码后，提交前运行 `npm run build`。profile 使用本地链接时需要保留源码目录。
 
-### Verification
+### 验证
 
-Development dependencies are pinned to DSH `0.2.1-rc.2`. `npm run test:compat` reruns the real command and Git tests on `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, and `0.2.2-rc.1`.
+开发依赖固定为 DSH `0.2.1-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1` 四个隔离宿主上重跑真实命令与 Git 测试。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -211,21 +211,21 @@ npm run check
 npm pack --dry-run
 ```
 
-Tests use real temporary Git repositories to cover paths, untracked files, fallback, conflicts, staged mismatches, stale snapshots, and execution errors. Fixtures are created under `.test-tmp` and cleaned up on normal completion.
+测试使用真实临时 Git 仓库，覆盖路径、未跟踪文件、回退、冲突、暂存区错位、快照过期及执行错误。测试夹具位于 `.test-tmp`，正常结束时自动清理。
 
-`tests/host.test.mjs` uses the DSH runtime in the project’s `node_modules` by default. Set `DSH_RUNTIME_ROOT` to use another runtime's node_modules path. When detected, it runs isolated integration checks for real service registration, Git execution, message delivery, and disposal; otherwise, that test is explicitly skipped. Tests do not call a model or modify installed profiles.
+`tests/host.test.mjs` 默认使用项目 `node_modules` 中的 DSH 运行时；也可通过 `DSH_RUNTIME_ROOT` 指定其 node_modules 路径。检测到时执行隔离的真实服务注册、Git 执行、消息投递与卸载测试；缺失时明确标为跳过。测试不调用模型，不修改已安装 profile。
 
-GitHub Actions checks types and tests on Windows, Linux, and macOS, using the host runtime from development dependencies through `DSH_RUNTIME_ROOT`. Publishing a stable GitHub Release starts `publish.yml`: it runs all three platform checks, validates the version, bilingual release notes, and package contents, publishes through npm Trusted Publishing, and uploads the same tgz to the Release. Configure `publish.yml` as the workflow filename in npm and allow `npm publish`; no publishing token is required.
+GitHub Actions 在 Windows、Linux、macOS 上检查类型与测试，并通过 `DSH_RUNTIME_ROOT` 使用开发依赖中的宿主运行时。发布正式 GitHub Release 后，`publish.yml` 先完成三平台检查，再核对版本、双语发布说明及安装包内容，通过 npm Trusted Publishing 发布，并把同一 tgz 上传到 Release。npm 中的工作流文件名需配置为 `publish.yml`，并允许 `npm publish`；不需要发布令牌。
 
-| Path | Responsibility |
+| 目录 | 职责 |
 | --- | --- |
-| `src/args.ts` | Command argument parsing |
-| `src/exec.ts` | DSH subprocess, Git failures, cancellation, and timeouts |
-| `src/git.ts` | Git scope, NUL parsing, line ranges, and snapshot verification |
-| `src/prompt.ts` | Editing task, scope, and verification instructions |
-| `src/command.ts`, `src/index.ts` | Command handling, delivery, and lifecycle |
-| `tests` | Regression and host integration checks |
+| `src/args.ts` | 命令参数解析 |
+| `src/exec.ts` | DSH subprocess 与 Git 错误、取消、超时处理 |
+| `src/git.ts` | Git 范围选择、NUL 解析、行号与快照复核 |
+| `src/prompt.ts` | 编辑任务、范围与验证提示词 |
+| `src/command.ts`、`src/index.ts` | 命令处理、投递及生命周期 |
+| `tests` | 回归与宿主集成验证 |
 
-## License
+## 许可证
 
-[Apache-2.0](LICENSE), Copyright 2026 MichengAI.
+[Apache-2.0](LICENSE)，Copyright 2026 MichengAI。
