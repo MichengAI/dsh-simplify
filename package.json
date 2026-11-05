@@ -123,7 +123,8 @@
     "@deepseek-ai/dsh-subagent-fork-in-process": "0.2.2-rc.1",
     "@deepseek-ai/dsh-typert-protocol": "0.2.2-rc.1",
     "@deepseek-ai/dsh-typert-registry": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-util-time": "0.2.2-rc.1"
+    "@deepseek-ai/dsh-util-time": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-http-proxy": "0.2.2-rc.1"
   },
   "icon": "assets/icon.svg"
 }
