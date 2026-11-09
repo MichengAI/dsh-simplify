@@ -22,6 +22,8 @@
 
 > DSH Simplify es un complemento mantenido por la comunidad para DeepSeek Harness, no un producto oficial de DeepSeek AI. Escribe `/simplify` en la conversación actual para pedirle al Agent que refine el código dentro del alcance de cambios de Git, mejorando la legibilidad sin alterar el comportamiento. Compatible con DSH Web y aplicaciones de escritorio que integran DSH Web.
 
+Las instrucciones enviadas al Agent se mantienen en chino simplificado, mientras que las etiquetas y descripciones de los comandos sugeridos se adaptan automáticamente al idioma de la interfaz.
+
 ## Características
 
 Después de una sesión de programación, usa `/simplify` para solicitar al Agent que optimice la claridad del código recién editado:
@@ -51,17 +53,48 @@ Después de una sesión de programación, usa `/simplify` para solicitar al Agen
 ## Requisitos previos
 
 - Compatibilidad con DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), probado con `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`.
+- Los entornos anteriores a `0.2.0-rc.1` son rechazados por el control de versiones. Si utilizas `0.1.x`, instala la versión `0.1.16`.
 - Node.js >= 22.19 con Git disponible en PATH.
 - Sesión vinculada a un repositorio Git local.
 
 ## Instalación
 
+Los siguientes comandos utilizan el perfil `web`. Modifícalo según tu entorno.
+
+### Solicitar al Agent la instalación (Recomendado)
+
+Envía el siguiente mensaje a cualquier Agent con permisos de terminal:
+
+```text
+Instala el plugin @michengai/dsh-simplify en mi perfil web local ejecutando: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Luego ejecuta dsh --profile web --dump-config para confirmar que la configuración incluya michengai-simplify, y dime cómo recargar DSH y comenzar a usarlo.
+```
+
+### Instalación manual desde npm
+
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.7 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
 ```
+
+<details>
+<summary>Instalación desde paquete local</summary>
+
+Descarga el archivo tgz publicado desde [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8), y ejecuta en el directorio correspondiente:
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+```
+
+</details>
+
+### Recarga y confirmación
+
+Instala o actualiza una vez finalizada la tarea actual. Si no se refleja, utiliza la opción de recarga de la aplicación o reinicia `dsh web`.
 
 ## Uso
 
@@ -75,10 +108,38 @@ En una conversación vinculada a un repositorio Git, ejecuta:
 
 | Entrada | Alcance |
 | --- | --- |
-| `/simplify` | Cambios netos desde HEAD al espacio de trabajo actual (incluye archivos no rastreados) |
-| `/simplify --staged` | Solo el área de preparación (staged) |
-| `/simplify --ref=main` | Diferencias entre la confirmación indicada y el espacio de trabajo actual |
-| `/simplify src/a.ts` | Solo los archivos especificados |
+| `/simplify` | Cambios netos desde HEAD al espacio de trabajo actual (incluye archivos no rastreados). Si no hay cambios, revisa la última confirmación |
+| `/simplify --staged` | Solo el área de preparación (staged). Se rechaza si los archivos staged tienen cambios no preparados |
+| `/simplify --ref=main` | Diferencias entre la confirmación indicada y el espacio de trabajo actual (incluye archivos no rastreados) |
+| `/simplify --ref HEAD` | Alcance explícito de HEAD sin revisión retrospectiva de la confirmación anterior |
+| `/simplify src/a.ts "src/archivo con espacio.ts"` | Solo los archivos especificados (los no rastreados se revisan por completo) |
+| `/simplify src` | Despliega los archivos modificados dentro del directorio |
+| `/simplify -- --especial.ts` | El terminador `--` permite rutas que comiencen con guion |
+
+## Solución de problemas
+
+**Al pulsar Enter se borra el texto pero no hay respuesta**: Una revisión vacía no invocará al Agent. Si no hay cambios o los archivos modificados carecen de líneas operables, no se realiza ninguna petición.
+
+**El directorio actual no es un repositorio Git**: Ejecuta el comando en una sesión vinculada a un repositorio Git válido o inicialízalo previamente.
+
+**Los archivos en preparación tienen modificaciones pendientes**: Guarda o prepara esos cambios antes de usar `--staged`, o ejecuta `/simplify` sin parámetros para revisar el espacio de trabajo actual.
+
+**Tiempo de espera agotado o instantánea caducada**: Acota el alcance mediante rutas específicas y vuelve a intentarlo tras concluir las ediciones en paralelo.
+
+## Límites de ejecución
+
+El plugin solo realiza consultas de solo lectura en Git y lectura de archivos locales; no ejecuta automáticamente `git add`, `commit`, `reset` ni `stash`.
+
+El alcance de modificación es una restricción a nivel de prompt para el Agent, no un aislamiento físico del sistema de archivos.
+
+## Desinstalación
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web remove @michengai/dsh-simplify
+```
 
 ## Licencia
 

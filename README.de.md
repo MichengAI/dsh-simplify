@@ -22,6 +22,8 @@
 
 > DSH Simplify ist ein von der Community gepflegtes Plugin für DeepSeek Harness und kein offizielles Produkt von DeepSeek AI. Geben Sie `/simplify` in der aktuellen Sitzung ein, um den Agenten aufzufordern, den Code innerhalb des Git-Änderungsbereichs zu bereinigen, die Lesbarkeit zu verbessern und das Verhalten beizubehalten.
 
+Aufgaben-Prompts an den Agenten bleiben in vereinfachtem Chinesisch, während Bezeichnungen und Beschreibungen für Befehlsvorschläge sich dynamisch an die Schnittstellensprache anpassen.
+
 ## Funktionen
 
 - **Fokus auf aktuelle Änderungen**: Beschränkt Änderungen auf den Git-Änderungsbereich, um irrelevante Dateien zu schützen.
@@ -49,22 +51,84 @@
 ## Voraussetzungen
 
 - DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), getestet mit `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`.
+- Frühere Versionen vor `0.2.0-rc.1` werden abgewiesen. Bei DSH `0.1.x` installieren Sie bitte Version `0.1.16`.
 - Node.js >= 22.19, Git im PATH verfügbar.
 - Sitzung mit lokalem Git-Projekt verknüpft.
 
 ## Installation
 
+Verwenden Sie das Profil `web` (oder passen Sie es an):
+
+### Agent zur Installation auffordern (Empfohlen)
+
+```text
+Installieren Sie das DSH-Plugin @michengai/dsh-simplify in mein lokales Web-Profil: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Bestätigen Sie anschließend mit dsh --profile web --dump-config.
+```
+
+### Manuelle Installation über npm
+
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.7 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
 ```
+
+<details>
+<summary>Installation aus lokalem Paket</summary>
+
+Laden Sie das tgz-Archiv von [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) herunter und führen Sie aus:
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+```
+
+</details>
+
+### Neuladen und Bestätigen
+
+Installieren oder aktualisieren Sie nach Abschluss der aktuellen Aufgabe. Nutzen Sie die Neuladefunktion der Desktop-App oder starten Sie `dsh web` neu.
 
 ## Verwendung
 
 ```text
 /simplify
+```
+
+### Bereichsoptionen
+
+| Eingabe | Prüfbereich |
+| --- | --- |
+| `/simplify` | Netto-Änderungen von HEAD zum aktuellen Arbeitsverzeichnis (inkl. neuer Dateien). Prüft bei sauberem Verzeichnis den letzten Commit |
+| `/simplify --staged` | Nur der Staging-Bereich |
+| `/simplify --ref=main` | Differenz zwischen angegebenem Commit und aktuellem Arbeitsverzeichnis |
+| `/simplify --ref HEAD` | Expliziter HEAD-Bereich ohne Rückgriff auf vorherigen Commit |
+| `/simplify src/a.ts "src/pfad mit leerzeichen.ts"` | Nur angegebene Dateien |
+| `/simplify src` | Expandiert geänderte Dateien im Verzeichnis |
+| `/simplify -- --special.ts` | Der Trenner `--` erlaubt Pfade, die mit Bindestrich beginnen |
+
+## Fehlerbehebung
+
+**Eingabetaste leert das Feld, aber keine Antwort erfolgt**: Bei leerem Prüfumfang wird kein Modellaufruf ausgelöst.
+
+**Aktuelles Verzeichnis ist kein Git-Repository**: Führen Sie den Befehl in einem gültigen Git-Projekt aus.
+
+**Staging-Dateien weisen ungespeicherte Änderungen auf**: Bitte stagen oder committen Sie diese Änderungen vor Aufruf von `--staged`.
+
+## Ausführungsgrenzen
+
+Das Plugin führt ausschließlich schreibgeschützte Git-Abfragen und lokale Dateilesevorgänge durch; es führt niemals automatisch `git add`, `commit` oder `reset` aus.
+
+## Deinstallation
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web remove @michengai/dsh-simplify
 ```
 
 ## Lizenz

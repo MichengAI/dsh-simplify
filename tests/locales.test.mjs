@@ -34,3 +34,48 @@ test('package.json 插件规范元数据与清单版本一致性', () => {
   assert.equal(packageJson.exports?.['./icon'], './assets/icon.svg');
   assert.ok(existsSync(join(rootDir, 'assets/icon.svg')));
 });
+
+test('全部 9 份 README 导航内部锚点均对应实际章节标题，零死链', () => {
+  const readmes = [
+    'README.md',
+    'README.zh-CN.md',
+    'README.en.md',
+    'README.ja.md',
+    'README.es.md',
+    'README.fr.md',
+    'README.de.md',
+    'README.ru.md',
+    'README.pt.md',
+  ];
+
+  const slugify = (text) => {
+    return text.trim().toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, '').replace(/\s+/g, '-');
+  };
+
+  for (const name of readmes) {
+    const filePath = join(rootDir, name);
+    assert.ok(existsSync(filePath), `README 不存在: ${name}`);
+    const content = readFileSync(filePath, 'utf8');
+    const headerMatches = Array.from(content.matchAll(/^#{1,6}\s+(.+)$/gm)).map(m => slugify(m[1]));
+    const anchorMatches = Array.from(content.matchAll(/\[([^\]]+)\]\(#([^\)]+)\)/g));
+    assert.ok(anchorMatches.length > 0, `${name} 必须包含导航锚点`);
+    for (const [, label, anchor] of anchorMatches) {
+      const slug = slugify(anchor);
+      assert.ok(
+        headerMatches.includes(slug) || headerMatches.includes(anchor),
+        `${name} 中的导航锚点 #${anchor} (${label}) 在正文中未找到对应的标题章节`
+      );
+    }
+  }
+});
+
+test('客户端 SupportedLocale 8 语集合与 locale 字典文件名完全一致', () => {
+  const clientTs = readFileSync(join(rootDir, 'src/client.ts'), 'utf8');
+  const match = clientTs.match(/export type SupportedLocale = ([^;]+);/);
+  assert.ok(match, '未在 src/client.ts 中找到 SupportedLocale 类型定义');
+  const localesInClient = match[1]
+    .split('|')
+    .map(s => s.trim().replace(/['"]/g, ''))
+    .sort();
+  assert.deepEqual(localesInClient, [...OFFICIAL_LANGUAGES].sort());
+});

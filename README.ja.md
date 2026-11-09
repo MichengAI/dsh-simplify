@@ -22,7 +22,7 @@
 
 > DSH Simplify はコミュニティによって保守されている DeepSeek Harness プラグインであり、DeepSeek AI 公式の製品ではありません。現在のセッションで `/simplify` と入力すると、Agent に Git 変更範囲内のコード整理を依頼し、可読性を高めつつ元の機能を維持します。DSH Web および DSH Web を統合したデスクトップアプリケーションをサポートしています。
 
-コマンドのプロンプトと説明文は簡体字中国語をベースとしています。
+Agent に送信されるタスクプロンプトは簡体字中国語のままですが、コマンド候補のラベルと説明はインターフェース言語に合わせて自動的に切り替わります。
 
 ## 機能概要
 
@@ -70,7 +70,7 @@
 ローカルのターミナルコマンドを実行できる任意の Agent に以下を送信してください：
 
 ```text
-DSH プラグイン @michengai/dsh-simplify をローカルの web プロファイルにインストールしてください。実行コマンド: dsh plugin --profile web add @michengai/dsh-simplify@1.0.7 --registry=https://registry.npmjs.org/。インストール後、dsh --profile web --dump-config を実行して設定に michengai-simplify が含まれていることを確認し、DSH をリロードして使い始める方法を教えてください。
+DSH プラグイン @michengai/dsh-simplify をローカルの web プロファイルにインストールしてください。実行コマンド: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/。インストール後、dsh --profile web --dump-config を実行して設定に michengai-simplify が含まれていることを確認し、DSH をリロードして使い始める方法を教えてください。
 ```
 
 ### npm から手動インストール
@@ -79,8 +79,22 @@ DSH プラグイン @michengai/dsh-simplify をローカルの web プロファ�
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.7 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
 ```
+
+<details>
+<summary>ローカルパッケージからインストール</summary>
+
+[GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) から公開されている tgz をダウンロードし、パッケージのディレクトリで以下を実行します：
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+```
+
+</details>
 
 ### リロードと確認
 
@@ -113,6 +127,23 @@ dsh plugin --profile web add @michengai/dsh-simplify@1.0.7 --registry=https://re
 **現在のディレクトリが Git リポジトリではない**：適切な Git プロジェクトセッションで実行するか、リポジトリを初期化してください。
 
 **ステージングファイルに未ステージの変更が残っている**：それらの変更を保存またはコミットした上で `--staged` を再実行するか、引数なしの `/simplify` を使用してください。
+
+**タイムアウトまたはスナップショットの期限切れ**：対象のファイルやディレクトリを絞り込み、並行編集が完了した後に再試行してください。
+
+## 実行境界
+
+本プラグインは Git の読み取り専用クエリおよびローカルファイルの読み取りのみを実行し、`git add`、コミット、リセット等の書き込み操作は一切自動実行しません。
+
+編集範囲は Agent に対するプロンプトレベルの制約であり、ファイルシステムの書き込み権限を物理的に隔離するものではありません。Agent はユーザーの承認とホストのツール権限に従って編集とテストを実施します。
+
+## アンインストール
+
+```powershell
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+dsh plugin --profile web remove @michengai/dsh-simplify
+```
 
 ## ライセンス
 

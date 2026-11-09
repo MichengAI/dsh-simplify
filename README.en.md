@@ -22,7 +22,7 @@
 
 > DSH Simplify is a community-maintained DeepSeek Harness plugin, not an official DeepSeek AI product. Enter `/simplify` in the current session to ask the Agent to improve code within your Git changes while preserving behavior. Supports DSH Web and desktop apps that include DSH Web.
 
-Command messages and prompts are in Simplified Chinese.
+Task prompts sent to the Agent remain in Simplified Chinese, while command candidate labels and descriptions adapt to the host interface language.
 
 ## Features
 
@@ -70,7 +70,7 @@ The commands below use the `web` profile; replace it for your environment. Disab
 Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
 
 ```text
-Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
 ```
 
 ### Install from npm
@@ -79,19 +79,19 @@ Install the DSH plugin @michengai/dsh-simplify into my local web profile by runn
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>Install from a local package</summary>
 
-Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.1), then run this from the package directory:
+Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8), then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.1.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
 ```
 
 </details>

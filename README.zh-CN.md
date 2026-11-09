@@ -22,7 +22,7 @@
 
 > DSH Simplify 是社区维护的 DeepSeek Harness 插件，并非 DeepSeek AI 官方产品。在当前会话中输入 `/simplify`，即可请 Agent 整理 Git 改动范围内的代码，改善可读性并保持原有功能。支持 DSH Web 及集成 DSH Web 的桌面应用。
 
-命令文案及提示词使用简体中文。
+发给 Agent 的任务提示词仍为简体中文，命令候选文案随界面语言自动切换。
 
 ## 功能概览
 
@@ -70,7 +70,7 @@
 把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
 
 ```text
-请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
 ### 手动从 npm 安装
@@ -79,19 +79,19 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.1 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>从本地安装包安装</summary>
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.1) 下载已发布的 tgz，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.1.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
 ```
 
 </details>
