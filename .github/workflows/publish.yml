@@ -58,10 +58,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $pack = @($packJson | ConvertFrom-Json)[0]
           $unexpected = @($pack.files | Where-Object {
-            $_.path -notmatch '^(lib/[^/]+\.(js(?:\.map)?|d\.ts)|locale/(?:en|zh)\.json|assets/branding/dsh-simplify-banner\.png|assets/icon\.svg|package\.json|cordis\.patch\.yml|README(?:\.zh-CN)?\.md|CHANGELOG(?:\.zh-CN)?\.md|LICENSE)$'
+            $_.path -notmatch '^(lib/[^/]+\.(js(?:\.map)?|d\.ts)|locale/[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*\.json|assets/branding/dsh-simplify-banner\.png|assets/icon\.svg|package\.json|cordis\.patch\.yml|README(?:\.[A-Za-z-]+)?\.md|CHANGELOG(?:\.[A-Za-z-]+)?\.md|LICENSE)$'
           })
           if ($unexpected.Count -gt 0) { throw "安装包包含非发布文件：$($unexpected.path -join ', ')" }
-          foreach ($required in @('lib/index.js', 'lib/index.d.ts', 'lib/client.js', 'package.json', 'cordis.patch.yml', 'LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CHANGELOG.zh-CN.md', 'assets/branding/dsh-simplify-banner.png', 'assets/icon.svg', 'locale/en.json', 'locale/zh.json')) {
+          $requiredFiles = @('lib/index.js', 'lib/index.d.ts', 'lib/client.js', 'package.json', 'cordis.patch.yml', 'LICENSE', 'assets/branding/dsh-simplify-banner.png', 'assets/icon.svg', 'CHANGELOG.md', 'CHANGELOG.zh-CN.md') + @('README.md', 'README.en.md', 'README.zh-CN.md', 'README.ja.md', 'README.es.md', 'README.fr.md', 'README.de.md', 'README.ru.md', 'README.pt.md') + @('zh', 'en', 'ja', 'es', 'fr', 'de', 'ru', 'pt' | ForEach-Object { "locale/$_.json" })
+          foreach ($required in $requiredFiles) {
             if ($required -notin $pack.files.path) { throw "安装包缺少 $required" }
           }
           "PACKAGE_TARBALL=$(Join-Path $packageDir $pack.filename)" | Add-Content -LiteralPath $env:GITHUB_ENV -Encoding UTF8
