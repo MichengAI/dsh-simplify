@@ -13,7 +13,7 @@ export function apply(ctx: Context): void {
     const unregister = ctx.commands.register({
       name: 'simplify',
       description: '简化最近改动的代码，保持功能并限定修改范围',
-      input: { hint: '[--staged] [--ref=<ref>] [--] [文件或目录...]' },
+      input: { hint: '[--staged] [--ref=<ref>] [--] [<paths>...]' },
       handler: invocation => {
         const operation = handleCommand(ctx, invocation, lifetime.signal);
         active.add(operation);

@@ -145,6 +145,8 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 dsh plugin --profile web remove @michengai/dsh-simplify
 ```
 
+> 開発および検証ガイドについては、[简体中文](README.zh-CN.md#二次开发) または [English](README.en.md#development) をご参照ください。
+
 ## ライセンス
 
 [Apache-2.0](LICENSE)，Copyright 2026 MichengAI。

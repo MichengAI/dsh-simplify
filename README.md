@@ -203,7 +203,7 @@ GitHub 与 npm 都包含可直接运行的 `lib`。改了源码后，提交前�
 
 ### 验证
 
-开发依赖固定为 DSH `0.2.1-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1` 四个隔离宿主上重跑真实命令与 Git 测试。
+开发依赖对齐 DSH `0.2.2-rc.1`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1` 等各版本隔离宿主上重跑真实命令与 Git 测试。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

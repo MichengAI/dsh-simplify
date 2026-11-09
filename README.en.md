@@ -203,7 +203,7 @@ GitHub and npm both include a ready-to-run `lib`. After changing source, run `np
 
 ### Verification
 
-Development dependencies are pinned to DSH `0.2.1-rc.2`. `npm run test:compat` reruns the real command and Git tests on `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, and `0.2.2-rc.1`.
+Development dependencies align with DSH `0.2.2-rc.1`. `npm run test:compat` reruns real command and Git tests across all supported isolated host versions (`0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, and `0.2.2-rc.1`).
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
