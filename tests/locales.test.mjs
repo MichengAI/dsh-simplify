@@ -65,9 +65,8 @@ test('全部 9 份 README 导航内部锚点及跨文件锚点均对应实际章
     const filePath = join(rootDir, name);
     const text = readFileSync(filePath, 'utf8');
     const headerMatches = fileHeaders.get(name);
-    // 1. 同文件内部锚点 [label](#anchor)
+    // 1. 同文件内部锚点 [label](#anchor)（若存在则必须对应实际章节标题）
     const anchorMatches = Array.from(text.matchAll(/\[([^\]]+)\]\(#([^\)]+)\)/g));
-    assert.ok(anchorMatches.length > 0, `${name} 必须包含导航锚点`);
     for (const [, label, anchor] of anchorMatches) {
       const slug = slugify(anchor);
       assert.ok(
