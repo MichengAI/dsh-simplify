@@ -10,6 +10,19 @@
   "bugs": {
     "url": "https://github.com/MichengAI/dsh-simplify/issues"
   },
+  "author": {
+    "name": "MichengAI",
+    "url": "https://github.com/MichengAI"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "simplify",
+    "git",
+    "code-review",
+    "refactoring"
+  ],
+  "icon": "./assets/icon.svg",
   "type": "module",
   "license": "Apache-2.0",
   "engines": {
@@ -27,6 +40,7 @@
       "default": "./lib/client.js"
     },
     "./package.json": "./package.json",
+    "./icon": "./assets/icon.svg",
     "./locale/*.json": "./locale/*.json"
   },
   "files": [
@@ -37,12 +51,19 @@
     "README.md",
     "README.en.md",
     "README.zh-CN.md",
+    "README.ja.md",
+    "README.es.md",
+    "README.fr.md",
+    "README.de.md",
+    "README.ru.md",
+    "README.pt.md",
     "LICENSE",
     "CHANGELOG.md",
     "CHANGELOG.zh-CN.md",
     "assets/icon.svg"
   ],
   "dsh": {
+    "manifestVersion": 1,
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
@@ -126,6 +147,5 @@
     "@deepseek-ai/dsh-typert-registry": "0.2.2-rc.1",
     "@deepseek-ai/dsh-util-time": "0.2.2-rc.1",
     "@deepseek-ai/dsh-http-proxy": "0.2.2-rc.1"
-  },
-  "icon": "assets/icon.svg"
+  }
 }

@@ -1,3 +1,4 @@
+export type SupportedLocale = 'zh' | 'en' | 'ja' | 'es' | 'fr' | 'de' | 'ru' | 'pt';
 type Lookup = {
     get?: (name: string) => unknown;
 };

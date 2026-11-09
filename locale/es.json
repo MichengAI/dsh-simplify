@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Simplify",
+    "description": "Simplifica los cambios acotados por Git, con compatibilidad para archivos no rastreados y rutas multiplataforma.",
+    "detail": "README.es.md"
+  }
+}

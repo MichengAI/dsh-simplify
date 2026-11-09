@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Simplify",
+    "description": "Simplifie le code dans le périmètre des modifications Git, avec prise en charge des fichiers non suivis et des chemins multiplateformes.",
+    "detail": "README.fr.md"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Simplify",
+    "description": "Git 変更範囲内でコードを簡素化し、未追跡ファイルやクロスプラットフォームパスに対応。",
+    "detail": "README.ja.md"
+  }
+}

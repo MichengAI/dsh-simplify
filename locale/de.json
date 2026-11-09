@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Simplify",
+    "description": "Vereinfacht Code innerhalb des Git-Änderungsbereichs, unterstützt nicht nachverfolgte Dateien und plattformübergreifende Pfade.",
+    "detail": "README.de.md"
+  }
+}

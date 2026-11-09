@@ -91,6 +91,26 @@ test('英文界面替换中文目录说明，不改语法提示、已有图标�
   }
 });
 
+test('全量 8 门官方语言及回退策略正确呈现对应文案', async () => {
+  const client = loadClient();
+  const cases = [
+    { locale: 'ja-JP', expected: { label: '簡素化', description: '最近の変更コードを簡素化し、機能を維持しながら変更範囲を限定' } },
+    { locale: 'es-ES', expected: { label: 'Simplificar', description: 'Simplifica los cambios recientes de código, preservando el comportamiento y limitando el alcance.' } },
+    { locale: 'fr-FR', expected: { label: 'Simplifier', description: 'Simplifier les modifications récentes du code, préserver le comportement et limiter la portée.' } },
+    { locale: 'de-DE', expected: { label: 'Vereinfachen', description: 'Kürzliche Codeänderungen vereinfachen, Verhalten beibehalten und Bearbeitungsbereich einschränken.' } },
+    { locale: 'ru-RU', expected: { label: 'Упростить', description: 'Упростить недавние изменения кода с сохранением поведения и ограничением области правок.' } },
+    { locale: 'pt-BR', expected: { label: 'Simplificar', description: 'Simplificar alterações recentes de código, preservando o comportamento e limitando o escopo.' } },
+    { locale: 'it-IT', expected: { label: 'Simplify', description: 'Simplify recent code changes, preserve behavior, and limit the edit scope.' } }, // 未知语言回退英文
+  ];
+  for (const { locale, expected } of cases) {
+    const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };
+    client.apply(host(commandUi, locale));
+    const rows = await commandUi.candidates();
+    assert.equal(rows[0].label, expected.label, locale);
+    assert.equal(rows[0].description, expected.description, locale);
+  }
+});
+
 test('宿主没有 Enhance 图标时仍补标题', async () => {
   const client = loadClient({});
   const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };

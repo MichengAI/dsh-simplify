@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Simplify",
+    "description": "Simplifica o código no escopo de alterações do Git, com suporte a arquivos não rastreados e caminhos multiplataforma.",
+    "detail": "README.pt.md"
+  }
+}
