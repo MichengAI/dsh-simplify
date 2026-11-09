@@ -4,6 +4,7 @@
 
 - **Full Support for All 8 Official DeepSeek Harness Languages**: Native integration for Chinese, English, Japanese, Spanish, French, German, Russian, and Portuguese (`zh`, `en`, `ja`, `es`, `fr`, `de`, `ru`, `pt`). The `/simplify` slash command label and description dynamically adapt to the active interface language in the command popup.
 - **Complete Multilingual Documentation and Manifest Metadata**: Dedicated localized READMEs with unified language navigation links and native plugin manager descriptions for all 8 official languages.
+- **Language-Neutral Command Parameter Hints**: Slash command input hints are now standardized to language-neutral `[--staged] [--ref=<ref>] [--] [<paths>...]`, ensuring a seamless input placeholder experience across all interface languages.
 
 [简体中文](CHANGELOG.zh-CN.md)
 

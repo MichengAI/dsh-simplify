@@ -31,7 +31,7 @@ function host(commandUi, locale) {
 test('中文界面显示中文标题和说明，不改语法提示和其他命令', async () => {
   const client = loadClient();
   const keep = () => null;
-  const hint = '[--staged] [--ref=<ref>] [--] [文件或目录...]';
+  const hint = '[--staged] [--ref=<ref>] [--] [<paths>...]';
   const commandUi = {
     candidates: async () => ([
       { name: 'compact', description: '压缩以上对话内容', icon: keep, label: '压缩' },
@@ -63,7 +63,7 @@ test('中文界面显示中文标题和说明，不改语法提示和其他命�
 test('英文界面替换中文目录说明，不改语法提示、已有图标和其他命令', async () => {
   const client = loadClient();
   const keep = () => null;
-  const hint = '[--staged] [--ref=<ref>] [--] [文件或目录...]';
+  const hint = '[--staged] [--ref=<ref>] [--] [<paths>...]';
   const commandUi = {
     candidates: async () => ([
       { name: 'compact', description: '压缩以上对话内容', label: '压缩' },

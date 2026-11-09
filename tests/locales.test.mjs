@@ -35,7 +35,7 @@ test('package.json 插件规范元数据与清单版本一致性', () => {
   assert.ok(existsSync(join(rootDir, 'assets/icon.svg')));
 });
 
-test('全部 9 份 README 导航内部锚点均对应实际章节标题，零死链', () => {
+test('全部 9 份 README 导航内部锚点及跨文件锚点均对应实际章节标题，零死链', () => {
   const readmes = [
     'README.md',
     'README.zh-CN.md',
@@ -52,18 +52,39 @@ test('全部 9 份 README 导航内部锚点均对应实际章节标题，零死
     return text.trim().toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, '').replace(/\s+/g, '-');
   };
 
+  const fileHeaders = new Map();
   for (const name of readmes) {
     const filePath = join(rootDir, name);
     assert.ok(existsSync(filePath), `README 不存在: ${name}`);
-    const content = readFileSync(filePath, 'utf8');
-    const headerMatches = Array.from(content.matchAll(/^#{1,6}\s+(.+)$/gm)).map(m => slugify(m[1]));
-    const anchorMatches = Array.from(content.matchAll(/\[([^\]]+)\]\(#([^\)]+)\)/g));
+    const text = readFileSync(filePath, 'utf8');
+    const headers = Array.from(text.matchAll(/^#{1,6}\s+(.+)$/gm)).map(m => slugify(m[1]));
+    fileHeaders.set(name, headers);
+  }
+
+  for (const name of readmes) {
+    const filePath = join(rootDir, name);
+    const text = readFileSync(filePath, 'utf8');
+    const headerMatches = fileHeaders.get(name);
+    // 1. 同文件内部锚点 [label](#anchor)
+    const anchorMatches = Array.from(text.matchAll(/\[([^\]]+)\]\(#([^\)]+)\)/g));
     assert.ok(anchorMatches.length > 0, `${name} 必须包含导航锚点`);
     for (const [, label, anchor] of anchorMatches) {
       const slug = slugify(anchor);
       assert.ok(
         headerMatches.includes(slug) || headerMatches.includes(anchor),
         `${name} 中的导航锚点 #${anchor} (${label}) 在正文中未找到对应的标题章节`
+      );
+    }
+
+    // 2. 跨文件锚点链接 [label](target.md#anchor)
+    const crossMatches = Array.from(text.matchAll(/\[([^\]]+)\]\(([A-Za-z0-9._-]+\.md)#([^\)\s]+)\)/g));
+    for (const [, label, targetFile, targetAnchor] of crossMatches) {
+      assert.ok(fileHeaders.has(targetFile), `${name} 引用了未知的 README: ${targetFile}`);
+      const targetHeaders = fileHeaders.get(targetFile);
+      const slug = slugify(targetAnchor);
+      assert.ok(
+        targetHeaders.includes(slug) || targetHeaders.includes(targetAnchor),
+        `${name} 中的跨文件锚点 ${targetFile}#${targetAnchor} (${label}) 在目标文件中未找到对应章节`
       );
     }
   }
