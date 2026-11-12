@@ -15,7 +15,7 @@
 [![ライセンス: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH 対応バージョン 0.2.2-rc.1](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.1-2563eb.svg)](#インストール)
+[![DSH 対応バージョン 0.2.2-rc.2](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.2-2563eb.svg)](#インストール)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -56,7 +56,7 @@ Agent に送信されるタスクプロンプトは簡体字中国語のまま�
 
 ## 前提条件
 
-- ホスト対応範囲：DeepSeek Harness `0.2.x` 全シリーズ（`>=0.2.0-rc.1 <0.3.0-0`）。`0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1` で互換性検証済み。
+- ホスト対応範囲：DeepSeek Harness `0.2.x` 全シリーズ（`>=0.2.0-rc.1 <0.3.0-0`）。`0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1`、`0.2.2-rc.2` で互換性検証済み。
 - `0.2.0-rc.1` より前の旧ホストはバージョンゲートにより拒否されます。`0.1.x` をお使いの場合はプラグインバージョン `0.1.16` をインストールしてください。
 - Node.js >= 22.19、PATH 内で Git が実行可能であること。
 - 現在のセッションがローカル Git リポジトリに関連付けられていること。
@@ -70,7 +70,7 @@ Agent に送信されるタスクプロンプトは簡体字中国語のまま�
 ローカルのターミナルコマンドを実行できる任意の Agent に以下を送信してください：
 
 ```text
-DSH プラグイン @michengai/dsh-simplify をローカルの web プロファイルにインストールしてください。実行コマンド: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/。インストール後、dsh --profile web --dump-config を実行して設定に michengai-simplify が含まれていることを確認し、DSH をリロードして使い始める方法を教えてください。
+DSH プラグイン @michengai/dsh-simplify をローカルの web プロファイルにインストールしてください。実行コマンド: dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/。インストール後、dsh --profile web --dump-config を実行して設定に michengai-simplify が含まれていることを確認し、DSH をリロードして使い始める方法を教えてください。
 ```
 
 ### npm から手動インストール
@@ -79,19 +79,19 @@ DSH プラグイン @michengai/dsh-simplify をローカルの web プロファ�
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>ローカルパッケージからインストール</summary>
 
-[GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) から公開されている tgz をダウンロードし、パッケージのディレクトリで以下を実行します：
+[GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.9) から公開されている tgz をダウンロードし、パッケージのディレクトリで以下を実行します：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.9.tgz --ignore-scripts
 ```
 
 </details>

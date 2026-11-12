@@ -15,7 +15,7 @@
 [![Licencia: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH compatible hasta 0.2.2-rc.1](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.1-2563eb.svg)](#instalación)
+[![DSH compatible hasta 0.2.2-rc.2](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.2-2563eb.svg)](#instalación)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -52,7 +52,7 @@ Después de una sesión de programación, usa `/simplify` para solicitar al Agen
 
 ## Requisitos previos
 
-- Compatibilidad con DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), probado con `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`.
+- Compatibilidad con DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), probado con `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`, `0.2.2-rc.2`.
 - Los entornos anteriores a `0.2.0-rc.1` son rechazados por el control de versiones. Si utilizas `0.1.x`, instala la versión `0.1.16`.
 - Node.js >= 22.19 con Git disponible en PATH.
 - Sesión vinculada a un repositorio Git local.
@@ -66,7 +66,7 @@ Los siguientes comandos utilizan el perfil `web`. Modifícalo según tu entorno.
 Envía el siguiente mensaje a cualquier Agent con permisos de terminal:
 
 ```text
-Instala el plugin @michengai/dsh-simplify en mi perfil web local ejecutando: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Luego ejecuta dsh --profile web --dump-config para confirmar que la configuración incluya michengai-simplify, y dime cómo recargar DSH y comenzar a usarlo.
+Instala el plugin @michengai/dsh-simplify en mi perfil web local ejecutando: dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/. Luego ejecuta dsh --profile web --dump-config para confirmar que la configuración incluya michengai-simplify, y dime cómo recargar DSH y comenzar a usarlo.
 ```
 
 ### Instalación manual desde npm
@@ -75,19 +75,19 @@ Instala el plugin @michengai/dsh-simplify en mi perfil web local ejecutando: dsh
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>Instalación desde paquete local</summary>
 
-Descarga el archivo tgz publicado desde [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8), y ejecuta en el directorio correspondiente:
+Descarga el archivo tgz publicado desde [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.9), y ejecuta en el directorio correspondiente:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.9.tgz --ignore-scripts
 ```
 
 </details>

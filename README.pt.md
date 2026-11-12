@@ -15,7 +15,7 @@
 [![Licença: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH compatível até 0.2.2-rc.1](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.1-2563eb.svg)](#instalação)
+[![DSH compatível até 0.2.2-rc.2](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.2-2563eb.svg)](#instalação)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -50,7 +50,7 @@ Os prompts de tarefas enviados ao Agent permanecem em chinês simplificado, enqu
 
 ## Pré-requisitos
 
-- Compatibilidade com DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), validado em `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`.
+- Compatibilidade com DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), validado em `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`, `0.2.2-rc.2`.
 - Versões anteriores a `0.2.0-rc.1` são rejeitadas. Se estiver no DSH `0.1.x`, instale a versão `0.1.16`.
 - Node.js >= 22.19, Git acessível no PATH.
 - Sessão vinculada a um repositório Git local.
@@ -60,7 +60,7 @@ Os prompts de tarefas enviados ao Agent permanecem em chinês simplificado, enqu
 ### Solicitar ao Agent a instalação (Recomendado)
 
 ```text
-Instale o plugin DSH @michengai/dsh-simplify no meu perfil web local executando: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Depois execute dsh --profile web --dump-config para confirmar a configuração.
+Instale o plugin DSH @michengai/dsh-simplify no meu perfil web local executando: dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/. Depois execute dsh --profile web --dump-config para confirmar a configuração.
 ```
 
 ### Instalação manual pelo npm
@@ -69,19 +69,19 @@ Instale o plugin DSH @michengai/dsh-simplify no meu perfil web local executando:
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>Instalação a partir de pacote local</summary>
 
-Baixe o arquivo tgz publicado no [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) e execute:
+Baixe o arquivo tgz publicado no [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.9) e execute:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.9.tgz --ignore-scripts
 ```
 
 </details>

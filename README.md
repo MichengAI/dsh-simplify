@@ -15,7 +15,7 @@
 [![许可证：Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH 支持至 0.2.2-rc.1](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.2--rc.1-2563eb.svg)](#安装)
+[![DSH 支持至 0.2.2-rc.2](https://img.shields.io/badge/DSH-%E6%94%AF%E6%8C%81%E8%87%B3%200.2.2--rc.2-2563eb.svg)](#安装)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -56,7 +56,7 @@
 
 ## 前置条件
 
-- 宿主支持范围：DeepSeek Harness `0.2.x` 全系列（`>=0.2.0-rc.1 <0.3.0-0`），已验证兼容 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1`，并自动支持后续全部 0.2.x RC 版本，同代宿主升级无需重复等待发版。
+- 宿主支持范围：DeepSeek Harness `0.2.x` 全系列（`>=0.2.0-rc.1 <0.3.0-0`），已验证兼容 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1`、`0.2.2-rc.2`，并自动支持后续全部 0.2.x RC 版本，同代宿主升级无需重复等待发版。
 - `0.2.0-rc.1` 之前的早期宿主会被版本门拒绝，`0.3.0` 代际破坏性更新由版本门拦截。仍在使用 `0.1.x` 的用户请安装插件 `0.1.16`。
 - Node.js >= 22.19，PATH 中可执行 Git。
 - 当前会话关联本地 Git 项目。
@@ -70,7 +70,7 @@
 把下面这段话发给任意能够执行本机终端命令的 Agent。将 `web` 替换为实际使用的 profile；安装完成后，在 DSH 中使用本插件。
 
 ```text
-请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
+请将 DSH 插件 @michengai/dsh-simplify 安装到本机 web profile，执行：dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/。安装后执行 dsh --profile web --dump-config，确认配置包含 michengai-simplify，并告诉我如何重新加载 DSH 和开始使用。
 ```
 
 ### 手动从 npm 安装
@@ -79,19 +79,19 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>从本地安装包安装</summary>
 
-从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) 下载已发布的 tgz，然后在安装包所在目录执行：
+从 [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.9) 下载已发布的 tgz，然后在安装包所在目录执行：
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.9.tgz --ignore-scripts
 ```
 
 </details>
@@ -203,7 +203,7 @@ GitHub 与 npm 都包含可直接运行的 `lib`。改了源码后，提交前�
 
 ### 验证
 
-开发依赖对齐 DSH `0.2.2-rc.1`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1` 等各版本隔离宿主上重跑真实命令与 Git 测试。
+开发依赖对齐 DSH `0.2.2-rc.2`。`npm run test:compat` 在 `0.2.0-rc.1`、`0.2.0-rc.2`、`0.2.1-rc.1`～`0.2.1-rc.5`、`0.2.2-rc.1`、`0.2.2-rc.2` 等各版本隔离宿主上重跑真实命令与 Git 测试。
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.9 - 2026-11-12
+
+- Align with official DSH `0.2.2-rc.2` release; upgrade development dependencies to `0.2.2-rc.2`.
+- Verify compatibility across all `0.2.x` RC hosts (`0.2.0-rc.1` through `0.2.2-rc.2`).
+- Update documentation badges and verified build ranges across all localized manuals, and simplify header navigation.
+
+[简体中文](CHANGELOG.zh-CN.md)
+
 ## 1.0.8 - 2026-11-09
 
 - **Full Support for All 8 Official DeepSeek Harness Languages**: Native integration for Chinese, English, Japanese, Spanish, French, German, Russian, and Portuguese (`zh`, `en`, `ja`, `es`, `fr`, `de`, `ru`, `pt`). The `/simplify` slash command label and description dynamically adapt to the active interface language in the command popup.

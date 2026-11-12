@@ -15,7 +15,7 @@
 [![Лицензия: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![Поддержка DSH до 0.2.2-rc.1](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.1-2563eb.svg)](#установка)
+[![Поддержка DSH до 0.2.2-rc.2](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.2-2563eb.svg)](#установка)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -50,7 +50,7 @@
 
 ## Требования
 
-- DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), проверено на `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`.
+- DeepSeek Harness `0.2.x` (`>=0.2.0-rc.1 <0.3.0-0`), проверено на `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`～`0.2.1-rc.5`, `0.2.2-rc.1`, `0.2.2-rc.2`.
 - Версии до `0.2.0-rc.1` отклоняются шлюзом версий. Для DSH `0.1.x` используйте версию `0.1.16`.
 - Node.js >= 22.19, Git доступен в PATH.
 - Сессия привязана к локальному репозиторию Git.
@@ -62,7 +62,7 @@
 ### Установка через Агента (Рекомендуется)
 
 ```text
-Установите плагин DSH @michengai/dsh-simplify в мой локальный профиль web: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Затем проверьте конфигурацию командой dsh --profile web --dump-config.
+Установите плагин DSH @michengai/dsh-simplify в мой локальный профиль web: dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/. Затем проверьте конфигурацию командой dsh --profile web --dump-config.
 ```
 
 ### Установка через npm вручную
@@ -71,19 +71,19 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>Установка из локального пакета</summary>
 
-Загрузите опубликованный архив tgz со страницы [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8) и выполните:
+Загрузите опубликованный архив tgz со страницы [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.9) и выполните:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.9.tgz --ignore-scripts
 ```
 
 </details>

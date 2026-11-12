@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 // 用当前开发基线编译，再把真实命令测试指到各版独立宿主，避免旧版借用新版包。
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const cordis = { '0.2.0-rc.1': '4.0.4', '0.2.0-rc.2': '4.0.4', '0.2.1-rc.1': '4.0.5', '0.2.1-rc.2': '4.0.5', '0.2.1-rc.3': '4.0.5', '0.2.1-rc.4': '4.0.5', '0.2.1-rc.5': '4.0.5', '0.2.2-rc.1': '4.1.0' };
+const cordis = { '0.2.0-rc.1': '4.0.4', '0.2.0-rc.2': '4.0.4', '0.2.1-rc.1': '4.0.5', '0.2.1-rc.2': '4.0.5', '0.2.1-rc.3': '4.0.5', '0.2.1-rc.4': '4.0.5', '0.2.1-rc.5': '4.0.5', '0.2.2-rc.1': '4.1.0', '0.2.2-rc.2': '4.1.0' };
 const versions = process.argv.slice(2);
 const supported = Object.keys(cordis);
 if (!versions.length) versions.push(...supported);
@@ -25,14 +25,18 @@ for (const version of versions) {
   try {
     const pin = cordis[version];
     if (!pin) throw new Error(`未支持的宿主：${version}`);
+    const hostDeps = {
+      '@deepseek-ai/cordis': pin,
+      '@deepseek-ai/dsh-commands': version,
+      '@deepseek-ai/dsh-subprocess-local': version,
+      ...(['0.2.0-rc.1', '0.2.0-rc.2', '0.2.1-rc.1', '0.2.1-rc.2', '0.2.1-rc.3', '0.2.1-rc.4', '0.2.1-rc.5', '0.2.2-rc.1'].includes(version)
+        ? {}
+        : { '@deepseek-ai/dsh-error': version }),
+    };
     writeFileSync(join(directory, 'package.json'), JSON.stringify({
       name: 'dsh-simplify-compatibility',
       private: true,
-      dependencies: {
-        '@deepseek-ai/cordis': pin,
-        '@deepseek-ai/dsh-commands': version,
-        '@deepseek-ai/dsh-subprocess-local': version,
-      },
+      dependencies: hostDeps,
     }, null, 2) + '\n', 'utf8');
     const env = { ...process.env, DSH_RUNTIME_ROOT: join(directory, 'node_modules') };
     const run = args => {

@@ -15,7 +15,7 @@
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![npm package](https://img.shields.io/npm/v/%40michengai%2Fdsh-simplify.svg?label=npm%20package)](https://www.npmjs.com/package/@michengai/dsh-simplify)
 [![DSH Web Plugin](https://img.shields.io/badge/DSH%20Web-Plugin-0f766e.svg)](https://github.com/deepseek-ai/deepseek-harness)
-[![DSH supported through 0.2.2-rc.1](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.1-2563eb.svg)](#installation)
+[![DSH supported through 0.2.2-rc.2](https://img.shields.io/badge/DSH-up%20to%200.2.2--rc.2-2563eb.svg)](#installation)
 [![Node.js 22.19+](https://img.shields.io/badge/Node.js-22.19%2B-339933.svg?logo=node.js&logoColor=white)](https://nodejs.org/)
 
 </div>
@@ -56,7 +56,7 @@ For a desktop workbench, download [DSH Codex Desktop](https://github.com/Micheng
 
 ## Prerequisites
 
-- Host compatibility: Full DeepSeek Harness `0.2.x` line (`>=0.2.0-rc.1 <0.3.0-0`), verified with `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, and `0.2.2-rc.1`, and forwards-compatible with subsequent `0.2.x` RC releases without requiring routine plugin version bumps.
+- Host compatibility: Full DeepSeek Harness `0.2.x` line (`>=0.2.0-rc.1 <0.3.0-0`), verified with `0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, `0.2.2-rc.1`, and `0.2.2-rc.2`, and forwards-compatible with subsequent `0.2.x` RC releases without requiring routine plugin version bumps.
 - Legacy hosts prior to `0.2.0-rc.1` are rejected by the version gate. The version gate cleanly intercepts breaking changes in the `0.3.0` generation. Users on `0.1.x` hosts should install `0.1.16`.
 - Node.js >= 22.19, git available in PATH.
 - Active conversation linked to a local git repository.
@@ -70,7 +70,7 @@ The commands below use the `web` profile; replace it for your environment. Disab
 Send the prompt below to any agent that can run terminal commands on your computer. Replace `web` with your actual profile. Once installed, use the plugin in DSH.
 
 ```text
-Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
+Install the DSH plugin @michengai/dsh-simplify into my local web profile by running: dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/. Then run dsh --profile web --dump-config, confirm the configuration includes michengai-simplify, and explain how to reload DSH and start using the plugin.
 ```
 
 ### Install from npm
@@ -79,19 +79,19 @@ Install the DSH plugin @michengai/dsh-simplify into my local web profile by runn
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add @michengai/dsh-simplify@1.0.8 --registry=https://registry.npmjs.org/
+dsh plugin --profile web add @michengai/dsh-simplify@1.0.9 --registry=https://registry.npmjs.org/
 ```
 
 <details>
 <summary>Install from a local package</summary>
 
-Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.8), then run this from the package directory:
+Download the published tgz from the [GitHub Release](https://github.com/MichengAI/dsh-simplify/releases/tag/v1.0.9), then run this from the package directory:
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-dsh plugin --profile web add .\michengai-dsh-simplify-1.0.8.tgz --ignore-scripts
+dsh plugin --profile web add .\michengai-dsh-simplify-1.0.9.tgz --ignore-scripts
 ```
 
 </details>
@@ -203,7 +203,7 @@ GitHub and npm both include a ready-to-run `lib`. After changing source, run `np
 
 ### Verification
 
-Development dependencies align with DSH `0.2.2-rc.1`. `npm run test:compat` reruns real command and Git tests across all supported isolated host versions (`0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, and `0.2.2-rc.1`).
+Development dependencies align with DSH `0.2.2-rc.2`. `npm run test:compat` reruns real command and Git tests across all supported isolated host versions (`0.2.0-rc.1`, `0.2.0-rc.2`, `0.2.1-rc.1`–`0.2.1-rc.5`, `0.2.2-rc.1`, and `0.2.2-rc.2`).
 
 ```powershell
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
