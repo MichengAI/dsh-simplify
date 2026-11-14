@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.10 - 2026-11-14
+
+- Align with official DSH `0.2.2-rc.3` release; upgrade development dependencies to `0.2.2-rc.3`.
+- Verify compatibility across all `0.2.x` RC hosts (`0.2.0-rc.1` through `0.2.2-rc.3`).
+- Update documentation badges and verified build ranges across all localized manuals.
+
 ## 1.0.9 - 2026-11-12
 
 - Align with official DSH `0.2.2-rc.2` release; upgrade development dependencies to `0.2.2-rc.2`.
