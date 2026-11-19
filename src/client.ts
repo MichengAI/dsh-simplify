@@ -50,7 +50,7 @@ function decorateSlashFace(commandUi: unknown, ctx: Lookup): () => void {
       if (item.name !== 'simplify') return item;
       return {
         ...item,
-        ...(item.icon === undefined && FACE.icon !== undefined ? { icon: FACE.icon } : {}),
+        ...(item.icon === undefined ? { icon: FACE.icon } : {}),
         label: copy.label,
         description: copy.description,
       };

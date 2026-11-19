@@ -3,7 +3,7 @@ import type { CommandInvocation, CommandResult } from '@deepseek-ai/dsh-commands
 import { createUserMessage } from '@deepseek-ai/dsh-llm';
 import { parseArgs } from './args.js';
 import { createGitRunner } from './exec.js';
-import { collectReview, verifyReview } from './git.js';
+import { collectReview } from './git.js';
 import { buildPrompt } from './prompt.js';
 
 declare module '@deepseek-ai/dsh-llm' {
@@ -31,7 +31,6 @@ export async function handleCommand(ctx: Pick<Context, 'subprocess'>, invocation
       return { kind: 'success', text: `没有可简化的当前代码行。${skipped ? `\n已跳过 ${review.skipped.length} 个文件：\n${skipped}` : ''}` };
     }
     const prompt = buildPrompt(review);
-    await verifyReview(run, review);
     signal.throwIfAborted();
     // followup 在当前宿主中同时负责持久入队与唤醒，避免直接操作 inbox 后缺少唤醒。
     invocation.agent.followup(createUserMessage({
