@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.11 - 2026-11-19
+
+- Align with official DSH `0.2.2-rc.5` host environment; upgrade development dependencies to `0.2.2-rc.5`.
+- Refine supported host version matrix to `>=0.2.2-rc.1 <0.3.0-0`, completing full compatibility regression across all RC hosts.
+- Streamline command invocation and client initialization to improve execution smoothness.
+
+[简体中文](CHANGELOG.zh-CN.md)
+
 ## 1.0.10 - 2026-11-14
 
 - Align with official DSH `0.2.2-rc.3` release; upgrade development dependencies to `0.2.2-rc.3`.
