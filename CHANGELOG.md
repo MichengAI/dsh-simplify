@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.12 - 2026-11-22
+
+- Fix the `/simplify` entry in the `/` command menu showing nothing but the bare `simplify` name, with no icon and no localized title. It now looks like the built-in commands (`Compact`, `Permission`, …): a glyph plus a title in your interface language.
+- Other commands are unaffected, and the entry's argument hint and behavior stay the same.
+
+[简体中文](CHANGELOG.zh-CN.md)
+
 ## 1.0.11 - 2026-11-19
 
 - Align with official DSH `0.2.2-rc.5` host environment; upgrade development dependencies to `0.2.2-rc.5`.

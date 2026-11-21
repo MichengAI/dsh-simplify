@@ -1,15 +1,13 @@
 ## 简体中文
 
-- 对齐官方最新 DSH `0.2.2-rc.5` 宿主环境，更新开发依赖至 `0.2.2-rc.5`。
-- 优化宿主兼容支持矩阵，收缩为 `>=0.2.2-rc.1 <0.3.0-0`，完成全系 RC 宿主兼容性回归验证。
-- 精简命令调用与界面初始化处理，优化执行流畅度。
+- 修复在输入框敲 `/` 时，`/simplify` 那一行只剩一个 `simplify` 字样、既不显示图标也没有「简化」标题的问题；现在它和「压缩 compact」等内置指令一样，显示图标与当前界面语言的标题。
+- 其他指令不受影响，`/simplify` 的参数提示与功能行为保持不变。
 
 [English](CHANGELOG.md)
 
 ## English
 
-- Align with official DSH `0.2.2-rc.5` host environment; upgrade development dependencies to `0.2.2-rc.5`.
-- Refine supported host version matrix to `>=0.2.2-rc.1 <0.3.0-0`, completing full compatibility regression across all RC hosts.
-- Streamline command invocation and client initialization to improve execution smoothness.
+- Fix the `/simplify` entry in the `/` command menu showing nothing but the bare `simplify` name, with no icon and no localized title. It now looks like the built-in commands (`Compact`, `Permission`, …): a glyph plus a title in your interface language.
+- Other commands are unaffected, and the entry's argument hint and behavior stay the same.
 
 [简体中文](CHANGELOG.zh-CN.md)
