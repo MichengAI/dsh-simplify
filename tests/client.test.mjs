@@ -130,3 +130,62 @@ test('卸载后恢复原始 candidates', async () => {
   dispose();
   assert.equal(commandUi.candidates, original);
 });
+
+test('commandUi 未就绪时不静默失效，服务出现后再装饰', async () => {
+  const client = loadClient();
+  const rows = () => ([{ name: 'simplify', description: '宿主说明', hint: 'x' }]);
+  const commandUi = { candidates: async () => rows() };
+  let pending;
+  const injected = [];
+  const ctx = {
+    // 模拟真实时序：apply 时 commandUi 还不存在
+    get: name => (name === 'commandUi' ? undefined : undefined),
+    effect: callback => callback(),
+    inject: (deps, callback) => {
+      injected.push([...deps]);
+      pending = callback;
+    },
+  };
+  client.apply(ctx);
+  assert.deepEqual(injected, [['commandUi']]);
+  assert.equal(typeof pending, 'function');
+
+  // 服务就绪后回调，此时注入上下文才看得到 commandUi
+  const scope = {
+    get: name => (name === 'commandUi' ? commandUi : undefined),
+    effect: callback => callback(),
+  };
+  pending(scope);
+  const decorated = await commandUi.candidates();
+  assert.equal(decorated[0].icon, enhanceIcon);
+  assert.equal(decorated[0].label, '简化');
+  assert.equal(decorated[0].description, '简化最近改动的代码，保持功能并限定修改范围');
+  assert.equal(decorated[0].hint, 'x');
+});
+
+test('服务重建后重复注入不会多层包裹', async () => {
+  const client = loadClient();
+  let calls = 0;
+  const commandUi = {
+    candidates: async () => {
+      calls += 1;
+      return [{ name: 'simplify' }];
+    },
+  };
+  const callbacks = [];
+  const scope = {
+    get: name => (name === 'commandUi' ? commandUi : undefined),
+    effect: callback => callback(),
+  };
+  client.apply({ get: () => undefined, inject: (deps, callback) => callbacks.push(callback) });
+  callbacks[0](scope);
+  const afterFirst = commandUi.candidates;
+  callbacks[0](scope);
+  // 同一服务再次注入时不得再包一层（输出相同，但引用必须不变）。
+  assert.equal(commandUi.candidates, afterFirst);
+  const decorated = await commandUi.candidates();
+  assert.equal(calls, 1);
+  assert.equal(decorated.length, 1);
+  assert.equal(decorated[0].label, '简化');
+  assert.equal(decorated[0].icon, enhanceIcon);
+});
