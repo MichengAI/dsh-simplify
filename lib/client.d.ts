@@ -13,5 +13,5 @@ interface ClientScope extends Lookup {
  * undefined 并静默失效；`inject` 会在服务就绪时回调，并在服务重建后再次回调，
  * 因此这里同时承担重挂载责任。
  */
-export declare function apply(ctx: ClientScope): unknown;
+export declare function apply(ctx: ClientScope): () => void;
 export {};

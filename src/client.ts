@@ -24,8 +24,8 @@ const WRAPPED = Symbol.for('michengai.simplify.slashFace');
 
 /** 识别宿主界面当前生效的语言；未指定默认中文，非中文未知语种回落英文。 */
 function resolveLocale(ctx: Lookup): SupportedLocale {
-  const locale = ctx.get?.('locale') as { snapshot?: { active?: unknown } } | undefined;
-  const active = locale?.snapshot?.active;
+  const locale = ctx.get?.('locale') as { snapshot?: { active?: unknown }; getSnapshot?: () => { active?: unknown } } | undefined;
+  const active = locale?.snapshot?.active ?? locale?.getSnapshot?.()?.active;
   if (typeof active !== 'string') return 'zh';
   const tag = active.replace(/_/g, '-').toLowerCase();
   if (/^zh\b/.test(tag)) return 'zh';
@@ -78,17 +78,17 @@ interface ClientScope extends Lookup {
  * undefined 并静默失效；`inject` 会在服务就绪时回调，并在服务重建后再次回调，
  * 因此这里同时承担重挂载责任。
  */
-export function apply(ctx: ClientScope): unknown {
+export function apply(ctx: ClientScope): () => void {
   // 宿主 effect 返回卸载器；把它交回宿主，服务重建或插件卸载时才能恢复原方法。
   const decorate = (scope: ClientScope): (() => void) => {
     if (typeof scope.effect === 'function') {
-      return scope.effect(() => decorateSlashFace(scope.get?.('commandUi'), scope)) as () => void;
+      return (scope.effect(() => decorateSlashFace(scope.get?.('commandUi'), scope)) as () => void) ?? (() => {});
     }
     return decorateSlashFace(scope.get?.('commandUi'), scope);
   };
   if (typeof ctx.inject === 'function') {
-    ctx.inject(['commandUi'], scope => decorate(scope));
-    return;
+    const uninject = ctx.inject(['commandUi'], scope => decorate(scope));
+    return typeof uninject === 'function' ? (uninject as () => void) : () => {};
   }
   // 兼容不带 inject 的最小夹具：退化为一次性尝试。
   return decorate(ctx);

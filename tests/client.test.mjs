@@ -189,3 +189,52 @@ test('服务重建后重复注入不会多层包裹', async () => {
   assert.equal(decorated[0].label, '简化');
   assert.equal(decorated[0].icon, enhanceIcon);
 });
+
+test('inject 模式下 apply 返回可调用的注销函数，卸载时恢复原始 candidates', async () => {
+  const client = loadClient();
+  const original = async () => ([{ name: 'simplify' }]);
+  const commandUi = { candidates: original };
+  let uninjectCalled = false;
+  let injectedCallback;
+  const ctx = {
+    get: () => undefined,
+    inject: (deps, callback) => {
+      injectedCallback = callback;
+      return () => {
+        uninjectCalled = true;
+      };
+    },
+  };
+  const dispose = client.apply(ctx);
+  assert.equal(typeof dispose, 'function', 'apply 在 inject 模式下必须返回清理函数');
+
+  const scope = {
+    get: name => (name === 'commandUi' ? commandUi : undefined),
+    effect: callback => {
+      const cleaner = callback();
+      return cleaner;
+    },
+  };
+  injectedCallback(scope);
+  assert.notEqual(commandUi.candidates, original);
+
+  dispose();
+  assert.equal(uninjectCalled, true, '必须调用 inject 返回的卸载函数');
+});
+
+test('宿主 locale 服务通过 getSnapshot 方法提供语言时也能准确识别', async () => {
+  const client = loadClient();
+  const commandUi = { candidates: async () => ([{ name: 'simplify' }]) };
+  const hostWithGetSnapshot = {
+    get: name => {
+      if (name === 'commandUi') return commandUi;
+      if (name === 'locale') return { getSnapshot: () => ({ active: 'ja-JP' }) };
+      return undefined;
+    },
+    effect: callback => callback(),
+  };
+  client.apply(hostWithGetSnapshot);
+  const rows = await commandUi.candidates();
+  assert.equal(rows[0].label, '簡素化');
+  assert.equal(rows[0].description, '最近の変更コードを簡素化し、機能を維持しながら変更範囲を限定');
+});

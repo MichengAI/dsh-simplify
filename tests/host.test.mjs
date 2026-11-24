@@ -10,7 +10,15 @@ import { createGitRunner } from '../lib/exec.js';
 import { collectReview } from '../lib/git.js';
 import { parseArgs } from '../lib/args.js';
 
-const runtimeRoot = process.env.DSH_RUNTIME_ROOT ?? fileURLToPath(new URL('../node_modules/', import.meta.url));
+function resolveRuntimeRoot() {
+  const candidate = process.env.DSH_RUNTIME_ROOT ?? fileURLToPath(new URL('../node_modules/', import.meta.url));
+  if (existsSync(join(candidate, '@deepseek-ai', 'dsh-subprocess-local', 'lib', 'index.js'))) return candidate;
+  const nested = join(candidate, '@deepseek-ai', 'dsh', 'node_modules');
+  if (existsSync(join(nested, '@deepseek-ai', 'dsh-subprocess-local', 'lib', 'index.js'))) return nested;
+  return candidate;
+}
+
+const runtimeRoot = resolveRuntimeRoot();
 const available = existsSync(join(runtimeRoot, '@deepseek-ai', 'dsh-subprocess-local', 'lib', 'index.js'));
 
 test('真实 DSH 命令注册、subprocess 执行、消息投递与卸载', {skip: available ? false : '未检测到项目宿主依赖，请先安装依赖或设置 DSH_RUNTIME_ROOT'}, async () => {

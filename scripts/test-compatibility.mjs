@@ -5,7 +5,14 @@ import { fileURLToPath } from 'node:url';
 
 // 用当前开发基线编译，再把真实命令测试指到各版独立宿主，避免旧版借用新版包。
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const cordis = { '0.2.2-rc.1': '4.1.0', '0.2.2-rc.2': '4.1.0', '0.2.2-rc.3': '4.1.0', '0.2.2-rc.4': '4.1.0', '0.2.2-rc.5': '4.1.0' };
+const cordis = {
+  '0.2.2-rc.1': '4.1.0',
+  '0.2.2-rc.2': '4.1.0',
+  '0.2.2-rc.3': '4.1.0',
+  '0.2.2-rc.4': '4.1.0',
+  '0.2.2-rc.5': '4.1.0',
+  '0.2.3-alpha.2': '4.2.0-alpha.1',
+};
 const versions = process.argv.slice(2);
 const supported = Object.keys(cordis);
 if (!versions.length) versions.push(...supported);
@@ -30,6 +37,7 @@ for (const version of versions) {
       '@deepseek-ai/dsh-commands': version,
       '@deepseek-ai/dsh-subprocess-local': version,
       ...(version === '0.2.2-rc.1' ? {} : { '@deepseek-ai/dsh-error': version }),
+      ...(version.startsWith('0.2.3') ? { '@deepseek-ai/dsh-typert-protocol': version } : {}),
     };
     writeFileSync(join(directory, 'package.json'), JSON.stringify({
       name: 'dsh-simplify-compatibility',
