@@ -1,13 +1,15 @@
 ## 简体中文
 
-- 修复在输入框敲 `/` 时，`/simplify` 那一行只剩一个 `simplify` 字样、既不显示图标也没有「简化」标题的问题；现在它和「压缩 compact」等内置指令一样，显示图标与当前界面语言的标题。
-- 其他指令不受影响，`/simplify` 的参数提示与功能行为保持不变。
+- 对齐官方最新 DSH `0.2.3-alpha.2` 宿主环境，更新开发依赖并完成全系宿主兼容性回归验证。
+- 优化客户端命令菜单生命周期管理，支持插件卸载与热更新时的平滑清理，恢复原生命令菜单状态。
+- 完善界面语言识别，支持新版宿主语言快照获取方式，确保多语言界面标题准确显示。
 
 [English](CHANGELOG.md)
 
 ## English
 
-- Fix the `/simplify` entry in the `/` command menu showing nothing but the bare `simplify` name, with no icon and no localized title. It now looks like the built-in commands (`Compact`, `Permission`, …): a glyph plus a title in your interface language.
-- Other commands are unaffected, and the entry's argument hint and behavior stay the same.
+- Align with official DSH `0.2.3-alpha.2` host environment; upgrade development dependencies and complete compatibility regression across all supported hosts.
+- Improve client command menu lifecycle management, supporting clean state restoration upon plugin uninstallation and reload.
+- Enhance interface locale detection to support updated host snapshot access, ensuring accurate localized command titles across all languages.
 
 [简体中文](CHANGELOG.zh-CN.md)

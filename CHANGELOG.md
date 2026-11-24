@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.13 - 2026-11-24
+
+- Align with official DSH `0.2.3-alpha.2` host environment; upgrade development dependencies and complete compatibility regression across all supported hosts.
+- Improve client command menu lifecycle management, supporting clean state restoration upon plugin uninstallation and reload.
+- Enhance interface locale detection to support updated host snapshot access, ensuring accurate localized command titles across all languages.
+
+[简体中文](CHANGELOG.zh-CN.md)
+
 ## 1.0.12 - 2026-11-22
 
 - Fix the `/simplify` entry in the `/` command menu showing nothing but the bare `simplify` name, with no icon and no localized title. It now looks like the built-in commands (`Compact`, `Permission`, …): a glyph plus a title in your interface language.
