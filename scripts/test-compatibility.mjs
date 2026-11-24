@@ -36,8 +36,8 @@ for (const version of versions) {
       '@deepseek-ai/cordis': pin,
       '@deepseek-ai/dsh-commands': version,
       '@deepseek-ai/dsh-subprocess-local': version,
+      '@deepseek-ai/dsh-typert-protocol': version,
       ...(version === '0.2.2-rc.1' ? {} : { '@deepseek-ai/dsh-error': version }),
-      ...(version.startsWith('0.2.3') ? { '@deepseek-ai/dsh-typert-protocol': version } : {}),
     };
     writeFileSync(join(directory, 'package.json'), JSON.stringify({
       name: 'dsh-simplify-compatibility',

@@ -8,7 +8,7 @@ const peers = manifest.peerDependencies;
 const dev = manifest.devDependencies;
 const host = '>=0.2.2-rc.1 <0.3.0-0';
 
-test('宿主兼容列表收缩至 0.2.2-rc.1 起及 0.2.x 代际范围，开发依赖钉到 0.2.2-rc.5', () => {
+test('宿主兼容列表收缩至 0.2.2-rc.1 起及 0.2.x 代际范围，开发依赖对齐 0.2.3-alpha.2', () => {
   assert.equal(manifest.engines?.dsh, host);
   for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess', '@deepseek-ai/dsh-client-ui-commands', '@deepseek-ai/dsh-client-ui-primitives']) {
     assert.equal(peers[name], host);
@@ -20,9 +20,9 @@ test('宿主兼容列表收缩至 0.2.2-rc.1 起及 0.2.x 代际范围，开发�
     assert.equal(semver.satisfies(v, host, { includePrerelease: true }), false);
   }
   for (const name of ['@deepseek-ai/dsh-commands', '@deepseek-ai/dsh-llm', '@deepseek-ai/dsh-subprocess', '@deepseek-ai/dsh-client-ui-commands', '@deepseek-ai/dsh-client-ui-primitives', '@deepseek-ai/dsh-subprocess-local']) {
-    assert.equal(dev[name], '0.2.2-rc.5');
+    assert.equal(dev[name], '0.2.3-alpha.2');
   }
-  assert.equal(dev['@deepseek-ai/cordis'], '4.1.0');
+  assert.equal(dev['@deepseek-ai/cordis'], '4.2.0-alpha.1');
   assert.equal(peers['@deepseek-ai/cordis'], '>=4.1.0 <5');
   assert.ok(semver.satisfies('4.2.0-alpha.1', peers['@deepseek-ai/cordis'], { includePrerelease: true }));
 });
